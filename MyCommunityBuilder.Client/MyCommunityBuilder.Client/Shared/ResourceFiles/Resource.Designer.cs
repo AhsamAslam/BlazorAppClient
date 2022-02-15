@@ -358,6 +358,15 @@ namespace MyCommunityBuilder.Client.Shared.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to osaki.png.
+        /// </summary>
+        public static string LocalBusinessImage {
+            get {
+                return ResourceManager.GetString("LocalBusinessImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logout.
         /// </summary>
         public static string Logout {

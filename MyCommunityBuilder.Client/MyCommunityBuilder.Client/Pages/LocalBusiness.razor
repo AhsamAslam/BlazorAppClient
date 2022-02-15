@@ -2,63 +2,197 @@
 @using MyCommunityBuilder.Client.Services
 @inject BusinessClient BusinessClient
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILogger<Index> _logger
+@inject IJSRuntime JS
+@inject IStringLocalizer<Resource> Localizer
 
-<div class="container-fluid">
-    <div class="row" style="text-align:center;">
-        <div class="col-sm-12 col-md-4 col-lg-4">
-            <JLogo />
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
-            <div style="vertical-align: top; text-align: center; white-space: nowrap; overflow: hidden; width: 100%; padding-top:50px;">
-                <input type="text" placeholder="Business name, type, product or other.." style="color:Gray;border-color:#CCCCCC;border-width:2px;border-style:Inset; border-radius:10px; font-size:Medium;width:90%;" @oninput="@((e) => { SearchText=(string)e.Value;})" />
-                <input type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="http://www.las-cruces.biz/Images/Global/search.png" align="top" style="height:28px;width:28px;" />
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
-            <div style="vertical-align: bottom; width: 100%; font-family: Impact, 'Arial Narrow Bold', Haettenschweiler, sans-serif; text-align: center; padding-top:15px;">
-
-                <h3><span id="P0003_Label1" style="color: #580F5C; font-size: 1.3rem;">Become a fan of your favorite businesses and help them grow stronger</span></h3>
-            </div>
-        </div>
-
-    </div>
-    <div class="row"></div>
+<div class="row">
+    <JSlider Records="SliderItem"></JSlider>
 </div>
-<div class="container-fluid">
-    <div style="text-align: left; vertical-align: bottom;">
-        &nbsp;&nbsp;&nbsp;<a class="hover-item" @onclick="GetAllLocalBusinessCard" style="font-family:Verdana;font-size:0.8em; color:blue;">All Businesses</a>
-        <span id="MainContent_lbl_SearchCarat" style="font-family:Verdana;font-size:0.8em;">&gt;</span>
-        <a id="MainContent_hlnk_SearchTerm" href="#" style="font-family:Verdana;font-size:0.8em;">@SearchText</a>
+<div class="row" style="height: 75px;">
+    <NavMenuBar></NavMenuBar>
+</div>
+<div class="container ContainerBody">
+    <div class="row RowCenter">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="SearchBarDiv">
+                <input class="SearchInput" type="text" placeholder="Business name..." @oninput="@((e) => { SearchText=(string)e.Value;})" />
+                <input class="SearchIcon" type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["SearchImage"]))" align="top" />
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+        </div>
+    </div>
+    <div class="row RowCenter">
+        <div class="col-md-4 col-lg-4"></div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <button type="button" class="btn btn-link InviteBusinessLink">
+                Invite a business to register
+            </button>
+        </div>
+        <div class="col-md-4 col-lg-4"></div>
     </div>
     <div class="row">
-        @foreach (var item in BusinessBySite)
-        {
-            <div class="PanelProduct col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                <div class="DivDesignName" style="text-align: center; background-color: #333333; border-color: #333333; overflow: hidden;">
-                    <span class="BusinessName" style="text-align: center; font-size: medium; border-color: #333333; color: WHITE;" title='Mexican Restaurant'>@item.BusinessName</span><br />
-                </div>
-
-                <div class="DivProductImage" style="text-align: center; background-color: #333333; border-color: #333333;">
-                    <a @onclick="() => GetBusinessDetail(item.BusinessID)" id="MainContent_RepeaterBusinesses_HyperProductPage_0" class="hyperProductImage"><img class="ProductImage" data-width="250" data-height="104" src="http://www.las-cruces.biz/images/Designs/Icons/29a9b567-5b2b-49ba-b71c-56b4463940c3.jpg" style="text-align: center;" /></a>
-                </div>
-
-                <div style="border: 1px solid #333333; padding: 5px 2px 5px 2px; text-align: center; background-color: #333333; overflow: hidden; color: WHITE;">
-                    <div style="text-align: center; font-size: medium" title='Mexican Restaurant'>
-                        @item.Type
-                    </div>
-                </div>
+        <div class="col-sm-12 col-md-2 col-lg-2">
+            <div class="GetAllBusinessDiv">
+                &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">All Businesses</a>
+                <span class="SpaceSpan">&gt;</span>
+                <a href="#" class="SearchText">@SearchText</a>
             </div>
-        }
-        <a style="color: Red; font-family: verdana; font-size: Medium; font-weight: bold; text-decoration: underline; padding-top: 5px;">Help! I have a business that I want to add.</a>
+        </div>
+        <div class="col-md-8 col-lg-8"></div>
+        <div class="col-sm-12 col-md-2 col-lg-2">
+            <div class="GetAllBusinessDiv">
+                &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">Newest Businesses</a>
+                <span class="SpaceSpan">&gt;</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-lg-1"></div>
+        <JLocalBusinessCard Records="BusinessLocalCardDto"></JLocalBusinessCard>
     </div>
 </div>
+@*<div class="container-fluid">
+        <div style="text-align: left; vertical-align: bottom;">
+            &nbsp;&nbsp;&nbsp;<a class="hover-item" @onclick="GetAllLocalBusinessCard" style="font-family:Verdana;font-size:0.8em; color:blue;">All Businesses</a>
+            <span id="MainContent_lbl_SearchCarat" style="font-family:Verdana;font-size:0.8em;">&gt;</span>
+            <a id="MainContent_hlnk_SearchTerm" href="#" style="font-family:Verdana;font-size:0.8em;">@SearchText</a>
+        </div>
+        <div class="row">
+            @foreach (var item in BusinessBySite)
+            {
+                <div class="PanelProduct col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="DivDesignName" style="text-align: center; background-color: #333333; border-color: #333333; overflow: hidden;">
+                        <span class="BusinessName" style="text-align: center; font-size: medium; border-color: #333333; color: WHITE;" title='Mexican Restaurant'>@item.BusinessName</span><br />
+                    </div>
+
+                    <div class="DivProductImage" style="text-align: center; background-color: #333333; border-color: #333333;">
+                        <a @onclick="() => GetBusinessDetail(item.BusinessID)" id="MainContent_RepeaterBusinesses_HyperProductPage_0" class="hyperProductImage"><img class="ProductImage" data-width="250" data-height="104" src="http://www.las-cruces.biz/images/Designs/Icons/29a9b567-5b2b-49ba-b71c-56b4463940c3.jpg" style="text-align: center;" /></a>
+                    </div>
+
+                    <div style="border: 1px solid #333333; padding: 5px 2px 5px 2px; text-align: center; background-color: #333333; overflow: hidden; color: WHITE;">
+                        <div style="text-align: center; font-size: medium" title='Mexican Restaurant'>
+                            @item.Type
+                        </div>
+                    </div>
+                </div>
+            }
+            <a style="color: Red; font-family: verdana; font-size: Medium; font-weight: bold; text-decoration: underline; padding-top: 5px;">Help! I have a business that I want to add.</a>
+        </div>
+    </div>*@
 
 
 @code {
+    List<SliderItemDto> SliderItem = new List<SliderItemDto>();
+    List<BusinessLocalCardDto> BusinessLocalCardDto = new List<BusinessLocalCardDto>();
     protected override async Task OnInitializedAsync()
     {
+        #region Components Data
+        SliderItem = new List<SliderItemDto>
+{
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
+            Alt = "First Slide",
+            Caption = "Slide 1",
+            Header = "Slider 1 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage2"]),            Alt = "Second Slide",
+            Caption = "Slide 2",
+            Header = "Slider 2 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage3"]),            Alt = "Third Slide",
+            Caption = "Slide 3",
+            Header = "Slider 3 Header"
+
+        },
+    };
+
+        BusinessLocalCardDto = new List<BusinessLocalCardDto>
+    {
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Burrito's Victoria",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "1",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Las Cruces Game Knights",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "2",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Licensed Massage Therapy﻿",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "3",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Mountain View Market Co-op",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "4",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Okazuri Floating Sushi Bar",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "5",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Precious Little One's Childcare LLC",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "6",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+        };
+        #endregion
         await LoadBusinessesBySiteID();
         await base.OnInitializedAsync();
+    }
+
+    private async Task GetLocalBusinessCardByName()
+    {
+        try
+        {
+            BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardTitle == SearchText).ToList();
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
     }
 
 }

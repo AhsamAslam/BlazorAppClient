@@ -1,0 +1,30 @@
+﻿@*<ul class="card-wrapper">
+        @foreach (var item in Records)
+        {
+            <li class="card">
+                <h3><a href="@item.BusinessLocalCardLink">@item.BusinessLocalCardTitle</a></h3>
+                <JImage Src="@item.BusinessLocalCardImage" ></JImage>
+                <h3><a href="@item.BusinessLocalCardLink">@item.BusinessLocalCardName</a></h3>
+            </li>
+        }
+
+    </ul>*@
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+<div class="cards">
+    @foreach (var item in Records)
+	{
+    <div class="card">
+        <h5 class="card-title">@item.BusinessLocalCardTitle</h5>
+        <img src="@item.BusinessLocalCardImage" alt="Business" />
+        <h5 class="card-title">@item.BusinessLocalCardName</h5>
+        <p class="card-desc">@item.BusinessLocalCardDescription</p>
+    </div>
+	}
+    
+</div>
+
+@code {
+    [Parameter]
+    public List<BusinessLocalCardDto> Records { get; set; }
+}

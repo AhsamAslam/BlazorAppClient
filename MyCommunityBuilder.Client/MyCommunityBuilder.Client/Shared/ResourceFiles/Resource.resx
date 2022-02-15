@@ -216,6 +216,9 @@
   <data name="LasCruseSliderImage3" xml:space="preserve">
     <value>Las-Cruces-NM.jpg</value>
   </data>
+  <data name="LocalBusinessImage" xml:space="preserve">
+    <value>osaki.png</value>
+  </data>
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
   </data>

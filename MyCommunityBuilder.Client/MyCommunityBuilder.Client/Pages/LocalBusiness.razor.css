@@ -44,3 +44,53 @@
         color: blue;
         text-decoration: underline;
     }*/
+.ContainerBody {
+    background-color: #F9F9F9;
+}
+.RowCenter {
+    text-align: center;
+}
+.SearchBarDiv {
+    vertical-align: top;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 50px;
+}
+.SearchInput {
+    color: Gray;
+    border-color: #CCCCCC;
+    border-width: 2px;
+    border-style: Inset;
+    border-radius: 10px;
+    font-size: Medium;
+    width: 90%;
+}
+.SearchIcon {
+    height: 28px;
+    width: 28px;
+}
+.InviteBusinessLink {
+    padding: 0px;
+    border-width: 0px;
+    margin: 0px 15px 15px 15px;
+    font-style: italic;
+}
+.GetAllBusinessDiv {
+    text-align: left;
+    vertical-align: bottom;
+}
+.GetAllBusinessLink {
+    font-family: Verdana;
+    font-size: 0.8em;
+    color: blue;
+}
+.SpaceSpan {
+    font-family: Verdana;
+    font-size: 0.8em;
+}
+.SearchText {
+    font-family: Verdana;
+    font-size: 0.8em;
+}
