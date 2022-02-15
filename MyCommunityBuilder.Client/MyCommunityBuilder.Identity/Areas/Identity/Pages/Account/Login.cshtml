@@ -1,0 +1,172 @@
+﻿@page
+@model LoginModel
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container" style="text-wrap: AVOID; text-align: CENTER; max-width: 1140px; font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;">
+    <div class="row">
+        <div class="col-xs-0 col-sm-0 col-md-2"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8">
+            &nbsp;
+            <div id="divSortBy" style="background-color: gainsboro; text-align: center;">
+            </div>
+            <div id="divDesigns" class="clearfix" style="background-color: #FBFBFB; text-align: center;">
+                <p class="text-danger">
+
+                </p>
+                <form id="account" method="post">
+                    <div class="form-horizontal" style="text-align: center">
+                        <h4>
+                            <span style="font-size:X-Large;font-weight:bold;">Login into the system</span>
+                        </h4>
+                        <hr>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="col-md-12" style="text-align: center">
+                            <div class="form-group">
+                                <label for="MainContent_Email" class="col-md-12 control-label">Email:</label>
+                                <div class="col-md-12">
+                                    <input asp-for="Input.Email" class="form-control" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MainContent_ConfirmPassword" class="col-md-12 control-label">Password:</label>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input asp-for="Input.Password" class="form-control" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <img id="EyeImg" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/eye-3551333-2973853.png" style="height:24px;" class="fa fa-eye-slash" title="show" onclick="password_show_hide(this)"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label asp-for="Input.RememberMe">
+                                            <input asp-for="Input.RememberMe" />
+                                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="text-align: center">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Login</button>
+                                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                    @{
+                                        var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
+                                    }
+                                    @if (result.Success)
+                                    {
+                                        await Html.RenderPartialAsync("_LoginPartial");
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidOperationException("The default Identity UI layout requires a partial view '_LoginPartial' " +
+                                            "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
+                                            $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 ">
+                            <br>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="col-xs-0 col-sm-0 col-md-2"></div>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col-md-12">
+        <section>
+            <form id="account" method="post">
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="Input.RememberMe">
+                            <input asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>-->
+@*<div class="form-group">
+        <p>
+            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+        </p>
+        <p>
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+        </p>
+        <p>
+            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+        </p>
+    </div>*@
+<!--</form>
+        </section>
+    </div>
+
+</div>-->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function password_show_hide(obj) {
+            var i = $(obj).parent().parent().parent().find("input");
+            if ($(obj).hasClass("fa fa-eye-slash")) {
+                $(i).attr('type', 'text');
+                $(obj).removeClass("fa fa-eye-slash");
+                $(obj).addClass("fa fa-eye");
+                $(obj).attr('title', 'hide');
+                document.getElementById("EyeImg").src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPd3UIBDbeMbdNfKXg9IIDAKzve3bQXg0KIg&usqp=CAU";
+            } else {
+                $(i).attr('type', 'password');
+                $(obj).removeClass("fa fa-eye")
+                $(obj).addClass("fa fa-eye-slash");
+                $(obj).attr('title', 'show');
+                document.getElementById("EyeImg").src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/eye-3551333-2973853.png"
+            }
+        };
+    </script>
+}

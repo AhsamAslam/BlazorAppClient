@@ -1,0 +1,10 @@
+﻿.ImageOverlay {
+    text-shadow: 3PX 3px black;
+    color: white;
+    padding-top: 125px;
+}
+
+.ImageText {
+    font-weight: 700;
+    font-size: xx-large;
+}

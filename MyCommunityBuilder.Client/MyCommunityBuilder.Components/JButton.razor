@@ -1,0 +1,18 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="d-grid gap-2 col-12 mx-auto ButtonStyle">
+    <h4>
+        <button class="JButton" style="background-color:@Records.ButtonBackGroundColor; color:@Records.Color"  type="button" @onclick="@Nevigate">@Records.Text</button>
+    </h4>
+</div>
+
+@code {
+
+    [Parameter]
+    public ButtonDto Records { get; set; }
+    async Task Nevigate()
+    {
+        NavigationManager.NavigateTo(Records.Link);
+    }
+
+}

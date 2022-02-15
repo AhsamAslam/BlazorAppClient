@@ -1,0 +1,64 @@
+﻿@page "/LocalBusiness"
+@using MyCommunityBuilder.Client.Services
+@inject BusinessClient BusinessClient
+@inject NavigationManager NavigationManager
+
+<div class="container-fluid">
+    <div class="row" style="text-align:center;">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <JLogo />
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div style="vertical-align: top; text-align: center; white-space: nowrap; overflow: hidden; width: 100%; padding-top:50px;">
+                <input type="text" placeholder="Business name, type, product or other.." style="color:Gray;border-color:#CCCCCC;border-width:2px;border-style:Inset; border-radius:10px; font-size:Medium;width:90%;" @oninput="@((e) => { SearchText=(string)e.Value;})" />
+                <input type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="http://www.las-cruces.biz/Images/Global/search.png" align="top" style="height:28px;width:28px;" />
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div style="vertical-align: bottom; width: 100%; font-family: Impact, 'Arial Narrow Bold', Haettenschweiler, sans-serif; text-align: center; padding-top:15px;">
+
+                <h3><span id="P0003_Label1" style="color: #580F5C; font-size: 1.3rem;">Become a fan of your favorite businesses and help them grow stronger</span></h3>
+            </div>
+        </div>
+
+    </div>
+    <div class="row"></div>
+</div>
+<div class="container-fluid">
+    <div style="text-align: left; vertical-align: bottom;">
+        &nbsp;&nbsp;&nbsp;<a class="hover-item" @onclick="GetAllLocalBusinessCard" style="font-family:Verdana;font-size:0.8em; color:blue;">All Businesses</a>
+        <span id="MainContent_lbl_SearchCarat" style="font-family:Verdana;font-size:0.8em;">&gt;</span>
+        <a id="MainContent_hlnk_SearchTerm" href="#" style="font-family:Verdana;font-size:0.8em;">@SearchText</a>
+    </div>
+    <div class="row">
+        @foreach (var item in BusinessBySite)
+        {
+            <div class="PanelProduct col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="DivDesignName" style="text-align: center; background-color: #333333; border-color: #333333; overflow: hidden;">
+                    <span class="BusinessName" style="text-align: center; font-size: medium; border-color: #333333; color: WHITE;" title='Mexican Restaurant'>@item.BusinessName</span><br />
+                </div>
+
+                <div class="DivProductImage" style="text-align: center; background-color: #333333; border-color: #333333;">
+                    <a @onclick="() => GetBusinessDetail(item.BusinessID)" id="MainContent_RepeaterBusinesses_HyperProductPage_0" class="hyperProductImage"><img class="ProductImage" data-width="250" data-height="104" src="http://www.las-cruces.biz/images/Designs/Icons/29a9b567-5b2b-49ba-b71c-56b4463940c3.jpg" style="text-align: center;" /></a>
+                </div>
+
+                <div style="border: 1px solid #333333; padding: 5px 2px 5px 2px; text-align: center; background-color: #333333; overflow: hidden; color: WHITE;">
+                    <div style="text-align: center; font-size: medium" title='Mexican Restaurant'>
+                        @item.Type
+                    </div>
+                </div>
+            </div>
+        }
+        <a style="color: Red; font-family: verdana; font-size: Medium; font-weight: bold; text-decoration: underline; padding-top: 5px;">Help! I have a business that I want to add.</a>
+    </div>
+</div>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBusinessesBySiteID();
+        await base.OnInitializedAsync();
+    }
+
+}

@@ -1,0 +1,41 @@
+﻿@typeparam TItem
+<div class="section crowdfunding-offerings">
+    <div class="sub-section">
+        @*<span class="headings">
+                <img src="http://www.mycommunitybuilder.org/Images/Saas/Structures/ppl.png" alt="" />
+
+                @Type
+            </span>*@
+
+        @if (items == null)
+        {
+            <div class="spinner-border"></div>
+        }
+        else
+        {
+            @foreach (var item in items)
+            {
+                <div class="sub-box">
+                    @Item(item)
+                    
+                    <br />
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+
+@code{
+
+    IEnumerable<TItem> items;
+    [Parameter] public Func<Task<IEnumerable<TItem>>> Loader { get; set; }
+    [Parameter] public string Type { get; set; }
+    [Parameter] public RenderFragment<TItem> Item { get; set; }
+    protected override async Task OnParametersSetAsync()
+    {
+        items = await Loader();
+    }
+
+}

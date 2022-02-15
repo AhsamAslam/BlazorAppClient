@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MyCommunityBuilder.Identity.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    var returnUrl = "/";
+    var isRegisterPage = false;
+    var isLoginPage = false;
+    if (Context.Request.Query.TryGetValue("returnUrl", out var existingUrl))
+    {
+        returnUrl = existingUrl;
+    }
+
+    if (Context.Request.Path.Value.Contains("Register", StringComparison.OrdinalIgnoreCase))
+    {
+        isRegisterPage = true;
+    }
+    else if (Context.Request.Path.Value.Contains("Login", StringComparison.OrdinalIgnoreCase))
+    {
+        isLoginPage = true;
+    }
+}
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @(User.Claims.Where(x => x.Type == "user_name").Select(x => x.Value).FirstOrDefault() ?? User.Identity.Name)!</a>
+        @* Check if user has Manager role *@
+        @if (User.IsInRole("Manager"))
+        {
+            <label class="ml-2 mt-2">Manager</label>
+        }
+        @* Check If user has Admin Role *@
+        @if (User.IsInRole("Admin"))
+        {
+            <label class="ml-2 mt-2">
+                Admin
+            </label>
+        }
+    </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        if (isRegisterPage || isLoginPage)
+        {
+            if (isLoginPage)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">Register</a>
+                </li>
+            }
+
+            if (isRegisterPage)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">Login</a>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">Login</a>
+            </li>
+
+        }
+    }
+</ul>

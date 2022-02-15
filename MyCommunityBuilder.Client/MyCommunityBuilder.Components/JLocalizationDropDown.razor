@@ -1,0 +1,34 @@
+﻿
+@inject NavigationManager NavigationManager
+
+<div>
+    <select value="@SelectedLanguage" @onchange="@onSelect" style="width: 200px; height: 35px; border-color: #5B3256; border: solid;">
+        @foreach (var item in Language)
+        {
+            <option style="text-align:center;" value="@item.LanguageID" selected=@(SelectedLanguage == item.LanguageID)>@item.LanguageDescription</option>
+        }
+
+    </select>
+</div>
+@code {
+    public static IDictionary<string, string> KeyValue { get; set; } = new Dictionary<string, string>();
+    protected override async Task OnInitializedAsync()
+    {
+
+        //public static IDictionary<string, string> Localization = new Dictionary<string, string>();
+        await LoadLanguage();
+        await LoadLanguageLocalization();
+        await LoadGenericLocalization();
+        //Console.WriteLine("Arqam Idrees Awan = {0}", Localization);
+
+        KeyValue = FillDictionary();
+
+        Console.WriteLine("Arqam Idrees Awan JComponent");
+        Console.WriteLine(KeyValue);
+
+        //_logger.LogInformation(string.Join(Environment.NewLine, KeyValue));
+
+        await base.OnInitializedAsync();
+    }
+
+}

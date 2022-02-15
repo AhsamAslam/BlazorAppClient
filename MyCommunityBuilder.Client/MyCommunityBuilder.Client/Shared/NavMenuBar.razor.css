@@ -1,0 +1,33 @@
+﻿.NavBarToggle {
+    border-width: 0px 2px 2px;
+    font-family: "Proxima Nova", Helvetica, Arial, sans-serif;
+    border-right-style: outset;
+    border-bottom-style: outset;
+    border-left-style: outset;
+    border-right-color: rgb(102, 102, 102);
+    border-bottom-color: rgb(102, 102, 102);
+    border-left-color: rgb(102, 102, 102);
+    display: block;
+    margin-top: 75px;
+}
+.NavBarToggleHeading {
+    font-weight: bold;
+}
+.NavBarToggleButton {
+    border-style: outset;
+    border-width: 3px;
+    font-family: 'Segoe UI Black';
+    padding: 6px;
+    border-radius: 3px;
+}
+.NavBarToggleFooter {
+    text-align: center;
+}
+.NavBarToggleFootorImage{
+    width:40px;
+    height:40px;
+}
+.NavBarToggleFooterText {
+    font-family: 'Brush Script MT',Vivaldi, 'Vladimir Script','Freestyle Script','French Script MT','Blackadder ITC','Bradley Hand ITC','Arial Narrow';
+    text-align: center;
+}

@@ -1,0 +1,97 @@
+﻿@page "/Design/{ID}"
+@using MyCommunityBuilder.Client.Services
+@inject BusinessClient BusinessClient
+<!--<style>
+    /* Make the image fully responsive */
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div id="demo" class="carousel slide" data-ride="carousel">-->
+<!-- Indicators -->
+<!--<ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+    <li data-target="#demo" data-slide-to="2"></li>
+</ul>-->
+<!-- The slideshow -->
+<!--<div class="carousel-inner">
+    <div class="carousel-item active">
+        <img src="https://www.w3schools.com/bootstrap4/chicago.jpg" alt="Los Angeles" width="1100" height="500">
+    </div>
+    <div class="carousel-item">
+        <img src="https://www.w3schools.com/bootstrap4/chicago.jpg" alt="Chicago" width="1100" height="500">
+    </div>
+    <div class="carousel-item">
+        <img src="https://www.w3schools.com/bootstrap4/chicago.jpg" alt="New York" width="1100" height="500">
+    </div>
+</div>-->
+<!-- Left and right controls -->
+<!--<a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>-->
+
+<UploadPhoto></UploadPhoto>
+
+<div class="container-fluid">
+    <div class="row" style="margin-bottom:10px;">
+        <div style="padding-right:10px;">
+            <SfButton OnClick="PdfExport" Content="Pdf Export"></SfButton>
+        </div>
+        <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <SfGrid @ref="SfGrid" DataSource="@BusinessGrid" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowPdfExport="true" AllowExcelExport="true">
+            <GridPageSettings PageSize="10"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Field="@nameof(BusinessGridDto.FileURL)" HeaderText="Image" TextAlign="TextAlign.Center" Width="120">
+                    <Template>
+                        @{
+                            var business = (context as BusinessGridDto);
+                            if (business != null)
+                            {
+                                <div class="image">
+                                    <img src="@business.FileURL.Split('~')[1]" alt="Photo" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="image">
+                                    <img src="~/img/Empty.png" />
+                                </div>
+                            }
+
+
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.BusinessNumber)" HeaderText="Number" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.Type)" HeaderText="Type" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.NumberOfFans)" HeaderText="No. Fans" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.Description)" HeaderText="Description" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</div>
+
+
+
+@code {
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        await LoadBusinessesByBusinessID();
+        await LoadBusinessesGrid();
+        await base.OnInitializedAsync();
+    }
+
+}

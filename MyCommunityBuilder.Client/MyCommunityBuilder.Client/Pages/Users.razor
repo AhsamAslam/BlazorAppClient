@@ -1,0 +1,137 @@
+﻿@page "/users"
+@using MyCommunityBuilder.Client.Services
+
+@attribute [Authorize]
+@inject AccountService accountService
+<h3>Users</h3>
+
+@if (users != null && users.Any())
+{
+    foreach (IdentityUserViewModel user in users)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                User Id: @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@user.Name</h5>
+                <div class="row">
+                    <div class="col-12">
+                        User Email: @user.Email
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h5 class="card-title"> Roles </h5>
+                    </div>
+                </div>
+
+                @if (roles != null)
+                {
+                    foreach (var role in roles)
+                    {
+                        <div class="form-check">
+
+                            @if (user.Roles != null && user.Roles.Any(x => x.Id == role.Id))
+                            {
+                                <input type="checkbox" class="form-check-input" id="@role.Name @user.UserName" checked
+                                       @onchange="eventArgs => { CheckboxClicked(eventArgs.Value, role.Name, user.Id); }">
+                            }
+                            else
+                            {
+                                <input type="checkbox" class="form-check-input" id="@role.Name @user.UserName"
+                                       @onchange="eventArgs => { CheckboxClicked(eventArgs.Value, role.Name, user.Id); }">
+                            }
+
+                            <label class="form-check-label" for="@role.Name @user.UserName">@role.Name</label>
+                        </div>
+                    }
+                }
+
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h5 class="card-title"> 2 Factor Authetication </h5>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="custom-control custom-radio">
+                            @if (user.Force2FA)
+                            {
+                                <input type="radio" class="custom-control-input"
+                                       value="@user.Id" id="@user.Id mfa" name="@user.Id mfa" checked @onchange="eventArgs => { RadionClicked(user); }">
+                            }
+                            else
+                            {
+                                <input type="radio" value="@user.Id" class="custom-control-input" id="@user.Id mfa" name="@user.Id mfa" @onchange="eventArgs => { RadionClicked(user); }">
+                            }
+                            <label class="custom-control-label" for="@user.Id mfa">Force login with 2FA</label>
+                        </div>
+
+                        <div class="custom-control custom-radio">
+                            @if (user.Force2FA)
+                            {
+                                <input type="radio" value="@user.Id" class="custom-control-input" id="@user.Id" name="@user.Id mfa" @onchange="eventArgs => { RadionClicked(user); }">
+                            }
+                            else
+                            {
+                                <input type="radio" value="@user.Id" class="custom-control-input" id="@user.Id" name="@user.Id mfa" checked @onchange="eventArgs => { RadionClicked( user); }">
+
+                            }
+                            <label class="custom-control-label" for="@user.Id">Login with UserName & Password</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No users created yet.
+        </div>
+    </div>
+}
+@code {
+    IList<IdentityUserViewModel> users;
+    IList<IdentityRoleViewModel> roles;
+    AddUserRoleReqModel reqModel;
+    UpdateUser2FAModelReqModel updateUser2FA;
+    protected override async Task OnInitializedAsync()
+    {
+        users = await accountService.GetUsers();
+        roles = await accountService.GetRoles();
+        await base.OnInitializedAsync();
+    }
+
+    async Task CheckboxClicked(object checkedValue, string roleName, string userId)
+    {
+        reqModel = new AddUserRoleReqModel();
+
+        if ((bool)checkedValue)
+        {
+            reqModel.IsRemoved = false;
+            reqModel.Role = roleName;
+            reqModel.UserId = userId;
+        }
+        else
+        {
+            reqModel.IsRemoved = true;
+            reqModel.Role = roleName;
+            reqModel.UserId = userId;
+        }
+        await accountService.AddUpdateRole(reqModel);
+    }
+
+    async Task RadionClicked(IdentityUserViewModel user)
+    {
+        updateUser2FA = new UpdateUser2FAModelReqModel();
+        updateUser2FA.UserId = user.Id;
+        updateUser2FA.TwoFA = !user.Force2FA;
+        await accountService.UpdateUser2FA(updateUser2FA);
+    }
+}
+
+

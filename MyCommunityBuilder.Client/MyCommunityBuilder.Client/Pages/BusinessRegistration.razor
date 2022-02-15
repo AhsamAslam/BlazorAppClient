@@ -1,0 +1,133 @@
+﻿@page "/RegisterBusiness"
+
+    <div class="container" style="width: 100%; text-wrap: AVOID; text-align: CENTER;">
+        <div class="col-xs-0 col-sm-0 col-md-2"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8">
+            &nbsp;
+            <div id="divSortBy" style="background-color: gainsboro; text-align: center;">
+            </div>
+            <div id="divDesigns" class="clearfix" style="background-color: #FBFBFB; text-align: center;">
+                <p class="text-danger">
+
+                </p>
+
+                <div class="form-horizontal" style="text-align: center">
+                    <h4>
+                        <span style="font-size:X-Large;font-weight:bold;">Create a new business or investor account</span>
+                    </h4>
+                    <span id="MainContent_Label1" style="font-size:Small;">You will receive an email with instructions when your status is approved.</span>
+                    <hr>
+
+                    <div id="MainContent_ctl01" class="text-danger" data-valsummary="true" style="display:none;">
+
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_Email" class="col-md-12 control-label">Business Name:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$BusinessName" type="email" id="MainContent_BusinessName" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_Email" class="col-md-4 control-label">E-Mail:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$Email" type="email" id="MainContent_Email" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_TxtFirstName" class="col-md-12 control-label">First Name:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$TxtFirstName" type="text" maxlength="25" id="MainContent_TxtFirstName" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_TxtLastName" class="col-md-12 control-label">Last Name:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$TxtLastName" type="text" maxlength="25" id="MainContent_TxtLastName" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_TxtPhoneNumber" class="col-md-12 control-label">Phone Number:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$TxtPhoneNumber" type="text" id="MainContent_TxtPhoneNumber" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center">
+
+                        <br>
+                        &nbsp;&nbsp;<select name="ctl00$MainContent$DropDownList1" id="MainContent_DropDownList1" style="font-size:Larger;">
+                            <option selected="selected" value="Select One">Select One</option>
+                            <option value="Business">Business</option>
+                            <option value="Investor">Investor</option>
+
+                        </select>
+                        <br>
+                        <br>
+
+
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_Password" class="col-md-12 control-label" style="left: -1px; top: 3px">Password:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$Password" type="password" id="MainContent_Password" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="MainContent_ConfirmPassword" class="col-md-12 control-label">Confirm Password:</label>
+                            <div class="col-md-12">
+                                <input name="ctl00$MainContent$ConfirmPassword" type="password" id="MainContent_ConfirmPassword" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center">
+                        <div class="form-group">
+                            <input type="submit" name="ctl00$MainContent$ctl09" value="Register" class="btn btn-success" display="Dynamic">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 ">
+                        <br>
+
+
+                        <div id="socialLoginList">
+                            <h4><span>OR Login using your </span> <b> facebook </b> <span>account:</span> </h4>
+                            <link href="../Content/font-awesome.min.css" rel="stylesheet">
+
+
+                            <p>
+                                <button type="submit" class="btn btn-primary" style="background-color:#4267b2" name="provider" value="ExternalCookie" title="Log in using your ExternalCookie account.">
+                                    <span style="font-size:18px" class="fa fa-facebook-official"></span>&nbsp;facebook
+                                </button>
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-0 col-sm-0 col-md-2"></div>
+    </div>
+    @code {
+
+    }

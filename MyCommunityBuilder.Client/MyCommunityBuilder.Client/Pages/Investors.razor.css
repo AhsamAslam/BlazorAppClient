@@ -1,0 +1,154 @@
+﻿.inverters-and-business {
+    padding: 70px 40px 0px 40px;
+    height: fit-content;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .inverters-and-business {
+        padding: 50px 20px;
+    }
+}
+
+.inverters-and-business .container-fluid {
+    margin: 0;
+    padding: 0;
+}
+
+    .inverters-and-business .container-fluid .col-lg-4 {
+        padding: 20px;
+    }
+
+        .inverters-and-business .container-fluid .col-lg-4 .step-1,
+        .inverters-and-business .container-fluid .col-lg-4 .step-2,
+        .inverters-and-business .container-fluid .col-lg-4 .step-3 {
+            padding: 20px;
+            /* Color with low opacity are not working */
+            -webkit-box-shadow: 0 0 30px #e5e2e5;
+            -moz-box-shadow: 0 0 30px #e5e2e5;
+            box-shadow: 0 0 30px #e5e2e5;
+            margin-top: 100px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #d3d3d3;
+        }
+
+            .inverters-and-business .container-fluid .col-lg-4 .step-1 .row .each {
+                display: table;
+                margin: 0 auto;
+                padding: 20px;
+                text-align: center;
+            }
+
+                .inverters-and-business .container-fluid .col-lg-4 .step-1 .row .each img {
+                    height: 60px;
+                }
+
+                .inverters-and-business .container-fluid .col-lg-4 .step-1 .row .each h3 {
+                    color: slategrey;
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+        .inverters-and-business .container-fluid .col-lg-4 a {
+            text-decoration: none;
+            color: unset;
+        }
+
+        .inverters-and-business .container-fluid .col-lg-4 .step-2 {
+            text-align: center;
+        }
+
+            .inverters-and-business .container-fluid .col-lg-4 .step-2 .each {
+                padding: 20px 10px;
+            }
+
+            .inverters-and-business .container-fluid .col-lg-4 .step-2 img {
+                height: 60px;
+            }
+
+            .inverters-and-business .container-fluid .col-lg-4 .step-2 h3 {
+                color: slategrey;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+        .inverters-and-business .container-fluid .col-lg-4 .step-3 .each {
+            display: table;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+            .inverters-and-business .container-fluid .col-lg-4 .step-3 .each span {
+                color: slategrey;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+
+.inverters-and-business .step {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    cursor: default;
+    margin: 0 3px;
+    padding: 10px 10px 10px 30px;
+    min-width: 100%;
+    float: left;
+    position: relative;
+    background-color: #d9e3f7;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    margin-left: -8px;
+    cursor: pointer;
+}
+
+    .inverters-and-business .step:after,
+    .inverters-and-business .step:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: -17px;
+        width: 0;
+        height: 0;
+        border-top: 22px solid transparent;
+        border-bottom: 17px solid transparent;
+        border-left: 17px solid #d9e3f7;
+        z-index: 2;
+        transition: border-color 0.2s ease;
+    }
+
+    .inverters-and-business .step:before {
+        right: auto;
+        left: 0;
+        border-left: 17px solid #fff;
+        z-index: 0;
+    }
+
+    .inverters-and-business .step.current {
+        color: #fff;
+        background-color: slategrey;
+    }
+
+        .inverters-and-business .step.current:after {
+            border-left: 17px solid slategrey;
+        }
+
+    .inverters-and-business .step:hover {
+        color: #fff;
+        background-color: slategrey;
+    }
+
+        .inverters-and-business .step:hover:after {
+            border-left: 17px solid slategrey;
+        }
+
+@media screen and (max-width: 768px) {
+    .hide-on-mob {
+        display: none;
+    }
+}

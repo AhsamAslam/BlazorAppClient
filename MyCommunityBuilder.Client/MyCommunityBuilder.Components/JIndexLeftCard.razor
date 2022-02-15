@@ -1,0 +1,57 @@
+﻿<div class="Card">
+    <div class="card-body">
+        <h5 class="card-title CardTitle">@CardTitle</h5>
+        <div class="col-XS-12">
+            <div class="card-body">
+                @foreach (var item in Records)
+                {
+                    <h6 class="card-title CardHeading">@item.CardHeading</h6>
+                    <div class="card-text">
+                        @if (item.CardLink1 != null && item.CardLink1 != "")
+                        {
+                    <a href="@item.CardLink1" style="font-weight:bold;">@item.CardLink1Text1</a>
+                }
+                else
+                {
+                    <a style="font-weight:bold;">@item.CardLink1Text1</a>
+                }
+
+                        @item.CardLink1Text2
+                    </div><div class="card-text">
+                      @if (item.CardLink2 != null && item.CardLink2 != "")
+                      {
+                         <a href="@item.CardLink2" style="font-weight:bold;">@item.CardLink2Text1&#xFEFF;</a>
+                         }
+                         else
+                         {
+                         <a style="font-weight:bold;">@item.CardLink2Text1&#xFEFF;</a>
+                         
+                         }
+                         
+                             @item.CardLink2Text2
+                         </div><div class="card-text">
+                             @if (item.CardLink3 != null && item.CardLink3 != "")
+                             {
+                               <a href="@item.CardLink3" style="font-weight:bold;">@item.CardLink3Text1</a>
+                               }
+                               else
+                               {
+                               <a style="font-weight:bold;">@item.CardLink3Text1</a>
+                               
+                               }
+                               
+                                   @item.CardLink3Text2
+                               </div>
+                    <hr>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@code { 
+    [Parameter]
+    public string CardTitle { get; set; }
+    [Parameter]
+    public List<JIndexLeftCardDto> Records { get; set; }
+}

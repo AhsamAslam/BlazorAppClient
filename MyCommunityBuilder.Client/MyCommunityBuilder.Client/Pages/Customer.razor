@@ -1,0 +1,40 @@
+﻿@page "/Customer"
+@inject NavigationManager NavigationManager
+<div class="row">
+    <JSlider></JSlider>
+</div>
+<div class="row" style="height: 75px;">
+    <JNavMenuBar></JNavMenuBar>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+            <div>
+                <JCustomerCard></JCustomerCard>
+            </div>
+            <div style="padding-top:10px;">
+                <JCustomerMenu></JCustomerMenu>
+            </div>
+
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="d-grid gap-2 mx-auto" style="margin-top: 20px; text-align: center; margin-bottom: 20px">
+                <h4><button class="btn btn-success" type="button" style="border: 2px outset #666666;" @onclick="@FanRegister">Customers Get Started HERE</button></h4>
+            </div>
+            <div>
+                <JSideSlider></JSideSlider>
+            </div>
+            <div style="width: 395px;">
+                <JImage Src="http://www.smallstreet.org/Images/Initiatives/Adopt20210430/BLACKBOARD2_20210618.png" Link="/"></JImage>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+    async Task FanRegister()
+    {
+        NavigationManager.NavigateTo("/RegisterFan");
+    }
+
+}

@@ -1,0 +1,108 @@
+﻿@page "/distance"
+@using MyCommunityBuilder.Client.Services
+@inject BusinessClient BusinessClient
+@using Syncfusion.Blazor.Maps;
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <div style="width: 686px; padding-top: 150px; padding-left: 110px;  margin: 0 auto;">
+                <SfAutoComplete TValue="string" TItem="BusinessNameDto" Placeholder="Business" DataSource="@BusinessName" style="height:50px;">
+                    <AutoCompleteFieldSettings Value="BusinessName"></AutoCompleteFieldSettings>
+                </SfAutoComplete>
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div style="width: 300px; padding-top: 170px; margin: 0 auto; float:left; margin-left:-30px">
+                <SfDropDownList TValue="string" TItem="BusinessNameDto" Placeholder="Select a city" DataSource="@BusinessName">
+                    <DropDownListFieldSettings Value="BusinessAddressCity" Text="BusinessAddressCity"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div style="width: 300px; padding-top: 170px; margin: 0 auto; float: left; margin-left: -90px">
+                <SfDropDownList TValue="string" TItem="Radius" Placeholder="Select radius" DataSource="@RadiusList">
+                    <DropDownListFieldSettings Value="Text" Text="Text"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <SfMaps>
+                <MapsZoomSettings Enable="true">
+                    <MapsZoomToolbarSettings>
+                        <MapsZoomToolbarButton ToolbarItems="@ZoomToolbar"></MapsZoomToolbarButton>
+                    </MapsZoomToolbarSettings>
+                </MapsZoomSettings>
+                <MapsLayers>
+                    <MapsLayer UrlTemplate="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/level/tileX/tileY?access_token=pk.eyJ1IjoibGFrc2htaXJhZGhha3Jpc2huYW4iLCJhIjoiY2tqMm45NzQwMjg5OTJxcXRtbWlvZHhmNCJ9.hvMNfh9C9pfwWHp3mj2WpA" TValue="string">
+                        <MapsMarkerSettings>
+                            <MapsMarker TValue="PopulationCityDetails" Visible="true" DataSource="@LargestCities" Height="20" Width="20" Shape="MarkerType.Circle" AnimationDuration="0">
+                                <MapsMarkerTooltipSettings Visible="true" ValuePath="Name" Format="State: ${Name} <br> Country: ${Country}">
+                                    <MapsMarkerTooltipTextStyle FontFamily="Segoe UI"></MapsMarkerTooltipTextStyle>
+                                </MapsMarkerTooltipSettings>
+                            </MapsMarker>
+                        </MapsMarkerSettings>
+                    </MapsLayer>
+                </MapsLayers>
+            </SfMaps>
+        </div>
+    </div>
+</div>
+
+<style>
+    .control-wrapper {
+        width: 800px;
+        height: 45px;
+        margin: 0 auto;
+        padding-top: 100px;
+    }
+</style>
+
+@code {
+    public List<Syncfusion.Blazor.Maps.ToolbarItem> ZoomToolbar = new List<Syncfusion.Blazor.Maps.ToolbarItem> { Syncfusion.Blazor.Maps.ToolbarItem.Zoom, Syncfusion.Blazor.Maps.ToolbarItem.ZoomIn, Syncfusion.Blazor.Maps.ToolbarItem.ZoomOut, Syncfusion.Blazor.Maps.ToolbarItem.Pan, Syncfusion.Blazor.Maps.ToolbarItem.Reset };
+
+    public class PopulationCityDetails
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        //public string Name { get; set; }
+        //public double Population { get; set; }
+        //public string Country { get; set; }
+        //public string Continent { get; set; }
+        //public string Color { get; set; }
+        //public string Shape { get; set; }
+    };
+    public List<PopulationCityDetails> LargestCities = new List<PopulationCityDetails> {
+        new PopulationCityDetails { Latitude=35.6894875, Longitude=139.6917064}
+
+    };
+
+    public class Radius
+    {
+        public string Text { get; set; }
+    }
+    private List<Radius> RadiusList = new List<Radius>()
+{
+        new Radius(){ Text= "1 Km" },
+        new Radius(){ Text= "2 Km" },
+        new Radius(){ Text= "3 Km" },
+        new Radius(){ Text= "4 Km" },
+        new Radius(){ Text= "5 Km" },
+        new Radius(){ Text= "6 Km" },
+        new Radius(){ Text= "7 Km" },
+        new Radius(){ Text= "8 Km"},
+        new Radius(){ Text= "9 Km" },
+        new Radius(){ Text= "10 Km"},
+     };
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBusinessesName();
+        await base.OnInitializedAsync();
+    }
+
+}

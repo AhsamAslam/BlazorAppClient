@@ -1,0 +1,38 @@
+﻿<div class="col-xs-12 ImageHeadingTextCard">
+
+    <div class="col-xs-12">
+        <h5 class="ImageHeadingTextCardTitle">@Title</h5>
+    </div>
+    <div class="row">
+        @foreach (var item in Records)
+        {
+            <div class="col-md-6 ImageHeadingTextCardBody">
+                <div class="card card-horizontal ImageHeadingTextCardContent">
+                    <div class="card2-horizontal ImageHeadingTextCardContent">
+                        <div class="card-image">
+                            <a href="@item.ImageHeadingTextCardLink">
+                                <img class="imgRectangle imgRectangleMaxWidth" src="@item.ImageHeadingTextCardImageSource">
+                            </a>
+                        </div>
+
+                        <div class="card-body ImageHeadingTextCardContentText">
+                            <a href="">
+                                <h6 class="card-title ImageHeadingTextCardHeading">@item.ImageHeadingTextCardHeading&#xFEFF;</h6>
+                            </a>
+                            <p class="card-title">@item.ImageHeadingTextCardText</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public List<ImageHeadingTextCardDto> Records { get;set;}
+
+}

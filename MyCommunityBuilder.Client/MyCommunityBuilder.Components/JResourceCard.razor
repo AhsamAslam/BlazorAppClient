@@ -1,0 +1,34 @@
+﻿<div class="row col-md-12 ResourceCard">
+    <div class="col-md-12 ResourceCardTitle">
+        @Title
+    </div>
+    @foreach (var item in Records)
+    {
+        if (item.ResourceCardHeading.Length <= 42)
+        {
+           <div class="col-md-6 ResourceCardTitle">
+               <div class="ResourceCardHeading">
+                   @item.ResourceCardHeading
+               </div>
+           </div> 
+         }
+         else
+         {
+           <div class="col-md-12 ResourceCardTitle">
+               <div class="ResourceCardHeading">
+                   @item.ResourceCardHeading
+               </div>
+           </div>
+         }
+
+     }
+
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public List<ResourceCardDto> Records { get; set; }
+
+}

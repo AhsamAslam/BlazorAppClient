@@ -1,0 +1,40 @@
+﻿@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+    
+    <AuthorizeView>
+        <Authorized>
+            <a href="authentication/profile">Hello, @(context.User.Claims.Where(x => x.Type == "user_name").Select(x => x.Value).FirstOrDefault() ?? context.User.Identity.Name)!</a>
+
+            @* Check if user has Manager role *@
+            @if (context.User.IsInRole("Manager"))
+            {
+                <label class="ml-2 mt-2">Manager</label>
+            }
+            @* Check If user has Admin Role *@
+            @if (context.User.IsInRole("Admin"))
+            {
+                <label class="ml-2 mt-2">
+                    Admin
+                </label>
+            }
+            <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+        </Authorized>
+        <NotAuthorized>
+            @* Show Login & Register link to not authorized user *@
+            <a href="authentication/register">Register</a>
+            <a href="authentication/login">Log in</a>
+            @*<LocalizationDropDown></LocalizationDropDown>*@
+        </NotAuthorized>
+    </AuthorizeView>
+
+    @code{
+
+        private async Task BeginSignOut(MouseEventArgs args)
+        {
+            await SignOutManager.SetSignOutState();
+            Navigation.NavigateTo("authentication/logout");
+        }
+    }

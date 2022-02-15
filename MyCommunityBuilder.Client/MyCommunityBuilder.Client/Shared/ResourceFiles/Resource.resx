@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="1033" xml:space="preserve">
+    <value>flag_en.png</value>
+  </data>
+  <data name="2058" xml:space="preserve">
+    <value>flag_es.png</value>
+  </data>
+  <data name="AreyouReadyforInvestmentCrowdfunding?TakeOurReadinessSurvey." xml:space="preserve">
+    <value>Are you Ready for Investment Crowd- funding? Take Our Readiness Survey.</value>
+  </data>
+  <data name="AreyouReadyforInvestmentCrowdfundingImage" xml:space="preserve">
+    <value>websurveyc3.png</value>
+  </data>
+  <data name="BaseImageUrl" xml:space="preserve">
+    <value>https://mycommunitybuilderapi.herokuapp.com/upload/images/</value>
+  </data>
+  <data name="Becomeafanfavoriteandgetawholeweekinthespotlight." xml:space="preserve">
+    <value>Become a fan favorite and get a whole week in the spotlight.</value>
+  </data>
+  <data name="BOWcol" xml:space="preserve">
+    <value>Business of the Week:</value>
+  </data>
+  <data name="Businesses" xml:space="preserve">
+    <value>Businesses</value>
+  </data>
+  <data name="BusinessesDiscussingCrowdfundingOptions" xml:space="preserve">
+    <value>Businesses Discussing Crowdfunding Options:</value>
+  </data>
+  <data name="BusinessMainImage" xml:space="preserve">
+    <value>lcu.jpg</value>
+  </data>
+  <data name="BusinessoftheWeek" xml:space="preserve">
+    <value>Business of the Week:</value>
+  </data>
+  <data name="BusinessoftheWeekImage" xml:space="preserve">
+    <value>f04b8ea7-1553-4b6d-8094-ab6518866ae1.PNG</value>
+  </data>
+  <data name="CatererImage" xml:space="preserve">
+    <value>OSAKI.PNG</value>
+  </data>
+  <data name="CurrentOfferings" xml:space="preserve">
+    <value>Current Offerings</value>
+  </data>
+  <data name="CurrentOfferingsfromLasCrucesBusinesses" xml:space="preserve">
+    <value>Current Offerings from Las Cruces Businesses</value>
+  </data>
+  <data name="DontjustbuylocalinvestlocalHereshow" xml:space="preserve">
+    <value>Don't just buy local, invest local. Here's how:</value>
+  </data>
+  <data name="EOWcol" xml:space="preserve">
+    <value>Event of the Week:</value>
+  </data>
+  <data name="EventMainImage" xml:space="preserve">
+    <value>FanEvent.jpg</value>
+  </data>
+  <data name="EventoftheWeek" xml:space="preserve">
+    <value>Event of the Week:</value>
+  </data>
+  <data name="Events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="Fans" xml:space="preserve">
+    <value>Fans</value>
+  </data>
+  <data name="FansMainImage" xml:space="preserve">
+    <value>LMbusinessw.png</value>
+  </data>
+  <data name="FindaCompleteListofSmallStreetBusinesses" xml:space="preserve">
+    <value>Find a Complete List of SmallStreet Businesses</value>
+  </data>
+  <data name="Findyourfavoritebusiness" xml:space="preserve">
+    <value>Find your favorite business</value>
+  </data>
+  <data name="FiveWaysYouCanBecomeaChampionLocalInvestor:" xml:space="preserve">
+    <value>Five Ways You Can Become a Champion Local Investor:</value>
+  </data>
+  <data name="GroceriesImage" xml:space="preserve">
+    <value>3953fed5-24a3-4090-b1b4-c2fe63f84df5.PNG</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="IndexMainImage" xml:space="preserve">
+    <value>rodeo3sm.jpg</value>
+  </data>
+  <data name="InvestorMainImage" xml:space="preserve">
+    <value>LasCrucesHousingStrategy.jpg</value>
+  </data>
+  <data name="Investors" xml:space="preserve">
+    <value>Investors</value>
+  </data>
+  <data name="LasCruseSliderImage1" xml:space="preserve">
+    <value>lcnm2.PNG</value>
+  </data>
+  <data name="LasCruseSliderImage2" xml:space="preserve">
+    <value>lascruces.jpg</value>
+  </data>
+  <data name="LasCruseSliderImage3" xml:space="preserve">
+    <value>Las-Cruces-NM.jpg</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="MoreforBusiness" xml:space="preserve">
+    <value>More for Business</value>
+  </data>
+  <data name="MoreforFans" xml:space="preserve">
+    <value>More for Fans</value>
+  </data>
+  <data name="MoreforInvestors" xml:space="preserve">
+    <value>More for Investors</value>
+  </data>
+  <data name="OfferingoftheWeek" xml:space="preserve">
+    <value>Offering of the Week:</value>
+  </data>
+  <data name="OfferingoftheWeekImage" xml:space="preserve">
+    <value>cassava.png</value>
+  </data>
+  <data name="OOWcol" xml:space="preserve">
+    <value>Offering of the Week:</value>
+  </data>
+  <data name="orinviteabusinesstoregister" xml:space="preserve">
+    <value>or invite a business to register</value>
+  </data>
+  <data name="PurchasingDeals" xml:space="preserve">
+    <value>Purchasing Deals</value>
+  </data>
+  <data name="PutYourDollars" xml:space="preserve">
+    <value>Put Your Dollars to Work</value>
+  </data>
+  <data name="PutYourDollarstoWork" xml:space="preserve">
+    <value>Put Your Dollars to Work</value>
+  </data>
+  <data name="RegisteredFansGettheFollowingBenefits" xml:space="preserve">
+    <value>Registered Fans Get the Following Benefits:</value>
+  </data>
+  <data name="ResourceConversationImage" xml:space="preserve">
+    <value>Page_Index/discuss.jpg</value>
+  </data>
+  <data name="ResourceEffectImage" xml:space="preserve">
+    <value>lem.png</value>
+  </data>
+  <data name="ResourceMainImage" xml:space="preserve">
+    <value>lchssm.jpg</value>
+  </data>
+  <data name="Resources" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="ScreenPrintingImage" xml:space="preserve">
+    <value>86ecd0dd-c18c-4462-b1fb-7dbadda9da57.PNG</value>
+  </data>
+  <data name="SearchImage" xml:space="preserve">
+    <value>search.png</value>
+  </data>
+  <data name="Signin" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="SpecialOfferImage" xml:space="preserve">
+    <value>SPECIAL.gif</value>
+  </data>
+  <data name="StrengthenyourbusinessbyconvertingcustomersintofansHerehowyoubenefit" xml:space="preserve">
+    <value>Strengthen your business by converting customers into fans. Here's how you benefit:</value>
+  </data>
+  <data name="TherapeuticImage" xml:space="preserve">
+    <value>956a22cf-9a3a-437f-9ac0-d474ec4114c5.PNG</value>
+  </data>
+  <data name="WhatdoBusinessessay?" xml:space="preserve">
+    <value>What do Businesses say?</value>
+  </data>
+  <data name="WhatdoBusinessessayImage" xml:space="preserve">
+    <value>bugy.PNG</value>
+  </data>
+  <data name="WhatdoFanssay?" xml:space="preserve">
+    <value>What do Fans say?</value>
+  </data>
+  <data name="WhatdoFanssayImage" xml:space="preserve">
+    <value>30hispanicsm.jfif</value>
+  </data>
+  <data name="WhatdoInvestorssay?" xml:space="preserve">
+    <value>What do Investors say?</value>
+  </data>
+  <data name="WhatdoInvestorssayImage" xml:space="preserve">
+    <value>55yroldsm.jfif</value>
+  </data>
+  <data name="WhoWinningtheRaceForFans?" xml:space="preserve">
+    <value>Who's Winning the Race For Fans?</value>
+  </data>
+  <data name="WhoWinningtheRaceForFansImage" xml:space="preserve">
+    <value>HOrseraceb.png</value>
+  </data>
+</root>

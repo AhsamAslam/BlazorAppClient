@@ -1,0 +1,34 @@
+﻿@page "/"
+@using MyCommunityBuilder.Client.Services
+@using MyCommunityBuilder.Client.Shared
+@using System.Security.Claims
+@inject ILogger<Index> _logger
+@inject SiteClient SiteClient
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-lg-3"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align:center; padding:200px;">
+            <SfDropDownList TValue="string" TItem="SiteDto" Placeholder="Select a site" DataSource="@Sites">
+                <DropDownListEvents TItem="SiteDto" TValue="string" OnValueSelect="@((e)=>OnSelect(e.ItemData.SiteID))"></DropDownListEvents>
+                <DropDownListFieldSettings Value="ID" Text="Name"></DropDownListFieldSettings>
+            </SfDropDownList>
+        </div>
+        <div class="col-md-3 col-lg-3"></div>
+    </div>
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        await LoadSites();
+
+        await base.OnInitializedAsync();
+    }
+
+}

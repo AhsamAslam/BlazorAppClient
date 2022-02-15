@@ -1,0 +1,38 @@
+﻿<div class="HeadingTextCard">
+    <div class="card-body">
+        <h5 class="card-title HeadingTextCardTitle">@Title</h5>
+        @if (ImageSource != "" && ImageSource != null) { 
+            <div style="width: 110px; float: right;">
+                <JImage Src="@ImageSource"></JImage>
+            </div>
+        }
+        <div class="col-XS-12">
+            <div class="card-body">
+                @foreach (var item in Records)
+                {
+                    if (item.HeadingTextCardLink != null && item.HeadingTextCardLink != "")
+                    {
+                       <a href="@item.HeadingTextCardLink">
+                           <h6 class="card-title HeadingTextCardHeading">@item.HeadingTextCardHeading</h6>
+                       </a>
+                     }
+                     else
+                     {
+                         <h6 class="card-title HeadingTextCardHeading">@item.HeadingTextCardHeading</h6>
+                     }
+                     
+                     <p class="card-text">@item.HeadingTextCardContent</p>}
+
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string ImageSource { get; set; }
+    [Parameter]
+    public List<HeadingTextCardDto> Records { get; set; }
+
+}

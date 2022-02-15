@@ -1,0 +1,35 @@
+﻿<div class="GenericEventCard col-md-12">
+    <h5 class="GenericEventCardHeading">@Records.GenericEventCardHeading</h5>
+    <div class="row ">
+        <div class="col-2 text-right">
+            <h2 class="display-5"><span class="badge badge-secondary">@Records.GenericEventCardDate</span></h2>
+            <h4>@Records.GenericEventCardMonth</h4>
+            <span class="badge GenericEventCardTag">@Records.GenericEventCardTag</span>
+        </div>
+        <div class="col-10" style="margin-top: 5px">
+            <h5 class="text-uppercase"><strong>@Records.GenericEventCardUpperCaseText</strong></h5>
+            <h6 class="text" style="padding: 5px">@Records.GenericEventCardContent</h6>
+            <ul class="list-inline">
+                <li>@Records.GenericEventCardListContent1</li>
+                <li class="list-inline-item"><i class="fa fa-calendar" aria-hidden="true"></i>@Records.GenericEventCardDay</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i>@Records.GenericEventCardListContent2</li>
+                @if (Records.GenericEventCardLink != "" && Records.GenericEventCardLink != null)
+                {
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i><a href="@Records.GenericEventCardLink">@Records.GenericEventCardListContent3</a></li>
+                }
+                else
+                {
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i>@Records.GenericEventCardListContent3</li>
+               
+                }
+                <li></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public GenericEventCardDto Records { get; set; }
+
+}

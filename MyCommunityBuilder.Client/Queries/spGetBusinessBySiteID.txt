@@ -1,0 +1,37 @@
+USE [communitybuilder]
+GO
+/****** Object:  StoredProcedure [dbo].[spGetGenericLocalization]    Script Date: 10/14/2021 9:05:00 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Arqam Awan>
+-- Create date: <10-5-2021>
+-- Description:	<spGetBusinessBySiteID>
+-- exec spGetBusinessBySiteID 4, 'Marketplace'
+Alter PROCEDURE [dbo].[spGetBusinessBySiteID]
+@SiteID int,
+@SearchText nvarchar(100)
+AS
+BEGIN
+	Begin Try
+	    if(@SearchText = '' or @SearchText is null)
+		begin
+		select b.BusinessID, b.BusinessName, b.Type, bf.IconURL from Business b inner join BusinessFile bf on b.BusinessID = bf.BusinessID where b.SiteID = @SiteID and bf.SortIndex = 1
+		end
+		else
+		begin
+		select distinct b.BusinessID, b.BusinessName, b.Type, bf.IconURL from Business b inner join BusinessFile bf on b.BusinessID = bf.BusinessID 
+		where b.SiteID = @SiteID and bf.SortIndex = 1 and (b.BusinessName like '%' + @SearchText + '%' or b.Type like '%' + @SearchText + '%' or b.BusinessNumber like '%' + @SearchText + '%')
+		end
+
+	End Try
+	Begin Catch
+		
+	End Catch
+END
+
+
+
+

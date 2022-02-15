@@ -1,0 +1,38 @@
+﻿.Offering-winning-events {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+
+    .Offering-winning-events tr th {
+        text-align: center;
+    }
+
+    .Offering-winning-events td, .Offering-winning-events th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        height: 50px;
+    }
+
+    .Offering-winning-events tr:nth-child(even) {
+        background-color: #305872;
+        color: white;
+        height: 50px;
+    }
+    .Offering-winning-events tr:nth-child(odd) {
+        background-color: white;
+        color: black;
+        height: 50px;
+    }
+
+    .Offering-winning-events th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: white;
+        color: #305872;
+    }
+
+
+

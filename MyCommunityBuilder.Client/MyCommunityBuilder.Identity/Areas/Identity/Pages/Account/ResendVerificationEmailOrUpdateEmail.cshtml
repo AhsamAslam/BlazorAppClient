@@ -1,0 +1,156 @@
+﻿@page "{Email}"
+@model ResendVerificationEmailOrUpdateEmailModel
+@{
+    ViewData["Title"] = "Log in";
+}
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 45%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+<div class="container" style="padding-top:80px;">
+    <div class="row">
+        <div class="col-md-3 col-lg-3"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div style="background-color: red; text-align: center; height:45px; color:white;">
+                <h6><b>@ViewData["Email"]</b><br /> is not activated</h6>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-lg-3"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <h1>Please Verify Email</h1>
+        </div>
+        <div class="col-md-3 col-lg-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-lg-3"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <input type="hidden" asp-for="@ViewData["Email"]" />
+                <button type="submit" class="btn btn-success" style="margin-bottom: 15px;">Resend Email</button>
+            </form>
+            <button id="OpenPopup" class="btn btn-success" style="margin-bottom: 15px;">Edit Email</button>
+        </div>
+        <div class="col-md-3 col-lg-3"></div>
+    </div>
+</div>
+<div id="RolePopup" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="container" style="text-wrap: AVOID; text-align: CENTER; max-width: 1140px; font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;">
+            <div class="row">
+                <div class="col-xs-0 col-sm-0 col-md-2"></div>
+                <div class="col-xs-12 col-sm-12 col-md-8">
+                    &nbsp;
+                    <div id="divSortBy" style="background-color: gainsboro; text-align: center;">
+                    </div>
+                    <div id="divDesigns" class="clearfix" text-align: center;">
+                        <p class="text-danger">
+
+                        </p>
+                        <form method="post">
+                            <div class="form-horizontal" style="text-align: center">
+                                <h4>
+                                    <span style="font-size:X-Large;font-weight:bold;">Enter your new email</span>
+                                </h4>
+                                <hr>
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="MainContent_TxtFirstName" class="col-md-12 control-label">E-Mail:</label>
+                                        <div class="col-md-12">
+                                            <input asp-for="Input.Email" class="form-control" />
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" style="text-align: center">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="col-xs-0 col-sm-0 col-md-2"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Get the modal
+        var modal = document.getElementById("RolePopup");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("OpenPopup");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+}

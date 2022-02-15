@@ -1,0 +1,54 @@
+﻿@*<div class="col-xs-12" style="padding: 15px 6px 0px 6px; text-align: center;">
+    <h3>Featured Business of the Week</h3>
+</div>
+<div class="col-xs-12" style="margin-bottom: 20px;padding: 0px 15% 0px 15%;">
+    <div class="card">
+        <a href="BusinessWeek.aspx">
+            <img class="card-img-top img-fluid" src="http://www.smallstreet.org/Images/Designs/f04b8ea7-1553-4b6d-8094-ab6518866ae1.PNG" alt="image" style="margin: 0px;  vertical-align: top; background-color: transparent;" />
+        </a>
+        <div class="card-body">
+            <a href="BusinessWeek.aspx">
+                <h5 class="card-title" style="font-weight: bold; text-align: center; color: #333333;">Precious Little One's Childcare</h5>
+            </a>
+            <a href="BusinessWeek.aspx">
+                <p class="card-text">My facility is an in home center that I started in 2006 after working as a volunteer...</p>
+            </a>
+        </div>
+    </div>
+</div>*@
+<div class="col-xs-12" style="padding: 15px; border: 1px outset gainsboro; background-color: #FFFFFF; margin-bottom: 15px; border-radius: 2px;">
+    <div class="row">
+        <div class="col-md-6" style="text-align: justify; margin-bottom: 20px;">
+            <h5 style="font-weight: bold; color: #333333;">Featured Business of the Week:</h5>
+            <br>
+            <p style="font-weight: bold; color: #333333;">Precious Little One's Childcare LLC</p>
+            <JImage Src="@ImageSrc" Link="@ImageLink"></JImage>
+            <a href="/" style="display:inline-block;width:80%;">My facility is an in home center that I started in 2006 after working as a volunteer...</a>
+        </div>
+        <div class="col-md-6" style="margin-bottom: 20px">
+            <h5 style="font-weight: bold; color: #333333;">Latest Offerings</h5>
+            <div>
+                <JImage Src="@CrediblesSrc" Link="@CrediblesLink"></JImage>
+            </div>
+            <div>
+                <JImage Src="@EFunderSrc" Link="@EFunderLink"></JImage>
+            </div>
+            <div>
+                <JImage Src="@DinnerSrc" Link="@DinnerLink"></JImage>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    string CrediblesSrc = "http://www.smallstreet.org/Images/credibles.PNG";
+    string CrediblesLink = "https://www.credibles.co/offering/zumo";
+    string EFunderSrc = "http://www.smallstreet.org/Images/cassava.PNG";
+    string EFunderLink = "http://wefunder.com/cassavasf";
+    string DinnerSrc = "http://www.smallstreet.org/Images/29Diner.PNG";
+    string DinnerLink = "https://www.gofundme.com/f/help-rebuild-the-29-diner-kitchen?qid=7590f1184ad8867b65d2b3dcbc8b60d1";
+    string ImageSrc = "http://www.smallstreet.org/Images/Designs/f04b8ea7-1553-4b6d-8094-ab6518866ae1.PNG";
+    string ImageLink = "/";
+
+}

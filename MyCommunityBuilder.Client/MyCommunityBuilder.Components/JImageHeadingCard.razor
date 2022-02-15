@@ -1,0 +1,10 @@
+﻿<div class="ImageHeadingCard">
+    <a class="ImageHeadingCardLink" href="@Records.ImageHeadingCardLink" target="_blank"><img class="ImageHeadingCardImage" src="@Records.ImageHeadingCardSource" alt=""></a>
+    <a class="ImageHeadingCardHeading" href="@Records.ImageHeadingCardLink" target="_blank">@Records.ImageHeadingCardHeading</a>
+</div>
+
+@code {
+    [Parameter]
+    public ImageHeadingCardDto Records { get; set; }
+
+}

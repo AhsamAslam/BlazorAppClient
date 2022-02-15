@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>MyCommunityBuilder.Client</title>
+    <base href="/" />
+
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="MyCommunityBuilder.Client.styles.css" rel="stylesheet" />
+    <link href="MyCommunityBuilder.Components/JCARD.razor.css" rel="stylesheet" />
+    <link href="MyCommunityBuilder.Components/JTable.razor.css" rel="stylesheet" />
+    <link href="MyCommunityBuilder.Components/JTimeLine.razor.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="_content/Syncfusion.Blazor/styles/bootstrap4.css" rel="stylesheet" />
+    <link href="_content/Syncfusion.Blazor.Themes/bootstrap4.css" rel="stylesheet" />
+    <link href="css/Nav/Index.css" rel="stylesheet" />
+    <link href="css/Nav/owl.carousel.min.css" rel="stylesheet" />
+    <link href="css/Nav/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="css/Nav/style.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+</head>
+
+<body style="background-color: #eeeeee;">
+    <div id="app">Loading...</div>
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="js/bootstrap.js"></script>
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="poc-custom.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="_content/BlazorStrap/blazorstrap.js"></script>
+    <script src="_content/BlazorStrap/popper.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/Custom.js"></script>
+    <script>
+        window.blazorCulture = {
+            get: () => localStorage['BlazorCulture'],
+            set: (value) => localStorage['BlazorCulture'] = value
+        }
+    </script>
+   
+
+</body>
+
+</html>

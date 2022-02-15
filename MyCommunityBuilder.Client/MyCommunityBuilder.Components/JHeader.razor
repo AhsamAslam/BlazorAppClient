@@ -1,0 +1,57 @@
+﻿@inject NavigationManager NavigationManager
+
+<div id="Main_Photo" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " style="background-repeat: no-repeat; overflow-y: hidden; text-align: left; height: 500px; background-image: url(@SiteHeaders.Image); margin-bottom: 5px; overflow-x: hidden; background-position: center;">
+    <div id="HEADLINE" class="row" style="margin: 0px; padding: 0px; width: 100%;">
+
+        <div class="col-xs-0 col-sm-0  col-md-0 col-lg-1 col-xl-1 "></div>
+
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-6 col-xl-6">
+            <table style="width: 100%; vertical-align: bottom;">
+                <tr>
+                    <td class="visible-xs visible-sm visible-md visible-lg visible-xl">
+                        <div style="text-align: left; vertical-align: bottom;">
+                            <h6>
+                                <span id="LabelLg" CLASS="MAIN-caption" style="display:inline-block;color:#F7F7F7;font-family:Impact,Haettenschweiler,&#39;Arial Narrow Bold&#39;,sans-serif;font-weight:bold;width:100%; font-size:x-large;">@SiteHeaders.Title</span>
+                            </h6>
+                            <h5>
+                                <span id="LabelMd" CLASS="SUB-caption" style="display:inline-block;color:#F7F7F7;font-family:&#39;Franklin Gothic Medium&#39;,Impact,Haettenschweiler,&#39;Arial Narrow Bold&#39;,sans-serif;font-style:italic;width:100%; font-size:x-large;">@SiteHeaders.Text</span>
+                            </h5>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-5">
+            <div class="row ">
+
+                <div class="col-4" style="text-align: center;">
+                    <input type="image" @onclick="Nevigate" name="ctl00$ImageButton9" id="ImageButton9" title="Are You Interested in Becoming a Fan? Click Here." class="button responsive" src="http://www.mycommunitybuilder.org/Images/Saas/Structures/las-crucesbiz/btnfanxsm.PNG" style="height:51px;width:110px;" />
+                </div>
+                <div class="col-4" style="text-align: center;">
+                    <input type="image" name="ctl00$ImageButton8" id="ImageButton8" title="Ready to Invest? Click Here." class="button responsive" src="http://www.mycommunitybuilder.org/Images/Saas/Structures/las-crucesbiz/btn_Investxssm.png" style="height:51px;width:110px;" />
+                </div>
+                <div class="col-4" style="text-align: center;">
+                    <input type="image" name="ctl00$ImageButton1" id="ImageButton1" title="Are You a Business Looking For Capitol? Click Here." class="button responsive" src="http://www.mycommunitybuilder.org/Images/Saas/Structures/las-crucesbiz/btncapitalxsm.png" style="height:51px;width:110px;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+
+    [Parameter] public SiteHeaders SiteHeaders { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(SiteHeaders));
+
+    }
+    void Nevigate()
+    {
+        NavigationManager.NavigateTo("/LocalBusiness");
+    }
+
+
+}

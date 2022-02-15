@@ -1,0 +1,223 @@
+﻿@page "/Events"
+@page "/Events/{SiteID}"
+@using MyCommunityBuilder.Client.Services
+@using MyCommunityBuilder.Client.Shared
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILogger<Index> _logger
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@inject IStringLocalizer<Resource> Localizer
+
+<div class="row">
+    <JSlider Records="SliderItem"></JSlider>
+</div>
+<div class="row" style="height: 75px;">
+    <NavMenuBar></NavMenuBar>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+            <div style="padding-top: 10px;">
+                <JImage Src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["EventMainImage"]))"></JImage>
+            </div>
+            @foreach (var item in GenericEventCard)
+            {
+                <div>
+                    <JGenericEventCard Records="item"></JGenericEventCard>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string SiteID { get; set; }
+    public List<HeadingTextCardDto> HeadingTextCardDto = new List<HeadingTextCardDto>();
+    public List<GenericEventCardDto> GenericEventCard = new List<GenericEventCardDto>();
+    List<SliderItemDto> SliderItem = new List<SliderItemDto>();
+    #region Authentication
+    [Parameter]
+    public string ID { get; set; }
+    private string mfaName = "[\"mfa\"]";
+    private string mfaForceText = "True";
+    private Claim amrClaim;
+    private Claim force2FAClaim;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private AuthenticationState authState;
+    private string _authMessage;
+    private string _surnameMessage;
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+        #region Components Data
+        HeadingTextCardDto = new List<HeadingTextCardDto>
+{
+            new HeadingTextCardDto{HeadingTextCardLink="", HeadingTextCardHeading="1. More Sales",
+                                   HeadingTextCardContent = "Fans are your most loyal customers. Nurturing them will bring you more fans. And is good for your bottom line."},
+            new HeadingTextCardDto{HeadingTextCardLink="", HeadingTextCardHeading="2. More Feedback",
+                                   HeadingTextCardContent = " Fans will give you the best (and most constructive) advice about how to improve your business."},
+            new HeadingTextCardDto{HeadingTextCardLink="", HeadingTextCardHeading="3. Future Investors",
+                                   HeadingTextCardContent = "If your company ever decides to raise capital through crowdfunding, you can communicate directly and efficiently with your fans through our site."},
+
+        };
+        GenericEventCard = new List<GenericEventCardDto>
+    {
+            new GenericEventCardDto
+            {
+                 GenericEventCardHeading = "",
+                 GenericEventCardDate = "14",
+                 GenericEventCardMonth = "JUL",
+                 GenericEventCardTag = "NEW!",
+                 GenericEventCardUpperCaseText = "LOCAL INVESTMENT 101",
+                 GenericEventCardContent = "Don't miss this essential series.",
+                 GenericEventCardListContent1 = "Investment class begins with pt 1",
+                 GenericEventCardDay = "Wednesday",
+                 GenericEventCardListContent2 = "All Day",
+                 GenericEventCardListContent3 = "Join Online Here",
+                 GenericEventCardLink = "/"
+            },
+            new GenericEventCardDto
+            {
+                 GenericEventCardHeading = "",
+                 GenericEventCardDate = "6",
+                 GenericEventCardMonth = "JUL",
+                 GenericEventCardTag = "",
+                 GenericEventCardUpperCaseText = "LION MEETUP",
+                 GenericEventCardContent = "Local Investment Opportunity Network is a monthly mixer for investors and businesses..",
+                 GenericEventCardListContent1 = "",
+                 GenericEventCardDay = "Tuesday",
+                 GenericEventCardListContent2 = "6:30pm",
+                 GenericEventCardListContent3 = "Steak & Tater",
+                 GenericEventCardLink = ""
+            },
+            new GenericEventCardDto
+            {
+                 GenericEventCardHeading = "",
+                 GenericEventCardDate = "12",
+                 GenericEventCardMonth = "JUL",
+                 GenericEventCardTag = "",
+                 GenericEventCardUpperCaseText = "LUNCH & LEARN",
+                 GenericEventCardContent = "Meet Julie from Mountain View Coop",
+                 GenericEventCardListContent1 = "",
+                 GenericEventCardDay = "Monday",
+                 GenericEventCardListContent2 = "Noon",
+                 GenericEventCardListContent3 = "Wow! Interiors",
+                 GenericEventCardLink = ""
+            },
+            new GenericEventCardDto
+            {
+                GenericEventCardHeading = "",
+                GenericEventCardDate = "15",
+                GenericEventCardMonth = "JUL",
+                GenericEventCardTag = "",
+                GenericEventCardUpperCaseText = "SURE STEP FAN DAY!",
+                GenericEventCardContent = "Buy one and get one free on Shoes for fans.",
+                GenericEventCardListContent1 = "Invite your friends to become fans and get 1 / 2 off.",
+                GenericEventCardDay = "Thursday",
+                GenericEventCardListContent2 = "All Day",
+                GenericEventCardListContent3 = "Sure Step",
+                GenericEventCardLink = ""
+            },
+            new GenericEventCardDto
+            {
+                GenericEventCardHeading = "",
+                GenericEventCardDate = "2",
+                GenericEventCardMonth = "JUL",
+                GenericEventCardTag = "NEW!",
+                GenericEventCardUpperCaseText = "GRAND OPENING OF BOOK IT!!",
+                GenericEventCardContent = "Drawings, games for prizes",
+                GenericEventCardListContent1 = "Help us launch our beautiful new book cafe with Drawings, prizes and treasure hunts.",
+                GenericEventCardDay = "Friday",
+                GenericEventCardListContent2 = "All Day",
+                GenericEventCardListContent3 = "Book It!!",
+                GenericEventCardLink = ""
+            },
+
+             new GenericEventCardDto
+            {
+                GenericEventCardHeading = "",
+                GenericEventCardDate = "7",
+                GenericEventCardMonth = "JUL",
+                GenericEventCardTag = "",
+                GenericEventCardUpperCaseText = "FAN APPRECIATION AT JILLIAN'S",
+                GenericEventCardContent = "2 for 1 on burgers.",
+                GenericEventCardListContent1 = "Big, juicy, sesame seed love to our fans.",
+                GenericEventCardDay = "Wednesday",
+                GenericEventCardListContent2 = "Starts at 5:00pm",
+                GenericEventCardListContent3 = "Jillian's",
+                GenericEventCardLink = ""
+            },
+
+              new GenericEventCardDto
+            {
+                GenericEventCardHeading = "",
+                GenericEventCardDate = "13",
+                GenericEventCardMonth = "JUL",
+                GenericEventCardTag = "",
+                GenericEventCardUpperCaseText = "30% OFF AT ROUND ABOUT",
+                GenericEventCardContent = "For skating parties of 4 of more fans.",
+                GenericEventCardListContent1 = "Have a blast and thanks for being fans!",
+                GenericEventCardDay = "Tuesday",
+                GenericEventCardListContent2 = "All Day",
+                GenericEventCardListContent3 = "Round About",
+                GenericEventCardLink = ""
+            }
+                };
+        SliderItem = new List<SliderItemDto>
+        {
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
+            Alt = "First Slide",
+            Caption = "Slide 1",
+            Header = "Slider 1 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage2"]),            Alt = "Second Slide",
+            Caption = "Slide 2",
+            Header = "Slider 2 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage3"]),            Alt = "Third Slide",
+            Caption = "Slide 3",
+            Header = "Slider 3 Header"
+
+        },
+    };
+
+        #endregion
+
+        //Localization = LocalizationDropDown.Localization;
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // CHeck if user has Admin ofr Manager Role
+        if (user.Identity.IsAuthenticated)
+        {
+
+            // Check if MFA Force enable for the user
+            force2FAClaim = user.Claims.Where(x => x.Type == "force2fa").FirstOrDefault();
+            ID = user.FindFirst(c => c.Type == "sub")?.Value;
+
+            // Check if MFA is already not enable for the user
+            amrClaim = user.Claims.Where(x => x.Type == "amr").FirstOrDefault();
+            if (force2FAClaim != null && force2FAClaim.Value == mfaForceText)
+            {
+                if (amrClaim == null || amrClaim.Value != mfaName)
+                {
+                    // Force redirect to Enabl MFA page
+                    await JS.InvokeAsync<string>("navigateToMFA");
+                    _logger.LogWarning("warning");
+
+                }
+            }
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+}

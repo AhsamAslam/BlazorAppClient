@@ -1,0 +1,22 @@
+﻿.footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /*height: 100px; Height of the footer */
+    /*font-size: small;
+            background: gainsboro;
+            border-top-style: solid;
+            border-top-width: thin;
+            border-color: #580F5C;*/
+    /*opacity: 0.95;*/
+}
+
+.footerstyle {
+    font-size: LARGER;
+    /*font-weight:bolder;*/
+    Color: #580F5C;
+    /*vertical-align: middle;*/
+    font-family: iMPACT, 'Arial Narrow Bold','Arial Narrow', Haettenschweiler, sans-serif; /*Franklin Gothic Heavy;*/
+    /*letter-spacing: 0.1em;*/
+}

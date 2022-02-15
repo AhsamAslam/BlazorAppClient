@@ -1,0 +1,27 @@
+﻿@typeparam TItem
+
+
+    @if (items == null)
+    {
+        <div class="spinner-border"></div>
+    }
+    else
+    {
+        @foreach (var item in items)
+        {
+            @Item(item)
+        }
+    }
+
+@code {
+
+    IEnumerable<TItem> items;
+    [Parameter] public Func<Task<IEnumerable<TItem>>> Loader { get; set; }
+    [Parameter] public RenderFragment<TItem> Item { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        items = await Loader();
+    }
+
+}

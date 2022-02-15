@@ -1,0 +1,24 @@
+﻿.LeftImageCard {
+    border: 1px outset gainsboro;
+    background-color: #FFFFFF;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+
+.LeftImageCardBody {
+    padding: 8px;
+    text-align: left;
+}
+
+.LeftImageCardTitle {
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.LeftImageCardImage {
+    border-color: White;
+    border-width: 10px;
+    border-style: Solid;
+    width: 80px;
+}

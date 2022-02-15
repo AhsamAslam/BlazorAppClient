@@ -1,0 +1,20 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["StatusMessage"] != null)
+{
+    <h3>@TempData["StatusMessage"]</h3>
+}
+
+@if (ViewData["Succeeded"] != null && !Convert.ToBoolean(ViewData["Succeeded"]))
+{
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation" title="Manage">
+        Resend email confirmation Link
+    </a>
+}
+<a class="nav-link" style="white-space: nowrap" href="/Authentication/login">Sign in</a>

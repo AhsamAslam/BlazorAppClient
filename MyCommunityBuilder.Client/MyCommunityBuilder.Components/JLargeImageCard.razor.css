@@ -1,0 +1,12 @@
+﻿.LargeImageCard {
+    border: 1px outset gainsboro;
+    padding: 15px;
+    background-color: #FFFFFF;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+.LargeImageCardHeading {
+    font-weight: bold;
+    color: #333333;
+}

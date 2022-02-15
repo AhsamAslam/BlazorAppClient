@@ -1,0 +1,407 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@using MyCommunityBuilder.Client.Services
+@using MyCommunityBuilder.Client.Shared
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inject NavigationManager NavigationManager
+@inject SignOutSessionStateManager SignOutManager
+@inject IJSRuntime JSRuntime
+@inject SiteClient SiteClient
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment hostEnv
+@inject ILogger<Index> _logger
+@implements IDisposable
+@inject IJSRuntime JS
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IStringLocalizer<Resource> Localizer
+@*@attribute [Authorize]*@
+
+<!--<div id="carousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="3000" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; max-height: 225px;">-->
+    <!-- Indicators -->
+    <!-- End of Indicators -->
+    <!-- Carousel Content -->
+    <!--<div class="carousel-inner" role="listbox">
+        <div class="carousel-item active" style="background-image: url('/Images/Saas/logos/las-crucesbiz/lcnm2.PNG'); text-align: center; overflow: hidden; max-height: 225px;">
+            <div class="carousel-caption d-md-block" style="vertical-align: top; text-shadow: 1PX 4px 5px black; top: 30%;">
+                <h2 id="demo"></h2>
+            </div>
+        </div>-->
+        <!-- End of Carousel Item -->
+        <!--<div class="carousel-item" style="background-image: url('/Images/Saas/Logos/las-crucesbiz/lascruces.jpg'); text-align: center; overflow: hidden; max-height: 225px;">
+            <div class="carousel-caption d-md-block" style="vertical-align: top; text-shadow: 1PX 4px 5px black; top: 30%;">
+                <h2>Mountains of Opportunity</h2>
+            </div>
+        </div>-->
+        <!-- End of Carousel Item -->
+        <!--<div class="carousel-item" style="background-image: url('/Images/Saas/Logos/las-crucesbiz/Las-Cruces-NM.jpg'); text-align: center; overflow: hidden; max-height: 225px;" data-interval="9000">
+            <div class="carousel-caption d-md-block" style="vertical-align: top; text-shadow: 1PX 4px 5px black; top: 30%;">
+                <h2>Support Your Local Business</h2>
+            </div>
+        </div>-->
+        <!-- End of Carousel Item -->
+
+    <!--</div>-->
+    <!-- End of Carousel Content -->
+    <!-- Previous & Next -->
+
+<!--</div>-->
+<!-- End of Carousel -->
+<!-- End of Slider -->
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg navbar-expand-md navbar-light custom-nav" data-toggle="sticky-onscroll" style="width: 100%; height: 75px; font-weight: bold; border-top: 1px solid; border-bottom: 1px solid; text-align: left; border-top-color: #999999; border-bottom-color: #999999;">
+    <div class="container">
+        <div style="height: 10px"></div>
+        <button class="hamburger" @onclick="Hamburger" id="hamburger" style="font-size: large; font-weight: bold;">&#9776;</button>
+        <button class="cross" @onclick="Cross" id="cross" style="font-size: x-large; font-weight: bold; display:none;">&times;</button>&nbsp;
+        <a href="/">
+            <img id="logo" src="data:image/png;base64,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" style="max-width: 180px" />
+        </a>
+
+
+        <ul class="navbar-nav ml-auto mobile-menu" style="font-family: 'Proxima Nova', Helvetica, Arial, sans-serif; text-align: left; white-space: nowrap;">
+            <li class="nav-item">
+
+
+                <AuthorizeView>
+                    <Authorized>
+                        @*<a href="authentication/profile">Hello, @(context.User.Claims.Where(x => x.Type == "user_name").Select(x => x.Value).FirstOrDefault() ?? context.User.Identity.Name)!</a>*@
+                        @*Hello, @context.User.Identity.Name!*@
+                        @* Check if user has Manager role *@
+                        @if (context.User.IsInRole("Manager"))
+                        {
+                            <label class="ml-2 mt-2">Manager</label>
+                        }
+                        @* Check If user has Admin Role *@
+                        @if (context.User.IsInRole("Admin"))
+                        {
+                            <label class="ml-2 mt-2">
+                                Admin
+                            </label>
+                        }
+                        <a class="nav-link" style="white-space: nowrap" href="/identity/account/logout">Logout</a>
+                        @*<a class="nav-link" style="white-space: nowrap" href="Profile/@ID">
+                        <img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" style="border-radius:40px; height:45px;" />
+                    </a>*@
+                    </Authorized>
+                    <NotAuthorized>
+                        <a class="nav-link" style="white-space: nowrap" href="authentication/login">Sign in</a>
+                    </NotAuthorized>
+                </AuthorizeView>
+
+            </li>
+            @*<li class="search-div">
+
+                <LocalizationDropDown></LocalizationDropDown>
+
+            </li>*@
+            @*<li class="search-div ">
+            <a href="#" data-toggle="modal" data-target="#exampleModal" class="search-icon" style="font-size: 16px;"><span class="fa fa-search"></span></a>
+        </li>*@
+        </ul>
+
+
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            &nbsp;&nbsp;&nbsp;
+            <ul class="navbar-nav mr-auto" style="font-family: 'Proxima Nova', Helvetica, Arial, sans-serif; font-size: xx-large; vertical-align: text-bottom;">
+                @*@if (@Localization.ContainsKey("Home"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="/">@Localization["Home"]</a>
+            </li>
+        }*@
+                <li class="nav-item">
+                    <a class="nav-link" href="/Index">@Localizer["Home"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Fans">@Localizer["Fans"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Investors">@Localizer["Investors"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Businesses">@Localizer["Businesses"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Events">@Localizer["Events"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Resources">@Localizer["Resources"]</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ml-auto" style="font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;">
+
+                <li class="nav-item">
+                    <AuthorizeView>
+                        <Authorized>
+                            @*<a href="authentication/profile">Hello, @(context.User.Claims.Where(x => x.Type == "user_name").Select(x => x.Value).FirstOrDefault() ?? context.User.Identity.Name)!</a>*@
+                            @* Check if user has Manager role *@
+                            @if (context.User.IsInRole("Manager"))
+                            {
+                                <label class="ml-2 mt-2">Manager</label>
+                            }
+                            @* Check If user has Admin Role *@
+                            @if (context.User.IsInRole("Admin"))
+                            {
+                                <label class="ml-2 mt-2">
+                                    Admin
+                                </label>
+                            }
+                            <a class="nav-link" style="white-space: nowrap" href="/identity/account/logout">@Localizer["Logout"]</a>
+
+                            @*<button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>*@
+                            @{
+                                var UserID = context.User.Claims.Where(x => x.Type == "sub").Select(x => x.Value).FirstOrDefault();
+                            }
+                            <a class="nav-link" style="white-space: nowrap" href="Profile/@UserID">
+                                <img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" style="border-radius:40px; height:45px;" />
+                            </a>
+                            @*<p>User:@ID</p>
+                    <p>@context.User.Claims.Where(x => x.Type == "sub").Select(x => x.Value).FirstOrDefault()</p>*@
+
+                        </Authorized>
+                        <NotAuthorized>
+                            <a class="nav-link" style="white-space: nowrap" href="authentication/login">@Localizer["Signin"] </a>
+
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </li>
+                <li class="nav-item" >
+                
+                    <LocalizationDropDown></LocalizationDropDown>
+         
+                </li>
+
+                @*<li class="search-div" style="font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;">
+            <input class="header-search" type="search" placeholder="Search Las Cruces" aria-label="Search">
+            <a href="#" class="search-icon"><span class="fa fa-search" style="font-size: 22px;"></span></a>
+        </li>*@
+            </ul>
+
+            <ul class="navbar-nav tag-icons ml-3">
+
+                <li>
+                    <a id="HyperLink7" style="display:inline-block;width:32px;"><img src="http://www.smallstreet.org/Images/notifier.png" alt="" /></a>
+                </li>
+                <li>
+                    <a id="HyperLink3" style="display:inline-block;width:32px;"><img src="http://www.smallstreet.org/Images/heart.png" alt="" /></a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <div class="mobile-mode" style="font-family: 'Proxima Nova', Helvetica, Arial, sans-serif; overflow: scroll;">
+            <ul class="" style="font-size: large; overflow: visible;">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Index">@Localizer["Home"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Fans">@Localizer["Fans"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Investors">@Localizer["Investors"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Businesses">@Localizer["Businesses"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Events">@Localizer["Events"]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Resources">@Localizer["Resources"]</a>
+                </li>
+                <li class="nav-item">
+                    <LocalizationDropDown></LocalizationDropDown>
+                </li>
+            </ul>
+        </div>
+
+
+
+
+    </div>
+
+    @*<ul class="navbar-nav">
+            <li class="search-div" style="height:18px;">
+                <LocalizationDropDown></LocalizationDropDown>
+            </li>
+        </ul>*@
+    <!-- container -->
+</nav>
+
+<!-- menu -->
+<div class="menu NavBarToggle" id="Toggle" style="display:none">
+    <div class="row no-gutters">
+        <div class="col-lg-12">
+            <div class="inner-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6 class="NavBarToggleHeading">Fans</h6>
+                        <ul class="">
+                            <li><a href="../FanEvents.aspx">Fan Events</a></li>
+                            <li><a href="../ComingSoon.aspx">Top Fans</a></li>
+                            <li><a href="../ComingSoon.aspx">Should you Invest?</a></li>
+                            <li><a href="../ComingSoon.aspx">SmallStreet Champions</a></li>
+                            <li><a href="../ComingSoon.aspx">Newsletter</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="NavBarToggleHeading">Businesses</h6>
+                        <ul class="">
+                            <li><a href="../BusinessEvents.aspx">Business Events</a></li>
+                            <li><a href="../Offerings.aspx">Latest Offerings</a></li>
+                            <li><a href="../Winning.aspx">Who's Winning Fans?</a></li>
+                            <li><a href="../BusinessWeek.aspx">Business of the Week</a></li>
+                            <li><a href="../ComingSoon.aspx">Crowdfund Resources</a></li>
+                            <li><a href="../ComingSoon.aspx">Offer Deals </a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="NavBarToggleHeading">Investors</h6>
+                        <ul class="">
+                            <li><a href="../BusinessEvents.aspx">Investor Events</a></li>
+                            <li><a href="../ComingSoon.aspx">Local Investment FAQs</a></li>
+                            <li><a href="../ComingSoon.aspx">Put your $$ where your life is</a></li>
+                            <li><a href="../ComingSoon.aspx">New to investing?</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="NavBarToggleHeading">I'm a...</h6>
+                        <ul class="">
+                            <li><a href="../ComingSoon.aspx">Organization</a></li>
+                            <li><a href="../ComingSoon.aspx">Municipality</a></li>
+                            <li><a href="../ComingSoon.aspx">Oher</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="NavBarToggleHeading">Feed Us Back</h6>
+                        <ul class="">
+                            <li><a href="../ComingSoon.aspx">Suggestions to the site</a></li>
+                            <li><a href="../ComingSoon.aspx">SmallStreet Merch<span class="badge">NEW!</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4" style="padding-top: 30px; padding-left: 30px;">
+                        <ul>
+                            <li><a href="../ComingSoon.aspx"><span class="btn-success NavBarToggleButton">DONATE</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <div class="NavBarToggleFooter">
+                    <img alt="" src="https://localhost:44334/Images/daisy.gif" class="NavBarToggleFootorImage"><h5 class="NavBarToggleFooterText">...look no further than your own backyard...</h5>
+                </div>
+                <!-- row -->
+                <div class="footer-links">
+                    <ul>
+                        <li>© <strong>2021 SmallStreet.org</strong></li>
+                    </ul>
+                    <ul>
+                        <li><a href="../ComingSoon.aspx">Press</a></li>
+                        <li><a href="../ComingSoon.aspx">Privacy</a></li>
+                        <li><a href="../ComingSoon.aspx">User Terms</a></li>
+                        <li><a href="../ComingSoon.aspx">Help</a></li>
+                        <li><a href="../ComingSoon.aspx">Contact</a></li>
+                        <li><a href="../ComingSoon.aspx">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- inner-body -->
+    </div>
+</div>
+
+
+@code {
+
+    public string ID;
+    #region Authentication
+    private string mfaName = "[\"mfa\"]";
+    private string mfaForceText = "True";
+    private Claim amrClaim;
+    private Claim force2FAClaim;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private AuthenticationState authState;
+    private string _authMessage;
+    private string _surnameMessage;
+    #endregion
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        Console.WriteLine("NavMenuSiteID there", SiteID);
+        _logger.LogInformation(string.Join(Environment.NewLine, SiteID));
+        Console.WriteLine("Arqam Idrees Awan2233 Nav MenuBar");
+
+
+        //Localization = LocalizationDropDown.Localization;
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        ID = user.FindFirst(c => c.Type == "sub")?.Value;
+        // CHeck if user has Admin ofr Manager Role
+        if (user.Identity.IsAuthenticated)
+        {
+
+            // Check if MFA Force enable for the user
+            force2FAClaim = user.Claims.Where(x => x.Type == "force2fa").FirstOrDefault();
+            //ID = user.FindFirst(c => c.Type == "sub")?.Value;
+            Console.WriteLine("User ID Nav");
+            _logger.LogInformation(string.Join(Environment.NewLine, ID));
+
+            // Check if MFA is already not enable for the user
+            amrClaim = user.Claims.Where(x => x.Type == "amr").FirstOrDefault();
+            if (force2FAClaim != null && force2FAClaim.Value == mfaForceText)
+            {
+                if (amrClaim == null || amrClaim.Value != mfaName)
+                {
+                    // Force redirect to Enabl MFA page
+                    await JS.InvokeAsync<string>("navigateToMFA");
+                    _logger.LogWarning("warning");
+
+                }
+            }
+        }
+        await GetSitesID();
+        //LocalizationDropDown.OnChange += StateHasChanged;
+        //await base.OnInitializedAsync();
+        //public IDictionary<string, string> Localization { get; set; } = LocalizationDropDown.KeyValue;
+    }
+    public void Dispose()
+    {
+        //LocalizationDropDown.OnChange -= StateHasChanged;
+    }
+
+    async Task Hamburger()
+    {
+        List<string> param = new List<string>();
+        var resp = "";
+        param.Add("Toggle");
+        param.Add("hamburger");
+        param.Add("cross");
+        foreach (var item in param)
+        {
+            resp = await JSRuntime.InvokeAsync<string>(identifier: "FunctionOpen", item);
+            await JSRuntime.InvokeVoidAsync(identifier: "FunctionOpen", item, resp);
+        }
+
+    }
+    async Task Cross()
+    {
+        List<string> param = new List<string>();
+        param.Add("Toggle");
+        param.Add("hamburger");
+        param.Add("cross");
+        foreach (var item in param)
+        {
+            var resp = await JSRuntime.InvokeAsync<string>(identifier: "FunctionClose", item);
+            await JSRuntime.InvokeVoidAsync(identifier: "FunctionClose", item, resp);
+        }
+
+    }
+}

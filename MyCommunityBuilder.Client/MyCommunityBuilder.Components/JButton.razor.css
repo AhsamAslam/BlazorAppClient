@@ -1,0 +1,9 @@
+﻿.ButtonStyle {
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.JButton {
+    border: 2px outset #666666;
+    font-size: large;
+}

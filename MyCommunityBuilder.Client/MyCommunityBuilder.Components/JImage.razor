@@ -1,0 +1,21 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="card">
+    <img class="card-img-top" src="@Src" @onclick="@Nevigate" alt="image" style="width: 100%">
+    <div class="card-img-overlay d-flex align-items-end ImageOverlay">
+        <h3 class="ImageText">@Text</h3>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Src { get; set; }
+    [Parameter] public string Link { get; set; }
+    [Parameter] public string Text { get; set; }
+
+    async Task Nevigate()
+    {
+        NavigationManager.NavigateTo(Link);
+    }
+
+
+}

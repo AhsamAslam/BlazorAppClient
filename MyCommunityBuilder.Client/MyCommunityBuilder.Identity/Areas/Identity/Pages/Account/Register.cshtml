@@ -1,0 +1,191 @@
+﻿@page
+@model RegisterModel
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
+@{
+    ViewData["Title"] = "Register";
+}
+
+@*<h1>@ViewData["Title"]</h1>*@
+<div class="container" style="text-wrap: AVOID; text-align: CENTER; max-width: 1140px; font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;">
+    <div class="row">
+        <div class="col-xs-0 col-sm-0 col-md-2"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8">
+            &nbsp;
+            <div id="divSortBy" style="background-color: gainsboro; text-align: center;">
+            </div>
+            <div id="divDesigns" class="clearfix" style="background-color: #FBFBFB; text-align: center;">
+                <p class="text-danger">
+
+                </p>
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="form-horizontal" style="text-align: center">
+                        <h4>
+                            <span style="font-size:X-Large;font-weight:bold;">Create a new account</span>
+                        </h4>
+                        <hr>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="col-md-12" style="text-align: center">
+                            <div class="form-group">
+                                <label for="MainContent_Email" class="col-md-12 control-label">E-Mail:</label>
+                                <div class="col-md-12">
+                                    <input asp-for="Input.Email" class="form-control" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-12">
+            <div class="form-group">
+                <label for="MainContent_TxtFirstName" class="col-md-12 control-label">First Name:</label>
+                <div class="col-md-12">
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>*@
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MainContent_TxtLastName" class="col-md-12 control-label">Username:</label>
+                                <div class="col-md-12">
+                                    <input asp-for="Input.UserName" class="form-control" />
+                                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MainContent_TxtZipCode" class="col-md-12 control-label">Zip Code</label>
+                                <div class="col-md-12" style="background-color: #FFFFFF">
+                                    <input asp-for="Input.ZipCode" class="form-control" />
+                                    <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <span class="col-md-12 control-label">Select all that apply to you</span>
+                                <div class="col-md-12">
+                                    <div cssclass="form-control" style="padding: 7px 5px 3px 5px; background-color: #FFFFFF; border-radius: 5px; border: 1px solid gainsboro; margin-top: 5px; margin-bottom: 0px;">
+                                        <input asp-for="Input.BusinessRole" id="MainContent_ctl12" type="checkbox"><label for="MainContent_ctl12">Business Owner</label>
+                                        &nbsp;&nbsp;<input asp-for="Input.InvestorRole" id="MainContent_ctl13" type="checkbox"><label for="MainContent_ctl13">Investor</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MainContent_ConfirmPassword" class="col-md-12 control-label">Password:</label>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input asp-for="Input.Password" class="form-control" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <img id="EyeImg" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/eye-3551333-2973853.png" style="height:24px;" class="fa fa-eye-slash" title="show" onclick="password_show_hide(this)" />                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="MainContent_ConfirmPassword" class="col-md-12 control-label">Confirm Password:</label>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <img id="EyeImgConfirm" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/eye-3551333-2973853.png" style="height:24px;" class="fa fa-eye-slash" title="show" onclick="ConfirmPassword_show_hide(this)" />                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="text-align: center">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Register</button>
+                                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                    @{
+                                        var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
+                                    }
+                                    @if (result.Success)
+                                    {
+                                        await Html.RenderPartialAsync("_LoginPartial");
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidOperationException("The default Identity UI layout requires a partial view '_LoginPartial' " +
+                                            "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
+                                            $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 ">
+                            <br>
+
+
+                            @*<div id="socialLoginList">
+                <h4><span>OR Login using your </span> <b> facebook </b> <span>account:</span> </h4>
+                <link href="../Content/font-awesome.min.css" rel="stylesheet">
+
+
+                <p>
+                    <button type="submit" class="btn btn-primary" style="background-color:#4267b2" name="provider" value="ExternalCookie" title="Log in using your ExternalCookie account.">
+                        <span style="font-size:18px" class="fa fa-facebook-official"></span>&nbsp;facebook
+                    </button>
+                </p>
+
+            </div>*@
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="col-xs-0 col-sm-0 col-md-2"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+    function password_show_hide(obj) {
+        var i = $(obj).parent().parent().parent().find("input");
+        if ($(obj).hasClass("fa fa-eye-slash")) {
+            $(i).attr('type', 'text');
+            $(obj).removeClass("fa fa-eye-slash");
+            $(obj).addClass("fa fa-eye");
+            $(obj).attr('title', 'hide');
+            document.getElementById("EyeImg").src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPd3UIBDbeMbdNfKXg9IIDAKzve3bQXg0KIg&usqp=CAU";
+        } else {
+            $(i).attr('type', 'password');
+            $(obj).removeClass("fa fa-eye")
+            $(obj).addClass("fa fa-eye-slash");
+            $(obj).attr('title', 'show');
+            document.getElementById("EyeImg").src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/eye-3551333-2973853.png"
+        }
+    };
+</script>
+<script>
+    function ConfirmPassword_show_hide(obj) {
+        var i = $(obj).parent().parent().parent().find("input");
+        if ($(obj).hasClass("fa fa-eye-slash")) {
+            $(i).attr('type', 'text');
+            $(obj).removeClass("fa fa-eye-slash");
+            $(obj).addClass("fa fa-eye");
+            $(obj).attr('title', 'hide');
+            document.getElementById("EyeImgConfirm").src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPd3UIBDbeMbdNfKXg9IIDAKzve3bQXg0KIg&usqp=CAU";
+        } else {
+            $(i).attr('type', 'password');
+            $(obj).removeClass("fa fa-eye")
+            $(obj).addClass("fa fa-eye-slash");
+            $(obj).attr('title', 'show');
+            document.getElementById("EyeImgConfirm").src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/eye-3551333-2973853.png"
+        }
+    };
+</script>

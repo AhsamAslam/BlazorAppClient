@@ -1,0 +1,18 @@
+﻿
+<BlazorStrap.BSCarousel NumberOfItems="@Records.Count">
+    <div class="carousel-inner">
+        @for (int i = 0; i < Records.Count; i++)
+        {
+
+            <BlazorStrap.BSCarouselItem Src="@Records[i].Source" Alt="@Records[i].Alt" style="width:100%;" />
+        }
+    </div>
+    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Previous" NumberOfItems="@Records.Count" />
+    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Next" NumberOfItems="@Records.Count" />
+
+</BlazorStrap.BSCarousel>
+
+@code {
+    [Parameter] public List<SliderItemDto> Records { get; set; }
+
+}

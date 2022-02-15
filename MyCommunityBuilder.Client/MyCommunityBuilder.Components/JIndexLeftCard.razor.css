@@ -1,0 +1,16 @@
+﻿.Card {
+    border: 1px outset gainsboro;
+    background-color: #FFFFFF;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+.CardTitle {
+    font-weight: bolder;
+}
+.CardHeading {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.CardLink {
+    font-weight: bold;
+}

@@ -1,0 +1,41 @@
+﻿@typeparam TItem
+<div class="section events">
+    <div class="container the-events-section">
+        @if (items == null)
+        {
+            <div class="spinner-border"></div>
+        }
+        else
+        {
+            @foreach (var item in items)
+            {
+                <div class="timeline-block timeline-block-right">
+                    <div class="marker">
+                        <i class="fa fa-check active" aria-hidden="true"></i>
+                    </div>
+                    <div class="timeline-content">
+
+                        @Item(item)
+
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+         
+
+
+
+
+@code {
+    IEnumerable<TItem> items;
+    [Parameter] public Func<Task<IEnumerable<TItem>>> Loader { get; set; }
+    [Parameter] public RenderFragment<TItem> Item { get; set; }
+    protected override async Task OnParametersSetAsync()
+    {
+        items = await Loader();
+    }
+
+}

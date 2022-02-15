@@ -1,0 +1,156 @@
+﻿@page "/Resources"
+@page "/Resources/{SiteID}"
+@using MyCommunityBuilder.Client.Services
+@using MyCommunityBuilder.Client.Shared
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILogger<Index> _logger
+@inject SiteClient SiteClient
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@inject IStringLocalizer<Resource> Localizer
+
+<div class="row">
+    <JSlider Records="SliderItem"></JSlider>
+</div>
+<div class="row" style="height: 75px;">
+    <NavMenuBar></NavMenuBar>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+            <div style="padding-bottom:10px;">
+                <JImage Src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["ResourceMainImage"]))"></JImage>
+            </div>
+            <div>
+                <JResourceCard Title=@Localizer["FiveWaysYouCanBecomeaChampionLocalInvestor:"] Records="ResourceCardDto"></JResourceCard>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div style="padding-bottom:10px;">
+                <JImageHeadingCard Records="ImageHeadingCardDto1"></JImageHeadingCard>
+            </div>
+            <div>
+                <JImageHeadingCard Records="ImageHeadingCardDto2"></JImageHeadingCard>
+            </div>
+            <div>
+                <JLinksCard Title=@Localizer["MoreforBusiness"] Records="LinksCardDto"></JLinksCard>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code
+
+{
+    [Parameter]
+    public string SiteID { get; set; }
+    public string ID { get; set; }
+    public ImageHeadingCardDto ImageHeadingCardDto1 = new ImageHeadingCardDto();
+    public ImageHeadingCardDto ImageHeadingCardDto2 = new ImageHeadingCardDto();
+    public List<LinksCardDto> LinksCardDto = new List<LinksCardDto>();
+    public List<ResourceCardDto> ResourceCardDto = new List<ResourceCardDto>();
+    List<SliderItemDto> SliderItem = new List<SliderItemDto>();
+
+    #region Authentication
+    private string mfaName = "[\"mfa\"]";
+    private string mfaForceText = "True";
+    private Claim amrClaim;
+    private Claim force2FAClaim;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private AuthenticationState authState;
+    private string _authMessage;
+    private string _surnameMessage;
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+        #region Components Data
+        ImageHeadingCardDto1 = new ImageHeadingCardDto
+        {
+            ImageHeadingCardLink = "",
+            ImageHeadingCardSource = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["ResourceConversationImage"]),
+            ImageHeadingCardHeading = "Six Guidelines for Business-Investor Conversations",
+        };
+        ImageHeadingCardDto2 = new ImageHeadingCardDto
+        {
+            ImageHeadingCardLink = "",
+            ImageHeadingCardSource = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["ResourceEffectImage"]),
+            ImageHeadingCardHeading = "What is the Local Economic Multiplier Effect?",
+        };
+
+        LinksCardDto = new List<LinksCardDto>
+    {
+            new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Crowdfunding Readiness Assessment"},
+            new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Join a Discussion"},
+            new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Online Courses"},
+            new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Live Webinar Schedule"},
+            new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Newsletter Archives"}
+
+        };
+        ResourceCardDto = new List<ResourceCardDto>
+    {
+            new ResourceCardDto{ResourceCardHeading="1. Learn How to Invest Locally"},
+            new ResourceCardDto{ResourceCardHeading="2. Subscribe to the SmallStreet Newsletter"},
+            new ResourceCardDto{ResourceCardHeading="3. Join a Local Investment Group"},
+            new ResourceCardDto{ResourceCardHeading="4. Subscribe to the Main Street Journal"},
+            new ResourceCardDto{ResourceCardHeading="5. Check Out Helpful Books, Articles, Webinars, and Organizations"}
+        };
+        SliderItem = new List<SliderItemDto>
+        {
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
+            Alt = "First Slide",
+            Caption = "Slide 1",
+            Header = "Slider 1 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage2"]),            Alt = "Second Slide",
+            Caption = "Slide 2",
+            Header = "Slider 2 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage3"]),            Alt = "Third Slide",
+            Caption = "Slide 3",
+            Header = "Slider 3 Header"
+
+        },
+    };
+        #endregion
+
+        //Localization = LocalizationDropDown.Localization;
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // CHeck if user has Admin ofr Manager Role
+        if (user.Identity.IsAuthenticated)
+        {
+
+            // Check if MFA Force enable for the user
+            force2FAClaim = user.Claims.Where(x => x.Type == "force2fa").FirstOrDefault();
+            ID = user.FindFirst(c => c.Type == "sub")?.Value;
+
+            // Check if MFA is already not enable for the user
+            amrClaim = user.Claims.Where(x => x.Type == "amr").FirstOrDefault();
+            if (force2FAClaim != null && force2FAClaim.Value == mfaForceText)
+            {
+                if (amrClaim == null || amrClaim.Value != mfaName)
+                {
+                    // Force redirect to Enabl MFA page
+                    await JS.InvokeAsync<string>("navigateToMFA");
+                    _logger.LogWarning("warning");
+
+                }
+            }
+        }
+
+        await base.OnInitializedAsync();
+    }
+    //public void Dispose()
+    //{
+    //    LocalizationDropDown.OnChange -= StateHasChanged;
+    //}
+
+}

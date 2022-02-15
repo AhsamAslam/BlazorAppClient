@@ -1,0 +1,28 @@
+﻿.FanSearchDiv {
+    vertical-align: top;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+}
+.FanSearchInput {
+    color: Gray;
+    border-color: Silver;
+    border-width: 2px;
+    border-style: Inset;
+    font-size: Larger;
+    height: 30px;
+    width: 90%;
+}
+.FanSearchIcon {
+    height: 26px;
+    width: 26px;
+}
+.FanSearchButton {
+    padding: 0px;
+    border-width: 0px;
+    margin: 0px 15px 15px 15px;
+    font-style: italic;
+    text-align: left;
+    width: 90%;
+}

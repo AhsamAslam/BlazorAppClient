@@ -1,0 +1,36 @@
+﻿.crowdfunding-offerings {
+    padding: 20px 0px;
+}
+
+    .crowdfunding-offerings .sub-section.next {
+        margin-top: 30px;
+    }
+
+    .crowdfunding-offerings img {
+        height: 30px;
+    }
+
+    .crowdfunding-offerings span {
+        font-size: 20px;
+        font-weight: bold;
+        color: #305872;
+    }
+
+.sub-box {
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+    -moz-box-shadow: 0 8px 6px -6px #777;
+    box-shadow: 0 10px 6px -6px rgba(119, 119, 119, 0.315);
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+}
+
+    .sub-box span {
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .sub-box span a {
+            text-decoration: underline;
+            font-size: 15px;
+        }

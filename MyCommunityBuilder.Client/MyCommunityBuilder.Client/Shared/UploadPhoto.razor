@@ -1,0 +1,81 @@
+﻿
+@using Syncfusion.Blazor.Inputs
+@using System.IO
+@inject HttpClient Http
+    <div class="container-fluid">
+
+        <div class="form-row">
+            <div class="form-group col-md-12 control-section">
+                <label class="col-form-label">Upload Image:</label>
+                <SfUploader AllowedExtensions=".png,.jpeg,.jpg">
+                    <UploaderEvents ValueChange="onChange" OnRemove="onRemove"></UploaderEvents>
+                    <UploaderTemplates>
+                        <Template Context="HttpContext">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <img class="upload-image" alt="Preview Image @(HttpContext.Name)"
+                                             src="@(files.Count >0 ? files.Where(item=>item.Name == HttpContext.Name)?.FirstOrDefault()?.Path : string.Empty)">
+                                    </td>
+                                    <td>
+                                        <div style="padding: 7px;">
+                                            <h5 title="@(HttpContext.Name)">@(HttpContext.Name)</h5>
+                                            <i>@(HttpContext.Size) Bytes</i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <span class="e-icons e-file-remove-btn remove" id="removeIcon" title="Remove"></span>
+                            <span class="e-upload-icon e-icons e-file-remove-btn" title="Upload" id="iconUpload" @onclick="@uploadFile"></span>
+                        </Template>
+                    </UploaderTemplates>
+                </SfUploader>
+            </div>
+        </div>
+    </div>
+    @code {
+        [Parameter] public int ID { get; set; }
+        public MultipartFormDataContent content;
+        public string responseStr;
+        public HttpResponseMessage filepath { get; set; }
+        List<FileInfoDto> files = new List<FileInfoDto>();
+        public void onChange(UploadChangeEventArgs args)
+        {
+            files = new List<FileInfoDto>();
+            foreach (var file in args.Files)
+            {
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+                var fullPath = Path.Combine(pathToSave, file.FileInfo.Name);
+                byte[] bytes = file.Stream.ToArray();
+                string base64 = Convert.ToBase64String(bytes);
+                files.Add(new FileInfoDto() { Path = @"data:image/" + file.FileInfo.Type + ";base64," + base64, Name = file.FileInfo.Name, Size = file.FileInfo.Size });
+                content = new MultipartFormDataContent {
+                    { new ByteArrayContent(file.Stream.GetBuffer()), "\"upload\"", file.FileInfo.Name }
+                };
+
+            }
+        }
+        public void onRemove(RemovingEventArgs args)
+        {
+            foreach (var removeFile in args.FilesData)
+            {
+                if (File.Exists(Path.Combine(@"\Images", removeFile.Name)))
+                {
+                    File.Delete(Path.Combine(@"\Images\", removeFile.Name));
+                }
+            }
+        }
+        public async Task uploadFile(MouseEventArgs args)
+        {
+            filepath = await Http.PostAsync("https://localhost:44395/api/SampleData/Save", content);
+            this.responseStr = await filepath.Content.ReadAsStringAsync();
+        }
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+        }
+    }
+
+<style>
+  
+</style>

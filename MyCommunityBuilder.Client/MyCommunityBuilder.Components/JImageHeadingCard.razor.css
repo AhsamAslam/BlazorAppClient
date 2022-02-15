@@ -1,0 +1,19 @@
+﻿.ImageHeadingCard {
+    background-color: #FFFFFF;
+    border: 1px outset gainsboro;
+    text-align: center;
+    margin-top: 5px;
+}
+.ImageHeadingCardLink {
+    display: inline-block;
+    border-color: White;
+    border-width: 2px;
+    border-style: Solid;
+}
+.ImageHeadingCardImage {
+    width: 100%;
+}
+.ImageHeadingCardHeading {
+    display: inline-block;
+    width: 100%;
+}

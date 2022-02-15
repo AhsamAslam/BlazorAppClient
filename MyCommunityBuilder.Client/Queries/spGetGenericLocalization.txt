@@ -1,0 +1,28 @@
+USE [communitybuilder]
+GO
+/****** Object:  StoredProcedure [dbo].[spGetLocalizationBySiteURL]    Script Date: 10/6/2021 10:13:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Arqam Awan>
+-- Create date: <10-5-2021>
+-- Description:	<spGetGenericLocalization>
+-- exec spGetGenericLocalization
+Create PROCEDURE [dbo].[spGetGenericLocalization]
+AS
+BEGIN
+	Begin Try
+
+		select * from GenericLocalizationKeyValues
+
+	End Try
+	Begin Catch
+		
+	End Catch
+END
+
+
+
+

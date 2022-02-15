@@ -1,0 +1,14 @@
+﻿.HeadingTextCard {
+    border: 1px outset gainsboro;
+    background-color: #FFFFFF;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.HeadingTextCardTitle {
+    font-weight: bolder;
+}
+
+.HeadingTextCardHeading {
+    font-weight: bold;
+}

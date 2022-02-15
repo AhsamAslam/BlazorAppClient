@@ -1,0 +1,49 @@
+﻿@typeparam TItem
+<table class="Offering-winning-events">
+    <tr>
+        <th><img src="http://www.mycommunitybuilder.org/Images/Saas/Structures/Horseracesm.png" alt="" /></th>
+        @if (@Localization.ContainsKey("Place"))
+        {
+            <th>@Localization["Place"]</th>
+        }
+        @if (@Localization.ContainsKey("Name"))
+        {
+            <th>@Localization["Name"]</th>
+        }
+        @if (@Localization.ContainsKey("TotalFans"))
+        {
+            <th>@Localization["TotalFans"]</th>
+        }
+        @if (@Localization.ContainsKey("ThisWeek"))
+        {
+            <th>@Localization["ThisWeek"]</th>
+        }
+    </tr>
+    @if (items == null)
+    {
+        <div class="spinner-border"></div>
+    }
+    else
+    {
+        @foreach (var item in items)
+        {
+            <tr>
+                @Item(item)
+            </tr>
+        }
+    }
+</table>
+
+
+@code {
+
+    IEnumerable<TItem> items;
+    [Parameter] public Func<Task<IEnumerable<TItem>>> Loader { get; set; }
+    [Parameter] public IDictionary<string, string> Localization { get; set; }
+    [Parameter] public RenderFragment<TItem> Item { get; set; }
+    protected override async Task OnParametersSetAsync()
+    {
+        items = await Loader();
+    }
+
+}

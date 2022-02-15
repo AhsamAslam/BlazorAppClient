@@ -1,0 +1,33 @@
+﻿.ImageHeadingTextCard {
+    padding: 20px;
+    border: 1px outset gainsboro;
+    background-color: #FFFFFF;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    border-radius: 2px;
+}
+.ImageHeadingTextCardTitle {
+    margin: 4px;
+    font-weight: bold;
+}
+.ImageHeadingTextCardBody {
+    padding: 10px;
+}
+.ImageHeadingTextCardContent {
+    border-width: 0px;
+}
+.ImageHeadingTextCardContentText {
+    color: #333333;
+}
+.ImageHeadingTextCardHeading {
+    font-weight: bold;
+}
+
+.imgRectangleMaxWidth {
+    max-width: 100%;
+}
+.imgRectangle {
+    width: 250px;
+    height: 150px;
+    object-fit: cover;
+}

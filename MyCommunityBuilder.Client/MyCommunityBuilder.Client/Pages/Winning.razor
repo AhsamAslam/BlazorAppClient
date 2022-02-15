@@ -1,0 +1,93 @@
+﻿@page "/Winning"
+@page "/Winning/{SiteID}"
+@using MyCommunityBuilder.Client.Services
+@using MyCommunityBuilder.Client.Shared
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILogger<Index> _logger
+@inject SiteClient SiteClient
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@inject IStringLocalizer<Resource> Localizer
+
+<div class="row">
+    <JSlider></JSlider>
+</div>
+<div class="row" style="height: 75px;">
+    <NavMenuBar></NavMenuBar>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+            <div>
+                <JWinningTable></JWinningTable>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+            <div>
+                <JLargeImageCard Records="LargeImageCard1"></JLargeImageCard>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string SiteID { get; set; }
+    public string ID { get; set; }
+    public LargeImageCardDto LargeImageCard1 = new LargeImageCardDto();
+
+    #region Authentication
+    private string mfaName = "[\"mfa\"]";
+    private string mfaForceText = "True";
+    private Claim amrClaim;
+    private Claim force2FAClaim;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private AuthenticationState authState;
+    private string _authMessage;
+    private string _surnameMessage;
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+        #region Components Data
+        LargeImageCard1 = new LargeImageCardDto
+        {
+            LargeImageCardHeading = "",
+            LargeImageCardSource = "https://localhost:44334/Images/Designs/f04b8ea7-1553-4b6d-8094-ab6518866ae1.PNG",
+            LargeImageCardText = "",
+            LargeImageCardLink = "/Index",
+            LargeImageCardLinkText = "Precious Little One's Childcare",
+            LargeImageCardContent = "My facility is an in home center that I started in 2006 after working as a volunteer..."
+        };
+        #endregion
+
+        //Localization = LocalizationDropDown.Localization;
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // CHeck if user has Admin ofr Manager Role
+        if (user.Identity.IsAuthenticated)
+        {
+
+            // Check if MFA Force enable for the user
+            force2FAClaim = user.Claims.Where(x => x.Type == "force2fa").FirstOrDefault();
+            ID = user.FindFirst(c => c.Type == "sub")?.Value;
+
+            // Check if MFA is already not enable for the user
+            amrClaim = user.Claims.Where(x => x.Type == "amr").FirstOrDefault();
+            if (force2FAClaim != null && force2FAClaim.Value == mfaForceText)
+            {
+                if (amrClaim == null || amrClaim.Value != mfaName)
+                {
+                    // Force redirect to Enabl MFA page
+                    await JS.InvokeAsync<string>("navigateToMFA");
+                    _logger.LogWarning("warning");
+
+                }
+            }
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+}

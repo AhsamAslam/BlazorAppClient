@@ -1,0 +1,46 @@
+﻿.PanelProduct {
+    padding: 10px 12px 14px 12px;
+    border-radius: 5px;
+    border-width: 0px 5px;
+    border-color: #333333;
+    background-color: TRANSPARENT;
+}
+
+.DivDesignName {
+    height: 30px;
+    background-color: #333333;
+    overflow: hidden;
+    border: 1px solid #333333;
+    border-radius: 5px 5px 0 0;
+    border-bottom: none;
+    text-align: center;
+    padding: 0 5px;
+    border-color: #333333;
+}
+
+.DivProductImage {
+    height: 200px;
+    border: 1px solid #333333;
+    overflow: hidden;
+}
+
+.ProductImage {
+    height: 100%;
+}
+
+.hover-item {
+    color: blue;
+    cursor: pointer;
+}
+
+    .hover-item:hover {
+        text-decoration:underline;
+    }
+/*div a {
+    color: blue;
+}
+
+    div a:hover {
+        color: blue;
+        text-decoration: underline;
+    }*/

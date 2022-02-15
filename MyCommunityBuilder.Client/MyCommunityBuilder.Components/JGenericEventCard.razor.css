@@ -1,0 +1,15 @@
+﻿.GenericEventCard {
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px outset gainsboro;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+.GenericEventCardHeading {
+    font-weight: bold;
+    color: #333333;
+}
+.GenericEventCardTag {
+    background-color: #FFCC00;
+}

@@ -1,0 +1,19 @@
+﻿.RightImageCard {
+    border: 1px outset gainsboro;
+    background-color: #FFFFFF;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+.RightImageCardBody {
+    padding: 10px 5px 5px 15px;
+    text-align: left;
+}
+.RightImageCardTitle {
+    font-weight: 600;
+    font-size: medium;
+}
+.RightImageCardImage {
+    height: 40px;
+    width: 40px;
+}

@@ -1,0 +1,31 @@
+USE [communitybuilder]
+GO
+/****** Object:  StoredProcedure [dbo].[spGetLanguageBySiteURL]    Script Date: 10/5/2021 12:25:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Arqam Awan>
+-- Create date: <10-5-2021>
+-- Description:	<spGetLocalization>
+-- exec spGetLanguageBySiteURL 'http://localhost:1667/'
+ALTER PROCEDURE [dbo].[spGetLanguageBySiteURL]
+	@SiteURL nvarchar(150)
+AS
+BEGIN
+	Begin Try
+
+		DECLARE @SiteID AS INT = (Select SiteID from Site where URL = @SiteURL);
+
+		select la.*, s.DefaultLanguageID from [Language] la with (nolock) inner join Localization lo  with (nolock) on la.LanguageID = lo.LanguageID  inner join Site s with (nolock) on s.SiteID = lo.SiteID where lo.SiteID = @SiteID
+
+	End Try
+	Begin Catch
+		
+	End Catch
+END
+
+
+
+

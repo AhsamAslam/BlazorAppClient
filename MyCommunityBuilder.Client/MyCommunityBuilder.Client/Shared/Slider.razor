@@ -1,0 +1,42 @@
+﻿
+<BlazorStrap.BSCarousel NumberOfItems="@SliderItem.Count">
+    <div class="carousel-inner">
+        @for (int i = 0; i < SliderItem.Count; i++)
+        {
+
+            <BlazorStrap.BSCarouselItem Src="@SliderItem[i].Source" Alt="@SliderItem[i].Alt" style="width:100%;" />
+        }
+    </div>
+    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Previous" NumberOfItems="@SliderItem.Count" />
+    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Next" NumberOfItems="@SliderItem.Count" />
+
+</BlazorStrap.BSCarousel>
+
+@code {
+    //[Parameter] public List<SliderItemDto> SliderItem { get; set; }
+    List<SliderItemDto> SliderItem = new List<SliderItemDto>
+    {
+        new SliderItemDto{
+            Source = "http://www.smallstreet.org/Images/Page_Index/rodeo3.jpg",
+            Alt = "First Slide",
+            Caption = "Slide 1",
+            Header = "Slider 1 Header"
+
+        },
+        new SliderItemDto{
+            Source = "http://www.smallstreet.org/Images/Page_Index/rodeo3.jpg",
+            Alt = "Second Slide",
+            Caption = "Slide 2",
+            Header = "Slider 2 Header"
+
+        },
+        new SliderItemDto{
+            Source = "http://www.smallstreet.org/Images/Page_Index/rodeo3.jpg",
+            Alt = "Third Slide",
+            Caption = "Slide 3",
+            Header = "Slider 3 Header"
+
+        },
+    };
+
+}

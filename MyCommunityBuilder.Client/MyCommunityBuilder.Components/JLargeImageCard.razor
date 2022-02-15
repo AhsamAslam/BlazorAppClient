@@ -1,0 +1,21 @@
+﻿@inject NavigationManager NavigationManager
+<div class="card LargeImageCard">
+    <h5 class="LargeImageCardHeading">@Records.LargeImageCardHeading</h5>
+    <JImage Src="@Records.LargeImageCardSource" Link="@Records.LargeImageCardLink" Text="@Records.LargeImageCardText"></JImage>
+    <div class="card-body">
+        <a href="@Records.LargeImageCardLink">
+            <h5 class="card-title">@Records.LargeImageCardLinkText</h5>
+        </a>
+        <p class="card-text" type="button" @onclick="@Nevigate">@Records.LargeImageCardContent</p>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public LargeImageCardDto Records { get; set; }
+    async Task Nevigate()
+    {
+        NavigationManager.NavigateTo(Records.LargeImageCardLink);
+    }
+}

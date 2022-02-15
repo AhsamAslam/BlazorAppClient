@@ -1,0 +1,22 @@
+﻿<div class="col-xs-12 LeftImageCard">
+    <div class="LeftImageCardBody">
+        <a href="@Records.LeftImageCardLink">
+            <div class="LeftImageCardTitle">
+                @Records.LeftImageCardHeading
+            </div>
+        </a>
+        <div>
+            <img class="LeftImageCardImage" align="left" src="@Records.LeftImageCardSource">
+            @Records.LeftImageCardText
+
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public LeftImageCardDto Records { get; set; }
+
+}

@@ -1,0 +1,179 @@
+﻿@page "/Investnet"
+@using MyCommunityBuilder.Components
+@using MyCommunityBuilder.Client.Services
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject FanClient FanClient
+@inject BusinessClient BusinessClient
+@inject EventClient EventClient
+@inject LanguageClient LanguageClient
+@inject LocalizationClient LocalizationClient
+@inject GenericLocalizationClient GenericLocalizationClient
+@inject SiteClient SiteClient
+@inject HeaderClient HeaderClient
+@inject CSSClient CSSClient
+@inject NavigationManager NavigationManager
+@inject ILogger<Index> _logger
+@inject IStyled Styled
+@inherits Index
+<Styled @bind-Classname="@CardHeadingCss">
+    color:@CardHeadingColor;
+    Font-size: @CardHeadingFontSize;
+    Font-Family:@CardHeadingFontFamily;
+    Font-Weight:@CardHeadingFontWeight;
+    Text-Decoration:@CardHeadingTextDecoration;
+
+</Styled>
+<Styled @bind-Classname="@CardBodyCss">
+    color:@CardBodyTextColor;
+    Font-size: @CardBodyTextFontSize;
+    Font-Family:@CardBodyTextFontFamily;
+    Font-Weight:@CardBodyTextFontWeight;
+    Text-Decoration:@CardBodyTextDecoration;
+
+</Styled>
+<Styled @bind-Classname="@CardButtonCss">
+    color:@CardBodyButtonTextColor;
+    Font-size: @CardBodyButtonTextFontSize;
+    Font-Family:@CardBodyButtonTextFontFamily;
+    Font-Weight:@CardBodyButtonTextFontWeight;
+    Text-Decoration:@CardBodyButtonTextDecoration;
+    Background-Color: @CardBodyButtonBackGroundColor;
+
+</Styled>
+
+<div class="container-fluid">
+    <div class="row" style="text-align:center;">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-1 ">
+            <JLogo />
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+            <JSocialMedia />
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+            <img id="Image2" src="http://www.las-cruces.biz/Images/Saas/Structures/las-crucesbiz/lcb2.PNG" align="middle" style="border-color:White;border-width:5px;border-style:solid;" />
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-3" style="padding-top: 32px; padding-bottom:20px;">
+            <select value="@SelectedLanguage" @onchange="@onSelect" style="width: 200px; height: 35px; border-color: #5B3256; border: solid;">
+                @foreach (var item in Language)
+                {
+                    <option style="text-align:center;" value="@item.LanguageID" selected=@(SelectedLanguage == item.LanguageID)>@item.LanguageDescription</option>
+                }
+
+            </select>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="row">
+        @if (SiteHeaders != null)
+        {
+            <JHeader SiteHeaders="SiteHeaders">
+            </JHeader>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-md-1 col-lg-1"></div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            @if (@Localization.ContainsKey("CurrentCrowdfundingOfferings"))
+            {
+                <h5 class="@CardHeadingCss" style="padding-bottom: 20px;">@Localization["CurrentCrowdfundingOfferings"]</h5>
+            }
+
+            <JCARD Loader="@LoadBusinesses">
+                <Item Context="item">
+                    <span>
+                        <a href="#">@item.BusinessName</a>
+                        <span class="@CardBodyCss">@item.Description</span>
+                        <button class="@CardButtonCss">Load more</button>
+                    </span>
+                </Item>
+            </JCARD>
+        </div>
+        <div class="col-sm-12 col-md-5 col-lg-5">
+            @if (@Localization.ContainsKey("WhosWinning"))
+            {
+                <h5 class="" style="padding-bottom: 20px; font-weight:bold;">@Localization["WhosWinning"]</h5>
+
+            }
+            <JTable Loader="@LoadFans" Localization="@Localization">
+                <Item Context="item">
+                   
+                    <td style="text-align:center;"><img src="" alt="" style="height:35px;" /></td>
+                    <td style="text-align:center;"></td>
+                    <td>@item.BusinessName</td>
+                    <td style="text-align:center;">@item.NumberOfFans</td>
+                    <td style="text-align:center;">@item.ThisWeek</td>
+                </Item>
+            </JTable>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            @if (@Localization.ContainsKey("Events"))
+            {
+                <h5 class="" style="padding-bottom: 20px;">@Localization["Events"]</h5>
+            }
+            <JTimeLine Loader="@LoadEvents">
+                <Item Context="item">
+                    <h3 style="font-size: large; font-weight: bold; color: #305872;">@item.DateAdded @item.Location</h3>
+                    <span style="color: #305872;">@item.Comment</span><br />
+                    <a href="@item.Hyperlink1" style="color:red;">Online here</a>
+
+                </Item>
+            </JTimeLine>
+        </div>
+
+
+    </div>
+   
+
+    <div class="row">
+        <JFooter />
+    </div>
+</div>
+
+@code
+
+{
+    public SiteHeaders SiteHeaders { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        //var user = authState.User;
+
+        //// CHeck if user has Admin ofr Manager Role
+        //if (user.Identity.IsAuthenticated)
+        //{
+
+        //    // Check if MFA Force enable for the user
+        //    force2FAClaim = user.Claims.Where(x => x.Type == "force2fa").FirstOrDefault();
+
+        //    // Check if MFA is already not enable for the user
+        //    amrClaim = user.Claims.Where(x => x.Type == "amr").FirstOrDefault();
+        //    if (force2FAClaim != null && force2FAClaim.Value == mfaForceText)
+        //    {
+        //        if (amrClaim == null || amrClaim.Value != mfaName)
+        //        {
+        //            // Force redirect to Enabl MFA page
+        //            //await JS.InvokeAsync<string>("navigateToMFA");
+        //            _logger.LogWarning("warning");
+
+        //        }
+        //    }
+        //}
+        //await LoadLanguage();
+        //await LoadLanguageLocalization();
+        //await LoadGenericLocalization();
+
+        //SiteHeaders = await LoadHeader();
+
+
+        //await LoadCSS();
+        //FillDictionary();
+        ////_logger.LogInformation(string.Join(Environment.NewLine, Localization));
+        //await base.OnInitializedAsync();
+    }
+
+}

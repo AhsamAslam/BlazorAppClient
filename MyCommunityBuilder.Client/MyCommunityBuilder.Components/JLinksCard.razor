@@ -1,0 +1,24 @@
+﻿<div class="col-xs-12 LinksCard">
+
+
+    <div class="container-fluid LinksCardContainer">
+        <div class="LinksCardBody">
+            <h6 class="LinksCardHeading">@Title</h6>
+            <ul class="">
+                @foreach (var item in Records)
+                {
+                    <li><a href="@item.LinksCardLinks">@item.LinksCardLinksText</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public List<LinksCardDto> Records { get; set; }
+
+}
