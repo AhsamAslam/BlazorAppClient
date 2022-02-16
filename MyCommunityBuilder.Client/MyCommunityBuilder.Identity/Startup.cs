@@ -20,7 +20,7 @@ using MyCommunityBuilder.Server.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using System.Net.Http;
-using Tewr.Blazor.FileReader;
+
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 
@@ -127,7 +127,8 @@ namespace MyCommunityBuilder.Identity
             services.AddRazorPages();
             services.AddSyncfusionBlazor();
             services.AddScoped<HttpClient>();
-            services.AddFileReaderService();
+            //using Tewr.Blazor.FileReader;
+            //services.AddFileReaderService();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTMwOTAwQDMxMzkyZTMzMmUzMEVreTlQT2E5c0E0dkU2SE9zQlNrbllTc0I3cC8ybGFUcFFpbjZVcWZvcnM9");
 
             services.AddCors(options =>

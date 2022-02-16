@@ -40,7 +40,7 @@ namespace MyCommunityBuilder.Client.Pages
                 ex.Redirect();
             }
         }
-        private async Task GetLocalBusinessCardBySearchText()
+        private async Task GetLocalBusinessCardBySearchText2()
         {
             try
             {

@@ -94,3 +94,7 @@
     font-family: Verdana;
     font-size: 0.8em;
 }
+.control-wrapper {
+    width: 500px;
+    margin: 0 auto;
+}

@@ -15,15 +15,21 @@
 </div>
 <div class="container ContainerBody">
     <div class="row RowCenter">
-        <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-md-2 col-lg-2">
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-sm-12 col-md-8 col-lg-8">
             <div class="SearchBarDiv">
-                <input class="SearchInput" type="text" placeholder="Business name..." @oninput="@((e) => { SearchText=(string)e.Value;})" />
-                <input class="SearchIcon" type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["SearchImage"]))" align="top" />
+                @*<input class="SearchInput" type="text" placeholder="Business name..." @oninput="@((e) => { SearchText=(string)e.Value;})" />*@
+                <div class="control-wrapper">
+                    <SfAutoComplete TValue="string" TItem="BusinessLocalCardDto" Placeholder="Business" DataSource="@BusinessLocalCardDto" @oninput="@((e) => { SearchText=(string)e.Value;})" ValueChanged="@((e)=>OnChange())" >
+                        <AutoCompleteFieldSettings Value="BusinessLocalCardCategory" />
+                    </SfAutoComplete>
+
+                    <input class="SearchIcon" type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["SearchImage"]))" align="top" />
+                </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-md-2 col-lg-2">
         </div>
     </div>
     <div class="row RowCenter">
@@ -36,17 +42,17 @@
         <div class="col-md-4 col-lg-4"></div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-2 col-lg-2">
+        <div class="col-sm-12 col-md-8 col-lg-8">
             <div class="GetAllBusinessDiv">
                 &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">All Businesses</a>
                 <span class="SpaceSpan">&gt;</span>
                 <a href="#" class="SearchText">@SearchText</a>
             </div>
         </div>
-        <div class="col-md-8 col-lg-8"></div>
+        <div class="col-md-2 col-lg-2"></div>
         <div class="col-sm-12 col-md-2 col-lg-2">
             <div class="GetAllBusinessDiv">
-                &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">Newest Businesses</a>
+                &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetNewestLocalBusinessCard">Newest Businesses</a>
                 <span class="SpaceSpan">&gt;</span>
             </div>
         </div>
@@ -125,7 +131,7 @@
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
                 BusinessLocalCardCategory = "1",
-                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+                BusinessLocalCardNewest = null
             },
             new BusinessLocalCardDto
             {
@@ -145,7 +151,7 @@
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
                 BusinessLocalCardCategory = "3",
-                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+                BusinessLocalCardNewest = null
             },
             new BusinessLocalCardDto
             {
@@ -155,7 +161,7 @@
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
                 BusinessLocalCardCategory = "4",
-                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+                BusinessLocalCardNewest = null
             },
             new BusinessLocalCardDto
             {
@@ -183,11 +189,14 @@
         await base.OnInitializedAsync();
     }
 
-    private async Task GetLocalBusinessCardByName()
+    private async Task GetLocalBusinessCardBySearchText()
     {
         try
         {
-            BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardTitle == SearchText).ToList();
+
+            BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardTitle == SearchText || x.BusinessLocalCardName == SearchText || x.BusinessLocalCardCategory == SearchText).ToList();
+
+
         }
         catch (AccessTokenNotAvailableException ex)
         {
@@ -195,4 +204,88 @@
         }
     }
 
+    private async Task GetNewestLocalBusinessCard()
+    {
+        try
+        {
+            BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardNewest == DateTime.Now.Date.ToString()).ToList();
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
+    private async Task OnChange()
+    {
+        try
+        {
+            BusinessLocalCardDto = new List<BusinessLocalCardDto>
+    {
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Burrito's Victoria",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "1",
+                BusinessLocalCardNewest = null
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Las Cruces Game Knights",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "2",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Licensed Massage Therapy﻿",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "3",
+                BusinessLocalCardNewest = null
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Mountain View Market Co-op",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "4",
+                BusinessLocalCardNewest = null
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Okazuri Floating Sushi Bar",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "5",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+            new BusinessLocalCardDto
+            {
+                BusinessLocalCardTitle = "Precious Little One's Childcare LLC",
+                BusinessLocalCardImage = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LocalBusinessImage"]),
+                BusinessLocalCardName = "Mexican Restaurant",
+                BusinessLocalCardLink = "",
+                BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                BusinessLocalCardCategory = "6",
+                BusinessLocalCardNewest = DateTime.Now.Date.ToString()
+            },
+        };
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
 }
