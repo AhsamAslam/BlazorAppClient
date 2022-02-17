@@ -130,7 +130,7 @@
     <value>websurveyc3.png</value>
   </data>
   <data name="BaseImageUrl" xml:space="preserve">
-    <value>https://mycommunitybuilderapi.herokuapp.com/upload/images/</value>
+    <value>http://localhost:5002/upload/images/</value>
   </data>
   <data name="Becomeafanfavoriteandgetawholeweekinthespotlight." xml:space="preserve">
     <value>Become a fan favorite and get a whole week in the spotlight.</value>

@@ -95,6 +95,9 @@
     font-size: 0.8em;
 }
 .control-wrapper {
+    width: 335px;
+    margin-left:30px;
+}
+.InputWidth {
     width: 500px;
-    margin: 0 auto;
 }

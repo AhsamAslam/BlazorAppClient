@@ -97,7 +97,7 @@ namespace MyCommunityBuilder.Client.Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://mycommunitybuilderapi.herokuapp.com/upload/images/.
+        ///   Looks up a localized string similar to http://localhost:5002/upload/images/.
         /// </summary>
         public static string BaseImageUrl {
             get {

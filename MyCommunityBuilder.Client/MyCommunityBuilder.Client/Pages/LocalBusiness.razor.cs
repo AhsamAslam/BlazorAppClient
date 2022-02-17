@@ -55,5 +55,16 @@ namespace MyCommunityBuilder.Client.Pages
         {
             NavigationManager.NavigateTo("/Design"+"/"+ID);
         }
+        private async Task OnSelectCat(string e)
+        {
+            try
+            {
+                BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardCategory == e).ToList();
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
+        }
     }
 }
