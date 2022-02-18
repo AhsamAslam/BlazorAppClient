@@ -18,28 +18,46 @@
         <div class="col-md-2 col-lg-2">
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8">
-            <div class="SearchBarDiv">
+            <div class="containerBar">
+                    <select class="Drop selectBar" value="@CategorySelect" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnSelectCat(SearchText))">
+                        <option value="default" disabled selected>Select category</option>
+                        @foreach (var item in BusinessCategories)
+	                     {
+	                     	 <option value="@item">@item</option>
+	                     }
+                    </select>
+                    <input id="autoCompleteInput" list="AutoCompleteList" class="input" type="text" placeholder="Business" name="SearchBar" value="@SearchText" @onchange="((e) => OnSelectByNameAndTitle(e.Value.ToString()))">
+                    <datalist id="AutoCompleteList">
+                        @foreach (var item in AutoComplete)
+	                     {
+                            <option value="@item"/>
+	                     }
+                        
+                    </datalist>
+                <button class="btnBar" @onclick="GetAllLocalBusinessCard"> All </button>
+            </div>
+            @*<div class="SearchBarDiv">*@
                 @*<input class="SearchInput" type="text" placeholder="Business name..." @oninput="@((e) => { SearchText=(string)e.Value;})" />*@
-                <div class="control-wrapper">
-                    <SfAutoComplete TValue="string" TItem="BusinessLocalCardDto" Placeholder="Business" DataSource="@BusinessLocalCardDto" @oninput="@((e) => { SearchText=(string)e.Value;})" @onkeypress="@((e)=>OnChange())">
-                        <AutoCompleteFieldSettings Value="BusinessLocalCardName" />
-                        <AutoCompleteFieldSettings Value="BusinessLocalCardTitle" />
-                    </SfAutoComplete>
-                    <SfDropDownList TValue="string" TItem="BusinessLocalCardDto" Placeholder="Select a category" DataSource="@BusinessLocalCardDto">
-                        <DropDownListEvents TItem="BusinessLocalCardDto" TValue="string" OnValueSelect="@((e)=>OnSelectCat(e.ItemData.BusinessLocalCardCategory))"></DropDownListEvents>
-                        <DropDownListFieldSettings Value="BusinessLocalCardCategory" Text="BusinessLocalCardCategory"></DropDownListFieldSettings>
-                    </SfDropDownList>
+                @*<div class="control-wrapper">*@
+                    @*<SfAutoComplete TValue="string" TItem="BusinessLocalCardDto" Placeholder="Business" DataSource="@BusinessLocalCardDto" @oninput="@((e) => { SearchText=(string)e.Value;})" @onkeypress="@((e)=>OnChange())">
+                    <AutoCompleteFieldSettings Value="BusinessLocalCardName" />
+                    <AutoCompleteFieldSettings Value="BusinessLocalCardTitle" />
+                </SfAutoComplete>
+                <SfDropDownList TValue="string" TItem="BusinessLocalCardDto" Placeholder="Select a category" DataSource="@BusinessLocalCardDto">
+                    <DropDownListEvents TItem="BusinessLocalCardDto" TValue="string" OnValueSelect="@((e)=>OnSelectCat(e.ItemData.BusinessLocalCardCategory))"></DropDownListEvents>
+                    <DropDownListFieldSettings Value="BusinessLocalCardCategory" Text="BusinessLocalCardCategory"></DropDownListFieldSettings>
+                </SfDropDownList>*@
                     @*<input class="InputWidth" list="browsers" name="myBrowser" Placeholder="Business" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnChange())"/>
 
-                    <datalist id="browsers">
-                        @foreach (var item in BusinessLocalCardDto)
-                        {
-                            <option value="@item.BusinessLocalCardCategory" />
-                        }
-                    </datalist>
-                    <input class="SearchIcon" type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["SearchImage"]))" align="top" />*@
-                </div>
-            </div>
+                <datalist id="browsers">
+                    @foreach (var item in BusinessLocalCardDto)
+                    {
+                        <option value="@item.BusinessLocalCardCategory" />
+                    }
+                </datalist>
+                <input class="SearchIcon" type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["SearchImage"]))" align="top" />*@
+                @*</div>
+            </div>*@
         </div>
         @*<div class="col-sm-12 col-md-3 col-lg-3">
             <div class="SearchBarDiv">
@@ -63,23 +81,24 @@
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-8">
-            <div class="GetAllBusinessDiv">
+            @*<div class="GetAllBusinessDiv">
                 &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">All Businesses</a>
                 <span class="SpaceSpan">&gt;</span>
                 <a href="#" class="SearchText">@SearchText</a>
-            </div>
+            </div>*@
         </div>
         <div class="col-md-2 col-lg-2"></div>
         <div class="col-sm-12 col-md-2 col-lg-2">
-            <div class="GetAllBusinessDiv">
-                &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetNewestLocalBusinessCard">Newest Businesses</a>
-                <span class="SpaceSpan">&gt;</span>
-            </div>
+            <select class="Drop2" value="@SortBy"  @onchange="GetSortedLocalBusinessCard">
+                <option value="" disabled selected>Sort By:</option>
+                <option value="1">Newest</option>
+
+            </select>
         </div>
     </div>
     <div class="row">
         <div class="col-md-1 col-lg-1"></div>
-        <JLocalBusinessCard Records="BusinessLocalCardDto"></JLocalBusinessCard>
+        <JLocalBusinessCard Records="CurrentBusinessLocalCardDto"></JLocalBusinessCard>
     </div>
 </div>
 @*<div class="container-fluid">
@@ -115,6 +134,11 @@
 @code {
     List<SliderItemDto> SliderItem = new List<SliderItemDto>();
     List<BusinessLocalCardDto> BusinessLocalCardDto = new List<BusinessLocalCardDto>();
+    List<BusinessLocalCardDto> CurrentBusinessLocalCardDto = new List<BusinessLocalCardDto>();
+    List<string> BusinessCategories = new List<string>();
+    List<string> AutoComplete = new List<string>();
+    public int? SortBy { get; set; }
+    public string CategorySelect { get; set; }
     protected override async Task OnInitializedAsync()
     {
         #region Components Data
@@ -152,7 +176,7 @@
                 BusinessLocalCardName = "Mexican Restaurant",
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                BusinessLocalCardCategory = "1",
+                BusinessLocalCardCategory = "Sports",
                 BusinessLocalCardNewest = null
             },
             new BusinessLocalCardDto
@@ -162,7 +186,7 @@
                 BusinessLocalCardName = "Mexican Restaurant",
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                BusinessLocalCardCategory = "2",
+                BusinessLocalCardCategory = "Sports",
                 BusinessLocalCardNewest = DateTime.Now.Date.ToString()
             },
             new BusinessLocalCardDto
@@ -172,7 +196,7 @@
                 BusinessLocalCardName = "Mexican Restaurant",
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                BusinessLocalCardCategory = "3",
+                BusinessLocalCardCategory = "Childern",
                 BusinessLocalCardNewest = null
             },
             new BusinessLocalCardDto
@@ -182,7 +206,7 @@
                 BusinessLocalCardName = "Mexican Restaurant",
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                BusinessLocalCardCategory = "4",
+                BusinessLocalCardCategory = "Childern",
                 BusinessLocalCardNewest = null
             },
             new BusinessLocalCardDto
@@ -192,7 +216,7 @@
                 BusinessLocalCardName = "Mexican Restaurant",
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                BusinessLocalCardCategory = "5",
+                BusinessLocalCardCategory = "IT",
                 BusinessLocalCardNewest = DateTime.Now.Date.ToString()
             },
             new BusinessLocalCardDto
@@ -202,11 +226,40 @@
                 BusinessLocalCardName = "Mexican Restaurant",
                 BusinessLocalCardLink = "",
                 BusinessLocalCardDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                BusinessLocalCardCategory = "6",
+                BusinessLocalCardCategory = "IT",
                 BusinessLocalCardNewest = DateTime.Now.Date.ToString()
             },
         };
+        foreach (var item in BusinessLocalCardDto)
+        {
+            CurrentBusinessLocalCardDto.Add(new BusinessLocalCardDto() {
+                BusinessLocalCardTitle = item.BusinessLocalCardTitle,
+                BusinessLocalCardImage = item.BusinessLocalCardImage,
+                BusinessLocalCardName = item.BusinessLocalCardName,
+                BusinessLocalCardCategory = item.BusinessLocalCardCategory,
+                BusinessLocalCardDescription = item.BusinessLocalCardDescription,
+                BusinessLocalCardLink = item.BusinessLocalCardLink,
+                BusinessLocalCardNewest = item.BusinessLocalCardNewest
+            });
+        }
+
+        foreach (var item in BusinessLocalCardDto)
+        {
+            BusinessCategories.Add(item.BusinessLocalCardCategory);
+        }
+        foreach (var item in BusinessLocalCardDto)
+        {
+            AutoComplete.Add(item.BusinessLocalCardName);
+
+        }
+        foreach (var item in BusinessLocalCardDto)
+        {
+
+            AutoComplete.Add(item.BusinessLocalCardTitle);
+        }
+        _logger.LogInformation(string.Join(Environment.NewLine, AutoComplete));
         #endregion
+        _logger.LogInformation("SearchText", SearchText);
         await LoadBusinessesBySiteID();
         await base.OnInitializedAsync();
     }
@@ -226,11 +279,16 @@
         }
     }
 
-    private async Task GetNewestLocalBusinessCard()
+    private async Task GetSortedLocalBusinessCard(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
         try
         {
-            BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardNewest == DateTime.Now.Date.ToString()).ToList();
+            _logger.LogInformation(string.Join(Environment.NewLine, e));
+            SortBy = Convert.ToInt32(e.Value.ToString());
+            if(SortBy == 1)
+                CurrentBusinessLocalCardDto = CurrentBusinessLocalCardDto.OrderByDescending(x => x.BusinessLocalCardNewest).ToList();
+
+            SearchText = "Newest";
         }
         catch (AccessTokenNotAvailableException ex)
         {
@@ -247,6 +305,36 @@
 
             Console.WriteLine("BusinessLocalCardDto", BusinessLocalCardDto);
 
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
+    private async Task OnSelectCat(string e)
+    {
+        try
+        {
+            _logger.LogInformation(string.Join(Environment.NewLine, e));
+
+            CurrentBusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardCategory == e).ToList();
+            _logger.LogInformation(string.Join(Environment.NewLine, BusinessLocalCardDto));
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
+    private async Task OnSelectByNameAndTitle(string e)
+    {
+        try
+        {
+            _logger.LogInformation(string.Join(Environment.NewLine, e));
+
+            CurrentBusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardName == e || x.BusinessLocalCardTitle == e).ToList();
+            SearchText = e;
+            SearchText = "";
+            _logger.LogInformation(string.Join(Environment.NewLine, BusinessLocalCardDto));
         }
         catch (AccessTokenNotAvailableException ex)
         {

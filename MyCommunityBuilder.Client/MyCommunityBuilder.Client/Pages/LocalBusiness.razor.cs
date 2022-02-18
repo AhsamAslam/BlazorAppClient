@@ -33,7 +33,24 @@ namespace MyCommunityBuilder.Client.Pages
             
             try
             {
-                BusinessBySite = await BusinessClient.GetBusinessBySiteID(4, "");
+                CurrentBusinessLocalCardDto = new List<BusinessLocalCardDto>();
+                foreach (var item in BusinessLocalCardDto)
+                {
+                    CurrentBusinessLocalCardDto.Add(new BusinessLocalCardDto()
+                    {
+                        BusinessLocalCardTitle = item.BusinessLocalCardTitle,
+                        BusinessLocalCardImage = item.BusinessLocalCardImage,
+                        BusinessLocalCardName = item.BusinessLocalCardName,
+                        BusinessLocalCardCategory = item.BusinessLocalCardCategory,
+                        BusinessLocalCardDescription = item.BusinessLocalCardDescription,
+                        BusinessLocalCardLink = item.BusinessLocalCardLink,
+                        BusinessLocalCardNewest = item.BusinessLocalCardNewest
+                    });
+                }
+
+                SortBy = null;
+                SearchText = "ALL";
+                CategorySelect = "default";
             }
             catch (AccessTokenNotAvailableException ex)
             {
@@ -55,16 +72,6 @@ namespace MyCommunityBuilder.Client.Pages
         {
             NavigationManager.NavigateTo("/Design"+"/"+ID);
         }
-        private async Task OnSelectCat(string e)
-        {
-            try
-            {
-                BusinessLocalCardDto = BusinessLocalCardDto.Where(x => x.BusinessLocalCardCategory == e).ToList();
-            }
-            catch (AccessTokenNotAvailableException ex)
-            {
-                ex.Redirect();
-            }
-        }
+       
     }
 }
