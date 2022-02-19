@@ -180,24 +180,6 @@ namespace MyCommunityBuilder.Identity
             string baseURL = AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        private async Task<Action> OnApplicationStartedAsync(IWebHostEnvironment env)
-        {
-            try
-            {
-                var PathBuild = Path.Combine(env.WebRootPath, "Logs");
-                if (!Directory.Exists(PathBuild))
-                {
-                    Directory.CreateDirectory(PathBuild);
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-            return null;
-        }
+        
     }
 }

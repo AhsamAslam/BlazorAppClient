@@ -10,6 +10,11 @@ namespace MyCommunityBuilder.Identity.Helpers
     {
         public static void WriteLogLine(string strComments)
         {
+            var PathBuild = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Logs");
+            if (!Directory.Exists(PathBuild))
+            {
+                Directory.CreateDirectory(PathBuild);
+            }
             var fileName = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Logs\\Logs") + "_" + DateTime.Now.ToString("yyyy") + ".txt";
             using (StreamWriter file = new StreamWriter(fileName, true))
             {
