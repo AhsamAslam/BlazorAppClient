@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 {
@@ -43,23 +44,32 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            try
             {
-                var role = new IdentityRole { Name = Input.RoleName, NormalizedName = Input.RoleName };
-                var result = await _roleManager.CreateAsync(role);
+                if (ModelState.IsValid)
+                {
+                    var role = new IdentityRole { Name = Input.RoleName, NormalizedName = Input.RoleName };
+                    var result = await _roleManager.CreateAsync(role);
 
-                if (result.Succeeded)
-                {
-                  
+                    if (result.Succeeded)
+                    {
+
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                // If we got this far, something failed, redisplay form
+                return RedirectToPage("Roles");
             }
-
-            // If we got this far, something failed, redisplay form
-            return RedirectToPage("Roles");
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+            
         }
 
         public async Task<IActionResult> OnDeleteAsync(string Id)
@@ -77,9 +87,9 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
                     return RedirectToPage("Roles");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                LogService.WriteLogLine(ex.ToString());
                 throw;
             }
         }

@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.IO;
 using System.Drawing;
 using Microsoft.AspNetCore.Hosting;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Controllers
 {
@@ -35,73 +36,91 @@ namespace MyCommunityBuilder.Identity.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult> GetUserByIdAsync(string Id)
         {
-            var user = await _userManager.Users.Where(x => x.Id == Id).FirstOrDefaultAsync();
-            IdentityUserViewModel identityUserView = new IdentityUserViewModel();
-            if (user != null)
+            try
             {
-                var allRoles = await _roleManager.Roles.ToListAsync();
+                var user = await _userManager.Users.Where(x => x.Id == Id).FirstOrDefaultAsync();
+                IdentityUserViewModel identityUserView = new IdentityUserViewModel();
+                if (user != null)
+                {
+                    var allRoles = await _roleManager.Roles.ToListAsync();
 
-                identityUserView.Email = user.Email;
-                identityUserView.EmailConfirmed = user.EmailConfirmed;
-                identityUserView.Id = user.Id;
-                identityUserView.Name = user.Name;
-                identityUserView.TwoFactorEnabled = user.TwoFactorEnabled;
-                identityUserView.UserName = user.UserName;
-                identityUserView.Force2FA = user.Force2FA;
-                identityUserView.Was2faEnabledInit = user.Was2faEnabledInit;
-                identityUserView.Email = user.Email;
-                identityUserView.FirstName = user.FirstName;
-                identityUserView.LastName = user.LastName;
-                identityUserView.PhoneNumber = user.PhoneNumber;
-                identityUserView.ConcurrencyStamp = user.ConcurrencyStamp;
-                identityUserView.SecurityStamp = user.SecurityStamp;
-                identityUserView.ImagePath = user.ImagePath;
-                identityUserView.ImageBase64 = user.ImageBase64;
-                
-                //string[] PathList = identityUserView.ImagePath.Split("/");
-                //string FileName = PathList[3].ToString();
-            //foreach (string author in PathList)
-            //string FilePath = "\\" + PathList[1] + "\\" + PathList[2];
-            
-            //var FileSavePath = Path.Combine(Directory.GetCurrentDirectory(), "Upload", FileName);
-                //string imgBase64String = GetBase64StringForImage(@"D:\Ahsam Projects\BlazorApp\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Upload\lcnm2.PNG");
-                //identityUserView.ImageBase64 = ImageToBase64(identityUserView.ImagePath);
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Count > 0)
-                    identityUserView.Roles = (from r in roles
-                                              join ar in allRoles
-                                              on r equals ar.Name
-                                              select new IdentityRoleViewModel
-                                              {
-                                                  Name = ar.Name,
-                                                  Id = ar.Id,
-                                                  NormalizedName = ar.NormalizedName
-                                              }).ToList();
+                    identityUserView.Email = user.Email;
+                    identityUserView.EmailConfirmed = user.EmailConfirmed;
+                    identityUserView.Id = user.Id;
+                    identityUserView.Name = user.Name;
+                    identityUserView.TwoFactorEnabled = user.TwoFactorEnabled;
+                    identityUserView.UserName = user.UserName;
+                    identityUserView.Force2FA = user.Force2FA;
+                    identityUserView.Was2faEnabledInit = user.Was2faEnabledInit;
+                    identityUserView.Email = user.Email;
+                    identityUserView.FirstName = user.FirstName;
+                    identityUserView.LastName = user.LastName;
+                    identityUserView.PhoneNumber = user.PhoneNumber;
+                    identityUserView.ConcurrencyStamp = user.ConcurrencyStamp;
+                    identityUserView.SecurityStamp = user.SecurityStamp;
+                    identityUserView.ImagePath = user.ImagePath;
+                    identityUserView.ImageBase64 = user.ImageBase64;
+
+                    //string[] PathList = identityUserView.ImagePath.Split("/");
+                    //string FileName = PathList[3].ToString();
+                    //foreach (string author in PathList)
+                    //string FilePath = "\\" + PathList[1] + "\\" + PathList[2];
+
+                    //var FileSavePath = Path.Combine(Directory.GetCurrentDirectory(), "Upload", FileName);
+                    //string imgBase64String = GetBase64StringForImage(@"D:\Ahsam Projects\BlazorApp\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Upload\lcnm2.PNG");
+                    //identityUserView.ImageBase64 = ImageToBase64(identityUserView.ImagePath);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Count > 0)
+                        identityUserView.Roles = (from r in roles
+                                                  join ar in allRoles
+                                                  on r equals ar.Name
+                                                  select new IdentityRoleViewModel
+                                                  {
+                                                      Name = ar.Name,
+                                                      Id = ar.Id,
+                                                      NormalizedName = ar.NormalizedName
+                                                  }).ToList();
+                }
+
+                return Ok(identityUserView);
             }
-
-            return Ok(identityUserView);
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+            
         }
 
 
         [HttpPost("update")]
         public async Task<ActionResult> UpdateUser(IdentityUserViewModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.Id);
-
-            if (!string.IsNullOrEmpty(model.Name))
+            try
             {
-                user.Name = model.Name;
+                var user = await _userManager.FindByIdAsync(model.Id);
+
+                if (!string.IsNullOrEmpty(model.Name))
+                {
+                    user.Name = model.Name;
+                }
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.UserName = model.UserName;
+                user.ZipCode = model.ZipCode;
+                user.PhoneNumber = model.PhoneNumber;
+                await _userManager.UpdateAsync(user);
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                return Ok(true);
             }
-
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.UserName = model.UserName;
-            user.ZipCode = model.ZipCode;
-            user.PhoneNumber = model.PhoneNumber;
-            await _userManager.UpdateAsync(user);
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-
-            return Ok(true);
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+            
         }
 
         [HttpPost("upload")]
@@ -149,7 +168,7 @@ namespace MyCommunityBuilder.Identity.Controllers
             }
             catch (Exception ex)
             {
-
+                LogService.WriteLogLine(ex.ToString());
                 throw;
             }
             

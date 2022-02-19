@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MyCommunityBuilder.Identity.Helpers;
 using MyCommunityBuilder.Identity.Models;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
@@ -100,9 +101,9 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 
                 #endregion
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                LogService.WriteLogLine(ex.ToString());
                 throw;
             }
 
@@ -111,42 +112,51 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            var User = await _userManager.FindByEmailAsync(Input.Email);
-
-            User.FirstName = Input.FirstName;
-            User.LastName = Input.LastName;
-            User.PhoneNumber = Input.PhoneNumber;
-            User.UserName = Input.UserName;
-            User.ZipCode = Input.ZipCode;
-
-
-            if (ModelState.IsValid)
+            try
             {
+                var User = await _userManager.FindByEmailAsync(Input.Email);
 
-                var updateOtherRecord = await _userManager.UpdateAsync(User);
-                //var ifExist =
+                User.FirstName = Input.FirstName;
+                User.LastName = Input.LastName;
+                User.PhoneNumber = Input.PhoneNumber;
+                User.UserName = Input.UserName;
+                User.ZipCode = Input.ZipCode;
 
 
-                if (updateOtherRecord.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    var getCurrentUser = await _userManager.FindByEmailAsync(Input.Email);
-                    var changePasswordResult = await _userManager.ChangePasswordAsync(getCurrentUser, Input.OldPassword, Input.NewPassword);
 
-                    if (changePasswordResult.Succeeded)
+                    var updateOtherRecord = await _userManager.UpdateAsync(User);
+                    //var ifExist =
+
+
+                    if (updateOtherRecord.Succeeded)
                     {
+                        var getCurrentUser = await _userManager.FindByEmailAsync(Input.Email);
+                        var changePasswordResult = await _userManager.ChangePasswordAsync(getCurrentUser, Input.OldPassword, Input.NewPassword);
 
-                        return LocalRedirect("/");
+                        if (changePasswordResult.Succeeded)
+                        {
+
+                            return LocalRedirect("/");
+                        }
+
                     }
+                    foreach (var error in updateOtherRecord.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
 
-                }
-                foreach (var error in updateOtherRecord.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                // If we got this far, something failed, redisplay form
+                return Page();
             }
-
-            // If we got this far, something failed, redisplay form
-            return Page();
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+            
         }
 
     }

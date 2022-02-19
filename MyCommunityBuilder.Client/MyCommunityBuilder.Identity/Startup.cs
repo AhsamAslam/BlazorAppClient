@@ -23,6 +23,7 @@ using System.Net.Http;
 
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MyCommunityBuilder.Identity
 {
@@ -141,7 +142,7 @@ namespace MyCommunityBuilder.Identity
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
             {
@@ -175,6 +176,28 @@ namespace MyCommunityBuilder.Identity
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+            lifetime.ApplicationStarted.Register(OnApplicationStartedAsync(env).Wait);
+            string baseURL = AppDomain.CurrentDomain.BaseDirectory;
+        }
+
+        private async Task<Action> OnApplicationStartedAsync(IWebHostEnvironment env)
+        {
+            try
+            {
+                var PathBuild = Path.Combine(env.WebRootPath, "Logs");
+                if (!Directory.Exists(PathBuild))
+                {
+                    Directory.CreateDirectory(PathBuild);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return null;
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 {
@@ -63,29 +64,38 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
+
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToPage("./ResetPasswordConfirmation");
+                }
+
+                var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("./ResetPasswordConfirmation");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
                 return Page();
             }
-
-            var user = await _userManager.FindByEmailAsync(Input.Email);
-            if (user == null)
+            catch (Exception ex)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToPage("./ResetPasswordConfirmation");
+                LogService.WriteLogLine(ex.ToString());
+                throw;
             }
-
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToPage("./ResetPasswordConfirmation");
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return Page();
+           
         }
     }
 }

@@ -19,7 +19,7 @@
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8">
             <div class="containerBar">
-                    <select class="Drop selectBar" value="@CategorySelect" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnSelectCat(SearchText))">
+                    <select class="selectBar" value="@CategorySelect" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnSelectCat(SearchText))">
                         <option value="default" disabled selected>Select category</option>
                         @foreach (var item in BusinessCategories)
 	                     {

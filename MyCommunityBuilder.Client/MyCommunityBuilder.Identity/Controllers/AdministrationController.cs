@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Controllers
 {
@@ -28,72 +29,90 @@ namespace MyCommunityBuilder.Identity.Controllers
         [HttpGet("Users")]
         public async Task<ActionResult> GetUsersAsync()
         {
-            IList<IdentityUserViewModel> identityUserViews = new List<IdentityUserViewModel>();
-            IdentityUserViewModel identityUserView;
-            var users = await _userManager.Users.ToListAsync();
-            var allRoles = await _roleManager.Roles.ToListAsync();
-
-            foreach (var user in users)
+            try
             {
-                identityUserView = new IdentityUserViewModel();
-                identityUserView.Email = user.Email;
-                identityUserView.EmailConfirmed = user.EmailConfirmed;
-                identityUserView.Id = user.Id;
-                identityUserView.Name = user.Name;
-                identityUserView.TwoFactorEnabled = user.TwoFactorEnabled;
-                identityUserView.UserName = user.UserName;
-                identityUserView.Force2FA = user.Force2FA;
+                IList<IdentityUserViewModel> identityUserViews = new List<IdentityUserViewModel>();
+                IdentityUserViewModel identityUserView;
+                var users = await _userManager.Users.ToListAsync();
+                var allRoles = await _roleManager.Roles.ToListAsync();
 
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Count > 0)
+                foreach (var user in users)
                 {
-                    identityUserView.Roles = (from r in roles
-                                              join ar in allRoles
-                                              on r equals ar.Name
-                                              select new IdentityRoleViewModel
-                                              {
-                                                  Name = ar.Name,
-                                                  Id = ar.Id,
-                                                  NormalizedName = ar.NormalizedName
-                                              }).ToList();
-                }
+                    identityUserView = new IdentityUserViewModel();
+                    identityUserView.Email = user.Email;
+                    identityUserView.EmailConfirmed = user.EmailConfirmed;
+                    identityUserView.Id = user.Id;
+                    identityUserView.Name = user.Name;
+                    identityUserView.TwoFactorEnabled = user.TwoFactorEnabled;
+                    identityUserView.UserName = user.UserName;
+                    identityUserView.Force2FA = user.Force2FA;
 
-                identityUserViews.Add(identityUserView);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Count > 0)
+                    {
+                        identityUserView.Roles = (from r in roles
+                                                  join ar in allRoles
+                                                  on r equals ar.Name
+                                                  select new IdentityRoleViewModel
+                                                  {
+                                                      Name = ar.Name,
+                                                      Id = ar.Id,
+                                                      NormalizedName = ar.NormalizedName
+                                                  }).ToList();
+                    }
+
+                    identityUserViews.Add(identityUserView);
+                }
+                return Ok(identityUserViews);
             }
-            return Ok(identityUserViews);
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+            
         }
 
         [HttpGet("Users/{Id}")]
         public async Task<ActionResult> GetUserByIdAsync(string Id)
         {
-            var user = await _userManager.Users.Where(x => x.Id == Id).FirstOrDefaultAsync();
-            IdentityUserViewModel identityUserView = new IdentityUserViewModel();
-            if (user != null)
+            try
             {
-                var allRoles = await _roleManager.Roles.ToListAsync();
+                var user = await _userManager.Users.Where(x => x.Id == Id).FirstOrDefaultAsync();
+                IdentityUserViewModel identityUserView = new IdentityUserViewModel();
+                if (user != null)
+                {
+                    var allRoles = await _roleManager.Roles.ToListAsync();
 
-                identityUserView.Email = user.Email;
-                identityUserView.EmailConfirmed = user.EmailConfirmed;
-                identityUserView.Id = user.Id;
-                identityUserView.Name = user.Name;
-                identityUserView.TwoFactorEnabled = user.TwoFactorEnabled;
-                identityUserView.UserName = user.UserName;
-                identityUserView.Force2FA = user.Force2FA;
-                identityUserView.Was2faEnabledInit = user.Was2faEnabledInit;
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Count > 0)
-                    identityUserView.Roles = (from r in roles
-                                              join ar in allRoles
-                                              on r equals ar.Name
-                                              select new IdentityRoleViewModel
-                                              {
-                                                  Name = ar.Name,
-                                                  Id = ar.Id,
-                                                  NormalizedName = ar.NormalizedName
-                                              }).ToList();
+                    identityUserView.Email = user.Email;
+                    identityUserView.EmailConfirmed = user.EmailConfirmed;
+                    identityUserView.Id = user.Id;
+                    identityUserView.Name = user.Name;
+                    identityUserView.TwoFactorEnabled = user.TwoFactorEnabled;
+                    identityUserView.UserName = user.UserName;
+                    identityUserView.Force2FA = user.Force2FA;
+                    identityUserView.Was2faEnabledInit = user.Was2faEnabledInit;
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Count > 0)
+                        identityUserView.Roles = (from r in roles
+                                                  join ar in allRoles
+                                                  on r equals ar.Name
+                                                  select new IdentityRoleViewModel
+                                                  {
+                                                      Name = ar.Name,
+                                                      Id = ar.Id,
+                                                      NormalizedName = ar.NormalizedName
+                                                  }).ToList();
+                }
+
+                return Ok(identityUserView);
             }
-
-            return Ok(identityUserView);
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+           
         }
 
         [HttpGet("Roles")]
@@ -115,13 +134,22 @@ namespace MyCommunityBuilder.Identity.Controllers
         [HttpPost("users/role")]
         public async Task<ActionResult> AddUserRole(AddUserRoleReqModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.UserId);
-            bool isInRool = await _userManager.IsInRoleAsync(user, model.Role);
-            if (!isInRool && !model.IsRemoved)
-                await _userManager.AddToRoleAsync(user, model.Role);
-            else if (isInRool && model.IsRemoved)
-                await _userManager.RemoveFromRoleAsync(user, model.Role);
-            return Ok(true);
+            try
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                bool isInRool = await _userManager.IsInRoleAsync(user, model.Role);
+                if (!isInRool && !model.IsRemoved)
+                    await _userManager.AddToRoleAsync(user, model.Role);
+                else if (isInRool && model.IsRemoved)
+                    await _userManager.RemoveFromRoleAsync(user, model.Role);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+           
         }
 
         [HttpPost("users/update")]

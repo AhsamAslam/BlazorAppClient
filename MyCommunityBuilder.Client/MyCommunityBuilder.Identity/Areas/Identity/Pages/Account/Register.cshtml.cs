@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 {
@@ -119,64 +120,82 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            try
             {
-                var user = new ApplicationUser {FirstName = Input.FirstName, LastName = Input.LastName, 
-                    PhoneNumber = Input.PhoneNumber, Type = "null", UserName = Input.UserName,
-                    Email = Input.Email, Name = Input.Name, NormalizedUserName = Input.Name, ZipCode = Input.ZipCode };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-      
-                if (Input.BusinessRole != null && Input.BusinessRole != false)
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                if (ModelState.IsValid)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(user, RoleType.BusinessRole.ToDescriptionString());
-                    var roleResultCustomer = await _userManager.AddToRoleAsync(user, RoleType.Customer.ToDescriptionString());
-                }
-                if (Input.InvestorRole != null && Input.InvestorRole != false)
-                {
-                    var roleResult = await _userManager.AddToRoleAsync(user, RoleType.InvestorRole.ToDescriptionString());
-                    var roleResultCustomer = await _userManager.AddToRoleAsync(user, RoleType.Customer.ToDescriptionString());
-                }
-                if ((Input.BusinessRole == null || Input.BusinessRole == false) &&
-                    (Input.InvestorRole == null || Input.InvestorRole == false))
-                {
-                    var roleResultCustomer = await _userManager.AddToRoleAsync(user, RoleType.Customer.ToDescriptionString());
-                }
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email,
-                        "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    var user = new ApplicationUser
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        PhoneNumber = Input.PhoneNumber,
+                        Type = "null",
+                        UserName = Input.UserName,
+                        Email = Input.Email,
+                        Name = Input.Name,
+                        NormalizedUserName = Input.Name,
+                        ZipCode = Input.ZipCode
+                    };
+                    var result = await _userManager.CreateAsync(user, Input.Password);
+
+                    if (Input.BusinessRole != null && Input.BusinessRole != false)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        var roleResult = await _userManager.AddToRoleAsync(user, RoleType.BusinessRole.ToDescriptionString());
+                        var roleResultCustomer = await _userManager.AddToRoleAsync(user, RoleType.Customer.ToDescriptionString());
+                    }
+                    if (Input.InvestorRole != null && Input.InvestorRole != false)
+                    {
+                        var roleResult = await _userManager.AddToRoleAsync(user, RoleType.InvestorRole.ToDescriptionString());
+                        var roleResultCustomer = await _userManager.AddToRoleAsync(user, RoleType.Customer.ToDescriptionString());
+                    }
+                    if ((Input.BusinessRole == null || Input.BusinessRole == false) &&
+                        (Input.InvestorRole == null || Input.InvestorRole == false))
+                    {
+                        var roleResultCustomer = await _userManager.AddToRoleAsync(user, RoleType.Customer.ToDescriptionString());
+                    }
+
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email,
+                            "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                // If we got this far, something failed, redisplay form
+                return Page();
             }
-
-            // If we got this far, something failed, redisplay form
-            return Page();
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+           
         }
     }
 }

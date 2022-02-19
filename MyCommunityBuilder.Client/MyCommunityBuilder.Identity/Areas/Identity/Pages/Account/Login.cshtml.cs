@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 {
@@ -76,48 +78,56 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var user = await _userManager.FindByEmailAsync(Input.Email);
-
-            if (ModelState.IsValid)
+            try
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                if (result.IsNotAllowed)
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+  
+                if (ModelState.IsValid)
                 {
-                    
-                    return RedirectToPage("./ResendVerificationEmailOrUpdateEmail", new { Email = user.Email });
-                }
-                if (result.Succeeded)
-                {
-                    ApplicationUser userSucceed = await _userManager.FindByEmailAsync(Input.Email);
-                    await _signInManager.SignInWithClaimsAsync(userSucceed, new AuthenticationProperties { IsPersistent = Input.RememberMe }, new List<Claim> { new Claim("user_name", user.UserName) });
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                    var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                    if (result.IsNotAllowed)
+                    {
 
-                    _logger.LogInformation("User logged in.");
-                    //return RedirectToPage("./UserProfile", new { ID = userSucceed.Id });
-                    return LocalRedirect(returnUrl);
-                    //return LocalRedirect("~/Index/ID="+user.Id);
+                        return RedirectToPage("./ResendVerificationEmailOrUpdateEmail", new { Email = user.Email });
+                    }
+                    if (result.Succeeded)
+                    {
+                        ApplicationUser userSucceed = await _userManager.FindByEmailAsync(Input.Email);
+                        await _signInManager.SignInWithClaimsAsync(userSucceed, new AuthenticationProperties { IsPersistent = Input.RememberMe }, new List<Claim> { new Claim("user_name", user.UserName) });
+
+                        _logger.LogInformation("User logged in.");
+                        //return RedirectToPage("./UserProfile", new { ID = userSucceed.Id });
+                        return LocalRedirect(returnUrl);
+                        //return LocalRedirect("~/Index/ID="+user.Id);
+                    }
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToPage("./Lockout");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return Page();
+                    }
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+
+                // If we got this far, something failed, redisplay form
+                return Page();
             }
-
-            // If we got this far, something failed, redisplay form
-            return Page();
+            catch (Exception ex)
+            {
+                LogService.WriteLogLine(ex.ToString());
+                throw;
+            }
+            
         }
     }
 }

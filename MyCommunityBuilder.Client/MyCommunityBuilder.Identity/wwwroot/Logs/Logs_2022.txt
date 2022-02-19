@@ -1,0 +1,4 @@
+WriteLogLine Comments: [2/19/2022 3:42:01 PM] Attempted to divide by zero..
+WriteLogLine Comments: [2/19/2022 3:44:02 PM] Attempted to divide by zero..
+WriteLogLine Comments: [2/19/2022 3:46:12 PM] System.DivideByZeroException: Attempted to divide by zero.
+   at MyCommunityBuilder.Identity.Areas.Identity.Pages.Account.LoginModel.OnPostAsync(String returnUrl) in D:\Ahsam Projects\BlazorApp2\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Areas\Identity\Pages\Account\Login.cshtml.cs:line 86.

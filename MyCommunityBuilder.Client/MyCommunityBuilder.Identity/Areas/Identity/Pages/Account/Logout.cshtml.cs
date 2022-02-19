@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 {
@@ -32,16 +33,25 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
+            try
             {
-                return LocalRedirect(returnUrl);
+                await _signInManager.SignOutAsync();
+                _logger.LogInformation("User logged out.");
+                if (returnUrl != null)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToPage();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToPage();
+                LogService.WriteLogLine(ex.ToString());
+                throw;
             }
+           
         }
     }
 }

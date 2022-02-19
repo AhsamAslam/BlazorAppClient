@@ -112,6 +112,7 @@
     justify-content: center;
     justify-items: center;
     margin-top: 65px;
+    margin-left:35px;
 }
 
 input {
@@ -144,4 +145,88 @@ input {
 .Drop2 {
     width: 100px;
     height: 30px;
+}
+
+@media screen and (max-width: 375px) {
+    .containerBar select, .containerBar input, .containerBar button {
+        margin-left: 40px;
+        padding: 0px 0px;
+        width: 250px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+@media screen and (max-width: 400px) {
+    .containerBar select, .containerBar input, .containerBar button {
+        margin-left: 40px;
+        padding: 0px 0px;
+        width: 275px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .containerBar select, .containerBar input, .containerBar button {
+        margin-left: 40px;
+        padding: 0px 0px;
+        width: 370px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .containerBar select, .containerBar input, .containerBar button {
+        margin-left: 75px;
+        padding: 0px 0px;
+        width: 370px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+@media screen and (max-width: 700px) {
+    .containerBar select, .containerBar input, .containerBar button {
+        margin-left: 75px;
+        padding: 0px 0px;
+        width: 370px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+@media screen and (max-width: 800px) {
+    .containerBar select, .containerBar input, .containerBar button {
+        margin: 0px 0px;
+        padding: 0px 0px;
+        width: 250px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .Drop2 {
+        margin-left: 35px;
+        padding: 0px 0px;
+        width: 250px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
+}
+@media screen and (max-width: 375px) {
+    .Drop2 {
+        margin-left: 35px;
+        padding: 0px 0px;
+        width: 250px;
+        height: 43px;
+        display: flex;
+        float: left;
+    }
 }
