@@ -175,9 +175,7 @@ namespace MyCommunityBuilder.Identity
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
-            });
-            lifetime.ApplicationStarted.Register(OnApplicationStartedAsync(env).Wait);
-            string baseURL = AppDomain.CurrentDomain.BaseDirectory;
+           });
         }
 
         
