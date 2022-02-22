@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
 {
@@ -29,22 +30,30 @@ namespace MyCommunityBuilder.Identity.Areas.Identity.Pages.Account
         public bool Succeeded { get; set; }
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
-            if (userId == null || code == null)
+            try
             {
-                return RedirectToPage("/Index");
-            }
+                if (userId == null || code == null)
+                {
+                    return RedirectToPage("/Index");
+                }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{userId}'.");
+                }
+
+                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                var result = await _userManager.ConfirmEmailAsync(user, code);
+                Succeeded = result.Succeeded;
+                StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+                return Page();
+            }
+            catch(Exception ex)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                LogService.WriteLogLine(ex.ToString());
+                throw;
             }
-
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            Succeeded = result.Succeeded;
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
-            return Page();
         }
     }
 }
