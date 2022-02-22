@@ -175,13 +175,10 @@ namespace MyCommunityBuilder.Identity
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
-<<<<<<< HEAD
             });
             
             string baseURL = AppDomain.CurrentDomain.BaseDirectory;
-=======
-           });
->>>>>>> 274020c5ce32f8382ea63e59fc3c76eeabb99d09
+
         }
 
         
