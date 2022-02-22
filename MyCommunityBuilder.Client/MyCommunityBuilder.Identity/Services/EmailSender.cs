@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using System.IO;
 using System.Threading.Tasks;
+using MyCommunityBuilder.Identity.Helpers;
 
 namespace MyCommunityBuilder.Identity.Services
 {
@@ -64,7 +65,7 @@ namespace MyCommunityBuilder.Identity.Services
             }
             catch (System.Exception ex)
             {
-
+                LogService.WriteLogLine("EmailSender_" + ex.ToString());
                 throw;
             }
             
