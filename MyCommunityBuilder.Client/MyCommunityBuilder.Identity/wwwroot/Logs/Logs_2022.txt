@@ -1,2 +1,23 @@
 WriteLogLine Comments: [2/20/2022 2:14:43 PM] System.DivideByZeroException: Attempted to divide by zero.
    at MyCommunityBuilder.Identity.Areas.Identity.Pages.Account.LoginModel.OnPostAsync(String returnUrl) in D:\Ahsam Projects\BlazorApp2\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Areas\Identity\Pages\Account\Login.cshtml.cs:line 86.
+WriteLogLine Comments: [25/02/2022 1:03:00 pm] EmailSender_MailKit.Security.AuthenticationException: 535: 5.7.8 Username and Password not accepted. Learn more at
+5.7.8  https://support.google.com/mail/?p=BadCredentials r15-20020a05600c35cf00b003808165fbc2sm1711592wmq.25 - gsmtp
+ ---> MailKit.Net.Smtp.SmtpCommandException: 5.7.8 Username and Password not accepted. Learn more at
+5.7.8  https://support.google.com/mail/?p=BadCredentials r15-20020a05600c35cf00b003808165fbc2sm1711592wmq.25 - gsmtp
+   --- End of inner exception stack trace ---
+   at MailKit.Net.Smtp.SmtpClient.AuthenticateAsync(Encoding encoding, ICredentials credentials, Boolean doAsync, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.Authenticate(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(Encoding encoding, String userName, String password, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(String userName, String password, CancellationToken cancellationToken)
+   at MyCommunityBuilder.Identity.Services.EmailSender.Execute(MailRequest mailRequest) in C:\Arqam\BlazorApp\BlazorAppClient\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Services\EmailSender.cs:line 62.
+WriteLogLine Comments: [25/02/2022 1:03:00 pm] MailKit.Security.AuthenticationException: 535: 5.7.8 Username and Password not accepted. Learn more at
+5.7.8  https://support.google.com/mail/?p=BadCredentials r15-20020a05600c35cf00b003808165fbc2sm1711592wmq.25 - gsmtp
+ ---> MailKit.Net.Smtp.SmtpCommandException: 5.7.8 Username and Password not accepted. Learn more at
+5.7.8  https://support.google.com/mail/?p=BadCredentials r15-20020a05600c35cf00b003808165fbc2sm1711592wmq.25 - gsmtp
+   --- End of inner exception stack trace ---
+   at MailKit.Net.Smtp.SmtpClient.AuthenticateAsync(Encoding encoding, ICredentials credentials, Boolean doAsync, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.Authenticate(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(Encoding encoding, String userName, String password, CancellationToken cancellationToken)
+   at MailKit.MailService.Authenticate(String userName, String password, CancellationToken cancellationToken)
+   at MyCommunityBuilder.Identity.Services.EmailSender.Execute(MailRequest mailRequest) in C:\Arqam\BlazorApp\BlazorAppClient\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Services\EmailSender.cs:line 62
+   at MyCommunityBuilder.Identity.Areas.Identity.Pages.Account.RegisterModel.OnPostAsync(String returnUrl) in C:\Arqam\BlazorApp\BlazorAppClient\MyCommunityBuilder.Client\MyCommunityBuilder.Identity\Areas\Identity\Pages\Account\Register.cshtml.cs:line 170.
