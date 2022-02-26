@@ -51,7 +51,7 @@ namespace MyCommunityBuilder.Client
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTMwOTAwQDMxMzkyZTMzMmUzMEVreTlQT2E5c0E0dkU2SE9zQlNrbllTc0I3cC8ybGFUcFFpbjZVcWZvcnM9");
             Console.WriteLine("Ahsam" + url);
 
-            builder.Services.AddHttpClient("MyCommunityBuilder.ServerAPI", client => client.BaseAddress = new Uri(url))
+            builder.Services.AddHttpClient("MyCommunityBuilder.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
               .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
             builder.Services.AddOptions();

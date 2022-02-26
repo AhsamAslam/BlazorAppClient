@@ -25,6 +25,7 @@ namespace MyCommunityBuilder.Client.Pages
             [Required]
             public string Username { get; set; }
             public string ZipCode { get; set; }
+            public bool TwoStepFactor { get; set; }
             //[Required]
             //[DataType(DataType.EmailAddress)]
             //[EmailAddress]
@@ -94,7 +95,9 @@ namespace MyCommunityBuilder.Client.Pages
                     PhoneNumber = User.PhoneNumber,
                     ZipCode = User.ZipCode,
                     OldPassword = User.OldPassword,
-                    NewPassword = User.NewPassword
+                    NewPassword = User.NewPassword,
+                    TwoFactorEnabled = User.TwoStepFactor
+                    
 
 
                 };

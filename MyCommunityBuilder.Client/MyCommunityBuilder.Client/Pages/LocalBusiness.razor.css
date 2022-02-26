@@ -46,6 +46,7 @@
     }*/
 .ContainerBody {
     background-color: #F9F9F9;
+    max-width: 100%;
 }
 .RowCenter {
     text-align: center;

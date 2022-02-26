@@ -16,7 +16,8 @@
 @inject IFileReaderService fileReader;
 @inject HttpClient client;
 @inject HttpService _httpService;
-@attribute [Authorize]
+@inject IStringLocalizer<Resource> Localizer
+@*@attribute [Authorize]*@
 
 <style>
     /*Card*/
@@ -71,7 +72,7 @@
 
 
 <div class="row">
-    <JSlider></JSlider>
+    <JSlider Records="SliderItem"></JSlider>
 </div>
 <div class="row" style="height: 75px;">
     <NavMenuBar></NavMenuBar>
@@ -109,6 +110,15 @@
             <p class="title">Zip code: @UserDto.ZipCode</p>
             <p class="title">Username: @UserDto.UserName</p>
             <p class="title">Email: @UserDto.Email</p>
+            @if (UserDto.TwoFactorEnabled == true)
+            {
+                <input type="checkbox" checked @oninput="@((e) => { User.TwoStepFactor = (bool)e.Value;})" @onchange="@UpdateUser"><label style="margin-left:8px;">Enable two step verification</label>
+            }
+            else
+            {
+                <input type="checkbox" @oninput="@((e) => { User.TwoStepFactor = (bool)e.Value;})" @onchange="@UpdateUser"><label style="margin-left:8px;">Enable two step verification</label>
+
+            }
         </div>
     </div>
     <div class="row">
@@ -189,6 +199,7 @@
 
     public IDictionary<string, string> Localization = new Dictionary<string, string>();
     UserModal User = new UserModal();
+    List<SliderItemDto> SliderItem = new List<SliderItemDto>();
     #region Authentication
     private string mfaName = "[\"mfa\"]";
     private string mfaForceText = "True";
@@ -201,6 +212,30 @@
     #endregion
     protected override async Task OnInitializedAsync()
     {
+        #region Card Data
+        SliderItem = new List<SliderItemDto>
+    {
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
+            Alt = "First Slide",
+            Caption = "Slide 1",
+            Header = "Slider 1 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage2"]),            Alt = "Second Slide",
+            Caption = "Slide 2",
+            Header = "Slider 2 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage3"]),            Alt = "Third Slide",
+            Caption = "Slide 3",
+            Header = "Slider 3 Header"
+
+        },
+    };
+        #endregion
 
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;

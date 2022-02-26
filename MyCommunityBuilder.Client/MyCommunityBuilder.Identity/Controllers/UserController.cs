@@ -105,13 +105,23 @@ namespace MyCommunityBuilder.Identity.Controllers
                     user.Name = model.Name;
                 }
 
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.UserName = model.UserName;
-                user.ZipCode = model.ZipCode;
-                user.PhoneNumber = model.PhoneNumber;
-                await _userManager.UpdateAsync(user);
-                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                
+                if (model.NewPassword != null && model.NewPassword != "")
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.UserName = model.UserName;
+                    user.ZipCode = model.ZipCode;
+                    user.PhoneNumber = model.PhoneNumber;
+                    await _userManager.UpdateAsync(user);
+                    var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                }
+                else
+                {
+                    user.TwoFactorEnabled = model.TwoFactorEnabled;
+                    await _userManager.UpdateAsync(user);
+                }
 
                 return Ok(true);
             }
