@@ -123,7 +123,7 @@ namespace MyCommunityBuilder.Identity.Controllers
                     await _userManager.UpdateAsync(user);
                 }
 
-                return Ok(true);
+                return Ok();
             }
             catch (Exception ex)
             {
