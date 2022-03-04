@@ -9,12 +9,14 @@
 @inject IJSRuntime JS
 @inject IStringLocalizer<Resource> Localizer
 
-<div class="row">
-    <JSlider Records="SliderItem"></JSlider>
-</div>
-<div class="row" style="height: 75px;">
-    <NavMenuBar></NavMenuBar>
-</div>
+@*<div class="row">
+    
+</div>*@
+<JSlider Records="SliderItem"></JSlider>
+<NavMenuBar></NavMenuBar>
+@*<div class="row" style="height: 75px;">
+
+</div>*@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8">
@@ -81,13 +83,13 @@
             SmallImageCardText2 = "Investor in Game Knights"
         };
         LinksCardDto = new List<LinksCardDto>
-    {
+{
             new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Local Investment FAQs"},
             new LinksCardDto{LinksCardLinks="", LinksCardLinksText="New to investing?"},
 
         };
         ImageHeadingTextCardDto = new List<ImageHeadingTextCardDto>
-    {
+{
             new ImageHeadingTextCardDto{ImageHeadingTextCardLink = "",
                                         ImageHeadingTextCardImageSource = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["TherapeuticImage"]),
                                         ImageHeadingTextCardHeading= "Licensed Massage Therapy﻿"
@@ -106,7 +108,7 @@
                                         ,ImageHeadingTextCardText="Screen Printing and Graphic Media"}
         };
         SliderItem = new List<SliderItemDto>
-        {
+    {
         new SliderItemDto{
             Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
             Alt = "First Slide",

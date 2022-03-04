@@ -7,39 +7,41 @@
 @inject IJSRuntime JS
 @inject IStringLocalizer<Resource> Localizer
 
-<div class="row">
-    <JSlider Records="SliderItem"></JSlider>
-</div>
-<div class="row" style="height: 75px;">
-    <NavMenuBar></NavMenuBar>
-</div>
+@*<div class="row">
+
+</div>*@
+<JSlider Records="SliderItem"></JSlider>
+<NavMenuBar></NavMenuBar>
+@*<div class="row" style="height: 75px;">
+
+    </div>*@
 <div class="container ContainerBody">
     <div class="row RowCenter">
         <div class="col-md-2 col-lg-2">
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8">
             <div class="containerBar">
-                    <select class="selectBar" value="@CategorySelect" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnSelectCat(SearchText))">
-                        <option value="default" disabled selected>Select category</option>
-                        @foreach (var item in BusinessCategories)
-	                     {
-	                     	 <option value="@item">@item</option>
-	                     }
-                    </select>
-                    <input id="autoCompleteInput" list="AutoCompleteList" class="input" type="text" placeholder="Business" name="SearchBar" value="@SearchText" @onchange="((e) => OnSelectByNameAndTitle(e.Value.ToString()))">
-                    <datalist id="AutoCompleteList">
-                        @foreach (var item in AutoComplete)
-	                     {
-                            <option value="@item"/>
-	                     }
-                        
-                    </datalist>
+                <select class="selectBar" value="@CategorySelect" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnSelectCat(SearchText))">
+                    <option value="default" disabled selected>Select category</option>
+                    @foreach (var item in BusinessCategories)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <input id="autoCompleteInput" list="AutoCompleteList" class="input" type="text" placeholder="Business" name="SearchBar" value="@SearchText" @onchange="((e) => OnSelectByNameAndTitle(e.Value.ToString()))">
+                <datalist id="AutoCompleteList">
+                    @foreach (var item in AutoComplete)
+                    {
+                        <option value="@item" />
+                    }
+
+                </datalist>
                 <button class="btnBar" @onclick="GetAllLocalBusinessCard"> All </button>
             </div>
             @*<div class="SearchBarDiv">*@
-                @*<input class="SearchInput" type="text" placeholder="Business name..." @oninput="@((e) => { SearchText=(string)e.Value;})" />*@
-                @*<div class="control-wrapper">*@
-                    @*<SfAutoComplete TValue="string" TItem="BusinessLocalCardDto" Placeholder="Business" DataSource="@BusinessLocalCardDto" @oninput="@((e) => { SearchText=(string)e.Value;})" @onkeypress="@((e)=>OnChange())">
+            @*<input class="SearchInput" type="text" placeholder="Business name..." @oninput="@((e) => { SearchText=(string)e.Value;})" />*@
+            @*<div class="control-wrapper">*@
+            @*<SfAutoComplete TValue="string" TItem="BusinessLocalCardDto" Placeholder="Business" DataSource="@BusinessLocalCardDto" @oninput="@((e) => { SearchText=(string)e.Value;})" @onkeypress="@((e)=>OnChange())">
                     <AutoCompleteFieldSettings Value="BusinessLocalCardName" />
                     <AutoCompleteFieldSettings Value="BusinessLocalCardTitle" />
                 </SfAutoComplete>
@@ -47,7 +49,7 @@
                     <DropDownListEvents TItem="BusinessLocalCardDto" TValue="string" OnValueSelect="@((e)=>OnSelectCat(e.ItemData.BusinessLocalCardCategory))"></DropDownListEvents>
                     <DropDownListFieldSettings Value="BusinessLocalCardCategory" Text="BusinessLocalCardCategory"></DropDownListFieldSettings>
                 </SfDropDownList>*@
-                    @*<input class="InputWidth" list="browsers" name="myBrowser" Placeholder="Business" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnChange())"/>
+            @*<input class="InputWidth" list="browsers" name="myBrowser" Placeholder="Business" @oninput="@((e) => { SearchText=(string)e.Value;})" @onchange="@((e)=>OnChange())"/>
 
                 <datalist id="browsers">
                     @foreach (var item in BusinessLocalCardDto)
@@ -56,17 +58,17 @@
                     }
                 </datalist>
                 <input class="SearchIcon" type="image" @onclick="GetLocalBusinessCardBySearchText" title="Search business name, type, city or other" src="@(String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["SearchImage"]))" align="top" />*@
-                @*</div>
-            </div>*@
+            @*</div>
+                </div>*@
         </div>
         @*<div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="SearchBarDiv">
-                <SfDropDownList TValue="string" TItem="BusinessLocalCardDto" Placeholder="Select a city" DataSource="@BusinessLocalCardDto">
-                    <DropDownListEvents TItem="BusinessLocalCardDto" TValue="string" OnValueSelect="@((e)=>OnSelectCat(e.ItemData.BusinessLocalCardCategory))"></DropDownListEvents>
-                    <DropDownListFieldSettings Value="BusinessLocalCardCategory" Text="BusinessLocalCardCategory"></DropDownListFieldSettings>
-                </SfDropDownList>
-            </div>
-        </div>*@
+                <div class="SearchBarDiv">
+                    <SfDropDownList TValue="string" TItem="BusinessLocalCardDto" Placeholder="Select a city" DataSource="@BusinessLocalCardDto">
+                        <DropDownListEvents TItem="BusinessLocalCardDto" TValue="string" OnValueSelect="@((e)=>OnSelectCat(e.ItemData.BusinessLocalCardCategory))"></DropDownListEvents>
+                        <DropDownListFieldSettings Value="BusinessLocalCardCategory" Text="BusinessLocalCardCategory"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </div>
+            </div>*@
         <div class="col-md-2 col-lg-2">
         </div>
     </div>
@@ -82,14 +84,14 @@
     <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-8">
             @*<div class="GetAllBusinessDiv">
-                &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">All Businesses</a>
-                <span class="SpaceSpan">&gt;</span>
-                <a href="#" class="SearchText">@SearchText</a>
-            </div>*@
+                    &nbsp;&nbsp;&nbsp;<a class="hover-item GetAllBusinessLink" @onclick="GetAllLocalBusinessCard">All Businesses</a>
+                    <span class="SpaceSpan">&gt;</span>
+                    <a href="#" class="SearchText">@SearchText</a>
+                </div>*@
         </div>
         <div class="col-md-2 col-lg-2"></div>
         <div class="col-sm-12 col-md-2 col-lg-2">
-            <select class="Drop2" value="@SortBy"  @onchange="GetSortedLocalBusinessCard">
+            <select class="Drop2" value="@SortBy" @onchange="GetSortedLocalBusinessCard">
                 <option value="" disabled selected>Sort By:</option>
                 <option value="1">Newest</option>
 
@@ -232,7 +234,8 @@
         };
         foreach (var item in BusinessLocalCardDto)
         {
-            CurrentBusinessLocalCardDto.Add(new BusinessLocalCardDto() {
+            CurrentBusinessLocalCardDto.Add(new BusinessLocalCardDto()
+            {
                 BusinessLocalCardTitle = item.BusinessLocalCardTitle,
                 BusinessLocalCardImage = item.BusinessLocalCardImage,
                 BusinessLocalCardName = item.BusinessLocalCardName,
@@ -285,7 +288,7 @@
         {
             _logger.LogInformation(string.Join(Environment.NewLine, e));
             SortBy = Convert.ToInt32(e.Value.ToString());
-            if(SortBy == 1)
+            if (SortBy == 1)
                 CurrentBusinessLocalCardDto = CurrentBusinessLocalCardDto.OrderByDescending(x => x.BusinessLocalCardNewest).ToList();
 
             SearchText = "Newest";

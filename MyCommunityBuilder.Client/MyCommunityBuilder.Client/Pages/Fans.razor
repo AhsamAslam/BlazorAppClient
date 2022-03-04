@@ -10,12 +10,14 @@
 @inject IJSRuntime JS
 @inject IStringLocalizer<Resource> Localizer
 
-<div class="row">
-    <JSlider Records="SliderItem"></JSlider>
-</div>
-<div class="row" style="height: 75px;">
-    <NavMenuBar></NavMenuBar>
-</div>
+@*<div class="row">
+    
+</div>*@
+<JSlider Records="SliderItem"></JSlider>
+<NavMenuBar></NavMenuBar>
+@*<div class="row" style="height: 75px;">
+
+</div>*@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8">
@@ -98,13 +100,13 @@
             SmallImageCardText2 = "Fan of Burritos Victoria"
         };
         LinksCardDto = new List<LinksCardDto>
-    {
+{
             new LinksCardDto{LinksCardLinks="", LinksCardLinksText="List of all Registered Businesses"},
             new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Top Fans"},
             new LinksCardDto{LinksCardLinks="", LinksCardLinksText="Should I Invest?"}
         };
         SliderItem = new List<SliderItemDto>
-        {
+    {
         new SliderItemDto{
             Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
             Alt = "First Slide",

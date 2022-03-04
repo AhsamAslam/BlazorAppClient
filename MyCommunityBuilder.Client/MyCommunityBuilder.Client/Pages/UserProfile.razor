@@ -71,12 +71,14 @@
 </style>
 
 
-<div class="row">
-    <JSlider Records="SliderItem"></JSlider>
-</div>
-<div class="row" style="height: 75px;">
-    <NavMenuBar></NavMenuBar>
-</div>
+@*<div class="row">
+
+</div>*@
+<JSlider Records="SliderItem"></JSlider>
+<NavMenuBar></NavMenuBar>
+@*<div class="row" style="height: 75px;">
+
+    </div>*@
 <div class="container" style="padding-top:10px;">
     <div class="row">
         <div class="col-md-2 col-lg-2"></div>
@@ -214,7 +216,7 @@
     {
         #region Card Data
         SliderItem = new List<SliderItemDto>
-    {
+{
         new SliderItemDto{
             Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
             Alt = "First Slide",
