@@ -17,7 +17,7 @@ namespace MyCommunityBuilder.Client.Pages
         {
             try
             {
-                BusinessName = await BusinessClient.GetBusinessName();
+                //BusinessName = await BusinessClient.GetBusinessName();
                 //BusinessFiles = (from cust in BusinessDetail
                 //                 where cust.BusinessID == int.Parse(ID)
                 //                 select cust.FileURL).ToList();

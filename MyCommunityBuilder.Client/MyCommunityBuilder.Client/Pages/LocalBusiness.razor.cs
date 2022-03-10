@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MyCommunityBuilder.Shared;
+using MyCommunityBuilder.Shared.BusinessDtos;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,13 +16,25 @@ namespace MyCommunityBuilder.Client.Pages
         [Parameter] public int SiteID { get; set; }
         protected IEnumerable<LocalBusinessCardDto> BusinessBySite = Enumerable.Empty<LocalBusinessCardDto>();
         protected string SearchText { get; set; }
+
+        public class BusinessModal
+        {
+            public string Id { get; set; }
+            [Required]
+            public string Name { get; set; }
+            public string Address { get; set; }
+            [Required]
+            public string Telephone { get; set; }
+            public string Email { get; set; }
+            public string Comment { get; set; }
+        }
         #endregion
 
         protected async Task<IEnumerable<LocalBusinessCardDto>> LoadBusinessesBySiteID()
         {
             try
             {
-                BusinessBySite = await BusinessClient.GetBusinessBySiteID(4, "");
+                //BusinessBySite = await BusinessClient.GetBusinessBySiteID(4, "");
             }
             catch (AccessTokenNotAvailableException ex)
             {
@@ -61,7 +75,7 @@ namespace MyCommunityBuilder.Client.Pages
         {
             try
             {
-                BusinessBySite = await BusinessClient.GetBusinessBySiteID(4, SearchText);
+                //BusinessBySite = await BusinessClient.GetBusinessBySiteID(4, SearchText);
             }
             catch (AccessTokenNotAvailableException ex)
             {
@@ -72,6 +86,30 @@ namespace MyCommunityBuilder.Client.Pages
         {
             NavigationManager.NavigateTo("/Design"+"/"+ID);
         }
-       
+
+        protected async Task<bool> SaveBusiness()
+        {
+            try
+            {
+                AddBusinessDto IBusiness = new AddBusinessDto
+                {
+                    BusinessId = Convert.ToInt32(businessModel.Id),
+                    BusinessName = businessModel.Name,
+                    BusinessAddress = businessModel.Address,
+                    BusinessEmail = businessModel.Email,
+                    BusinessTelephone = businessModel.Telephone,
+                    BusinessComment = businessModel.Comment
+                };
+
+                //var AddedUser = await AccountService.UpdateUser(IUser);
+                NavigationManager.NavigateTo("/");
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
+            return true;
+        }
+
     }
 }

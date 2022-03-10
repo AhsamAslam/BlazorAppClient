@@ -65,7 +65,7 @@ namespace MyCommunityBuilder.Client.Pages
             IEnumerable<BusinessDto> business = Enumerable.Empty<BusinessDto>();
             try
             {
-                business = await BusinessClient.GetTopBusiness();
+                //business = await BusinessClient.GetTopBusiness();
             }
             catch (AccessTokenNotAvailableException ex)
             {

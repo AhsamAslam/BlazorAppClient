@@ -1,0 +1,68 @@
+﻿@page "/BusinessList"
+
+@using MyCommunityBuilder.Client.Services
+@inject BusinessClient BusinessClient
+@inject IJSRuntime JS
+@inject IStringLocalizer<Resource> Localizer
+
+<JSlider Records="SliderItem"></JSlider>
+<NavMenuBar></NavMenuBar>
+
+
+<div class="container-fluid" style="padding-top: 10px;">
+    <div class="row" style="margin-bottom:10px;">
+        <div style="padding-right:10px;">
+            <SfButton OnClick="PdfExport" Content="Pdf Export"></SfButton>
+        </div>
+        <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <SfGrid @ref="SfGrid" DataSource="@BusinessGrid" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowPdfExport="true" AllowExcelExport="true">
+            <GridPageSettings PageSize="10"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessEmail)" HeaderText="Email" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessTelephone)" HeaderText="Telephone" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessAddress)" HeaderText="Address" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessComment)" HeaderText="Comment" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</div>
+
+@code {
+    List<SliderItemDto> SliderItem = new List<SliderItemDto>();
+    protected override async Task OnInitializedAsync()
+    {
+        #region Component Data
+        SliderItem = new List<SliderItemDto>
+    {
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage1"]),
+            Alt = "First Slide",
+            Caption = "Slide 1",
+            Header = "Slider 1 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage2"]),            Alt = "Second Slide",
+            Caption = "Slide 2",
+            Header = "Slider 2 Header"
+
+        },
+        new SliderItemDto{
+            Source = String.Format("{0}{1}", Localizer["BaseImageUrl"], Localizer["LasCruseSliderImage3"]),            Alt = "Third Slide",
+            Caption = "Slide 3",
+            Header = "Slider 3 Header"
+
+        },
+    };
+        #endregion
+
+        await LoadBusinessesGrid();
+        await base.OnInitializedAsync();
+    }
+
+
+}

@@ -75,7 +75,7 @@
     <div class="row RowCenter">
         <div class="col-md-4 col-lg-4"></div>
         <div class="col-sm-12 col-md-4 col-lg-4">
-            <button type="button" class="btn btn-link InviteBusinessLink">
+            <button type="button" class="btn btn-link InviteBusinessLink" @onclick="@OpenDialog">
                 Invite a business to register
             </button>
         </div>
@@ -131,7 +131,52 @@
             <a style="color: Red; font-family: verdana; font-size: Medium; font-weight: bold; text-decoration: underline; padding-top: 5px;">Help! I have a business that I want to add.</a>
         </div>
     </div>*@
+<SfDialog Width="500px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+    <DialogTemplates>
+        <Header>Invite a business to register</Header>
+        <Content>
+            <EditForm Model="@businessModel" OnValidSubmit="SaveBusiness">
+                <DataAnnotationsValidator />
+                <SfTextBox @bind-Value="@businessModel.Id" hidden></SfTextBox>
+                <div class="form-row">
+                    <div class="form-group col-md-12" style="margin: 10px;">
+                        <label>Enter whatever information you have. We will reach out and encourage them to register on your behalf:</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12" style="margin: 10px;">
+                        <SfTextBox Multiline=true Placeholder="Business Name" @bind-Value="@businessModel.Name"></SfTextBox>
+                        <ValidationMessage For="@(() => businessModel.Name)"></ValidationMessage>
+                    </div>
+                    <div class="form-group col-md-12" style="margin: 10px;">
+                        <SfTextBox Multiline=true Placeholder="Business Address" @bind-Value="@businessModel.Address"></SfTextBox>
+                        <ValidationMessage For="@(() => businessModel.Address)"></ValidationMessage>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12" style="margin: 10px;">
+                        <SfTextBox Multiline=true Placeholder="Business Telephone" @bind-Value="@businessModel.Telephone"></SfTextBox>
+                        <ValidationMessage For="@(() => businessModel.Telephone)"></ValidationMessage>
+                    </div>
+                    <div class="form-group col-md-12" style="margin: 10px;">
+                        <SfTextBox Multiline=true Placeholder="Business Email" @bind-Value="@businessModel.Email"></SfTextBox>
+                        <ValidationMessage For="@(() => businessModel.Email)"></ValidationMessage>
+                    </div>
+                    <div class="form-group col-md-12" style="margin: 10px;">
+                        <SfTextBox Multiline=true Placeholder="Additional Comment" @bind-Value="@businessModel.Comment"></SfTextBox>
+                        <ValidationMessage For="@(() => businessModel.Comment)"></ValidationMessage>
+                    </div>
 
+                </div>
+
+
+                <div class="form-group" style="margin: 10px; float:right ">
+                    <button type="submit" class="btn btn-primary" @onclick="@SaveBusiness">Submit</button>
+                </div>
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
 
 @code {
     List<SliderItemDto> SliderItem = new List<SliderItemDto>();
@@ -141,6 +186,7 @@
     List<string> AutoComplete = new List<string>();
     public int? SortBy { get; set; }
     public string CategorySelect { get; set; }
+    BusinessModal businessModel = new BusinessModal();
     protected override async Task OnInitializedAsync()
     {
         #region Components Data
@@ -344,5 +390,19 @@
             ex.Redirect();
         }
     }
+
+    #region Modal
+    private bool IsVisible { get; set; } = false;
+
+    private void OpenDialog()
+    {
+        this.IsVisible = true;
+    }
+
+    private void CloseDialog()
+    {
+        this.IsVisible = false;
+    }
+    #endregion
 
 }
