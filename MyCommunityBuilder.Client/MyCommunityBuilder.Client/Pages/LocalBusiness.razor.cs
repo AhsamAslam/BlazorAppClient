@@ -101,8 +101,8 @@ namespace MyCommunityBuilder.Client.Pages
                     BusinessComment = businessModel.Comment
                 };
 
-                //var AddedUser = await AccountService.UpdateUser(IUser);
-                NavigationManager.NavigateTo("/");
+                await BusinessClient.AddBusiness(IBusiness);
+                NavigationManager.NavigateTo("/BusinessList");
             }
             catch (AccessTokenNotAvailableException ex)
             {

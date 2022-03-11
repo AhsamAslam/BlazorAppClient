@@ -12,10 +12,11 @@ namespace MyCommunityBuilder.Client.Services
     public class BusinessClient
     {
         private readonly HttpClient httpClient;
-
-        public BusinessClient(HttpClient httpClient)
+        private readonly HttpService _httpService;
+        public BusinessClient(HttpClient httpClient, HttpService httpService)
         {
             this.httpClient = httpClient;
+            _httpService = httpService;
         }
 
         //public async Task<IEnumerable<BusinessDto>> GetTopBusiness() =>
@@ -26,6 +27,9 @@ namespace MyCommunityBuilder.Client.Services
         //   await httpClient.GetFromJsonAsync<IEnumerable<BusinessDetailDto>>($"Business/ByBusinessID?BusinessID={BusinessID}");
         public async Task<IEnumerable<BusinessGridDto>> GetBusinessGrid() =>
             await httpClient.GetFromJsonAsync<IEnumerable<BusinessGridDto>>("Business/BusinessGrid");
+        public async Task<HttpResponseMessage> AddBusiness(AddBusinessDto business) =>
+           await httpClient.PostAsJsonAsync<AddBusinessDto>($"Business/AddBusiness", business);
+
         //public async Task<IEnumerable<BusinessNameDto>> GetBusinessName() =>
         //    await httpClient.GetFromJsonAsync<IEnumerable<BusinessNameDto>>("Business/BusinessName");
     }
