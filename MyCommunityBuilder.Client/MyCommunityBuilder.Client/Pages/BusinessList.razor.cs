@@ -23,7 +23,8 @@ namespace MyCommunityBuilder.Client.Pages
         {
             try
             {
-                BusinessGrid = await BusinessClient.GetBusinessGrid();
+                BusinessGrid = (await BusinessClient.GetBusinessGrid()).ToList();
+
 
 
             }

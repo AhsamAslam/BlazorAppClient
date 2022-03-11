@@ -18,7 +18,7 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
-        <SfGrid @ref="SfGrid" DataSource="@BusinessGrid" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowPdfExport="true" AllowExcelExport="true">
+        <SfGrid @ref="SfGrid" DataSource="@BusinessGrid" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowPdfExport="true" AllowExcelExport="true" Width="100%">
             <GridPageSettings PageSize="10"></GridPageSettings>
             <GridColumns>
                 <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="TextAlign.Center" Width="120"></GridColumn>
