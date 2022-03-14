@@ -50,7 +50,7 @@
         <SfGrid @ref="SfGrid" DataSource="@BusinessGrid" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowPdfExport="true" AllowExcelExport="true">
             <GridPageSettings PageSize="10"></GridPageSettings>
             <GridColumns>
-                <GridColumn Field="@nameof(BusinessGridDto.FileURL)" HeaderText="Image" TextAlign="TextAlign.Center" Width="120">
+                <GridColumn Field="@nameof(BusinessGridDto.FileURL)" HeaderText="Image" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120">
                     <Template>
                         @{
                             var business = (context as BusinessGridDto);
@@ -71,11 +71,11 @@
                         }
                     </Template>
                 </GridColumn>
-                <GridColumn Field="@nameof(BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(BusinessGridDto.BusinessNumber)" HeaderText="Number" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(BusinessGridDto.Type)" HeaderText="Type" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(BusinessGridDto.NumberOfFans)" HeaderText="No. Fans" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(BusinessGridDto.Description)" HeaderText="Description" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.BusinessNumber)" HeaderText="Number" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.Type)" HeaderText="Type" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.NumberOfFans)" HeaderText="No. Fans" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(BusinessGridDto.Description)" HeaderText="Description" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
             </GridColumns>
         </SfGrid>
     </div>

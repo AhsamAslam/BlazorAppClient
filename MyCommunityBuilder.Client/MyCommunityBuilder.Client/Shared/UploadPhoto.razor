@@ -39,7 +39,7 @@
         public string responseStr;
         public HttpResponseMessage filepath { get; set; }
         List<FileInfoDto> files = new List<FileInfoDto>();
-        public void onChange(UploadChangeEventArgs args)
+        public void onChange(Syncfusion.Blazor.Inputs.UploadChangeEventArgs args)
         {
             files = new List<FileInfoDto>();
             foreach (var file in args.Files)

@@ -12,6 +12,7 @@ using MyCommunityBuilder.Client.Services;
 using MyCommunityBuilder.Client.Shared;
 using MyCommunityBuilder.Components;
 using MyCommunityBuilder.Shared;
+using Radzen;
 using Syncfusion.Blazor;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,10 @@ namespace MyCommunityBuilder.Client
             });
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddLocalization();
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<TooltipService>();
+            builder.Services.AddScoped<ContextMenuService>();
             //builder.Services.AddBlazoredLocalStorage();
             //await builder.Build().RunAsync();
             var host = builder.Build();

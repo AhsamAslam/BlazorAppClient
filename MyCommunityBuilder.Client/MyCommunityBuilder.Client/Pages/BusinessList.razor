@@ -9,7 +9,7 @@
 <NavMenuBar></NavMenuBar>
 
 
-<div class="container-fluid" style="padding-top: 10px;">
+@*<div class="container-fluid" style="padding-top: 10px;">
     <div class="row" style="margin-bottom:10px;">
         <div style="padding-right:10px;">
             <SfButton OnClick="PdfExport" Content="Pdf Export"></SfButton>
@@ -21,13 +21,60 @@
         <SfGrid @ref="SfGrid" DataSource="@BusinessGrid" AllowPaging="true" AllowSorting="true" AllowFiltering="true" AllowPdfExport="true" AllowExcelExport="true" Width="100%">
             <GridPageSettings PageSize="10"></GridPageSettings>
             <GridColumns>
-                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessEmail)" HeaderText="Email" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessTelephone)" HeaderText="Telephone" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessAddress)" HeaderText="Address" TextAlign="TextAlign.Center" Width="120"></GridColumn>
-                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessComment)" HeaderText="Comment" TextAlign="TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessName)" HeaderText="Name" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessEmail)" HeaderText="Email" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessTelephone)" HeaderText="Telephone" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessAddress)" HeaderText="Address" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
+                <GridColumn Field="@nameof(MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto.BusinessComment)" HeaderText="Comment" TextAlign="Syncfusion.Blazor.Grids.TextAlign.Center" Width="120"></GridColumn>
             </GridColumns>
         </SfGrid>
+    </div>
+</div>*@
+
+<div class="container">
+    <div class="row py-5">
+        <div class="col">
+            <RadzenCard>
+
+                <RadzenDataList WrapItems="true" AllowPaging="true" Data="@BusinessGrid" TItem="MyCommunityBuilder.Shared.BusinessDtos.BusinessGridDto" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+                    <Template Context="business">
+                        <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-3 p-3 product-title">
+                                        @(business.BusinessName)
+                                    </div>
+                                    <div class="col-lg-7 p-3">
+                                        <div class="row d-flex">
+                                            <div class="col-md-6 col-lg-4">
+                                                <h5 class="mb-0">Email</h5>
+                                                <p class="mb-sm-2 mb-lg-0">@(business.BusinessEmail)</p>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3">
+                                                <h5 class="mb-0">Telephone</h5>
+                                                <p class="mb-sm-2 mb-lg-0">@(business.BusinessTelephone)</p>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                <h5 class="mb-0">Comment</h5>
+                                                <p class="mb-sm-2 mb-lg-0">@(business.BusinessComment)</p>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                <h5 class="mb-0">Address</h5>
+                                                <p class="mb-sm-2 mb-lg-0">@(business.BusinessAddress)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 p-3">
+                                        <RadzenButton Text="Delete" Class="w-100" />
+                                    </div>
+                                </div>
+                            </div>
+                        </RadzenCard>
+                    </Template>
+                </RadzenDataList>
+
+            </RadzenCard>
+        </div>
     </div>
 </div>
 

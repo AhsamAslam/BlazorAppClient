@@ -1,0 +1,16 @@
+﻿.product-title {
+    min-height: 72px;
+    color: #da0074;
+    background-color: rgba(255, 41, 155, .1);
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+}
+
+.price-badge {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 8px;
+}
