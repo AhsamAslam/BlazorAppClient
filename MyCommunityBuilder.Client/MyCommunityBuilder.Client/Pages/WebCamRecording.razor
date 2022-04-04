@@ -1,0 +1,52 @@
+﻿@page "/WebCam"
+@inject IJSRuntime JSRuntime
+
+<div id="container">
+    <video id="gum" playsinline autoplay muted></video>
+
+
+    <div>
+        <button id="start">Start camera</button>
+        <button class="btn btn-primary" id="record" >Record</button>
+        <button class="btn btn-primary" id="save" disabled>Save</button>
+        <button class="btn btn-primary" id="play" disabled>Play</button>
+        <button class="btn btn-primary" id="download" disabled>Download</button>
+    </div>
+
+    <div>
+        <h4>Media Stream Constraints options</h4>
+        <p>
+            Echo cancellation: <input type="checkbox" id="echoCancellation" />
+        </p>
+    </div>
+
+    <video id="recorded" playsinline loop></video>
+
+    <div>
+        <span id="errorMsg"></span>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+
+        await base.OnInitializedAsync();
+    }
+
+    //async Task StartRecording()
+    //{
+
+    //    //var resp = await JSRuntime.InvokeAsync<string>(identifier: "FunctionClose", item);
+    //    await JSRuntime.InvokeVoidAsync(identifier: "StartRecording");
+
+    //}
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("StartRecording");
+        }
+    }
+}
