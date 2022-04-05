@@ -22,41 +22,38 @@ function FunctionClose(id1, id2, id3) {
 
 
 // Web Cam Video Recording and Save to Server
-function StartRecording() {
+function StartRecordingWebCam() {
 let mediaRecorder;
 let recordedBlobs;
 
 const errorMsgElement = document.querySelector('span#errorMsg');
-const recordedVideo = document.querySelector('video#recorded');
+    const recordedVideo = document.querySelector('video#recorded');
+    const startVideo = document.querySelector('video#gum');
+
 const recordButton = document.querySelector('button#record');
-const playButton = document.querySelector('button#play');
+const shareButton = document.querySelector('button#share');
 const downloadButton = document.querySelector('button#download');
-const saveButton = document.querySelector('button#save');
+    const saveButton = document.querySelector('button#save');
+    const pauseButton = document.querySelector('button#pause');
+    const stopButton = document.querySelector('button#end');
 
-
-recordButton.addEventListener('click', () => {
-    debugger;
-    if (recordButton.textContent === 'Record') {
-        startRecording();
-    } else {
+    stopButton.addEventListener('click', () => {
+        debugger
         stopRecording();
-        recordButton.textContent = 'Record';
-        playButton.disabled = false;
-        downloadButton.disabled = false;
-        saveButton.disabled = false;
-    }
-});
+        
+    });
 
+    pauseButton.addEventListener('click', () => {
+        debugger
+        if (pauseButton.textContent == "Pause") {
+            pauseRecording();
+        }
+        else {
+            resumeRecording();
+        }
+        
 
-playButton.addEventListener('click', () => {
-    debugger;
-    const superBuffer = new Blob(recordedBlobs, { type: 'video/webm' });
-    recordedVideo.src = null;
-    recordedVideo.srcObject = null;
-    recordedVideo.src = window.URL.createObjectURL(superBuffer);
-    recordedVideo.controls = true;
-    recordedVideo.play();
-});
+    });
 
 
 downloadButton.addEventListener('click', () => {
@@ -76,29 +73,15 @@ downloadButton.addEventListener('click', () => {
 });
 saveButton.addEventListener('click', () => {
         debugger;
-        const blob = new Blob(recordedBlobs, { type: 'video/mp4' });
-        const url = window.URL.createObjectURL(blob);
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
 
-        const a = document.createElement('a');
-        a.style.display = 'none';
-    a.href = url;
+    today = mm + '-' + dd + '-' + yyyy;
 
-    //let xhr = new XMLHttpRequest();
-    //xhr.open("POST", "http://localhost:5002/api/UploadWebCamVideo/UploadVideo");
-    //xhr.setRequestHeader("Accept", "application/json");
-    //xhr.setRequestHeader("Content-Type", "application/json");
-
-    //xhr.onreadystatechange = function () {
-    //    if (xhr.readyState === 4) {
-    //        console.log(xhr.status);
-    //        console.log(xhr.responseText);
-    //    }
-    //};
-    //const JsonBlob = JSON.stringify(blob);
-
-    //xhr.send(JsonBlob);
     var formData = new FormData();
-    var fileName = "blob.mp4";
+    var fileName = today + "_"+ (Math.random() * 10000) + "_blob.mp4";
 
 
     var encodeData = new Blob(recordedBlobs, { type: 'multipart/form-data' });
@@ -108,14 +91,6 @@ saveButton.addEventListener('click', () => {
     request.open("POST", "http://localhost:5002/api/UploadWebCamVideo/UploadVideo", false);
     request.send(formData);
 
-
-        a.download = 'test.mp4';
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }, 100);
     });
 
 function handleDataAvailable(event) {
@@ -139,12 +114,22 @@ function startRecording() {
     }
 
     console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
-    recordButton.textContent = 'Stop Recording';
-    playButton.disabled = true;
-    downloadButton.disabled = true;
     mediaRecorder.onstop = (event) => {
         console.log('Recorder stopped: ', event);
         console.log('Recorded Blobs: ', recordedBlobs);
+        saveButton.style.display = "inline";
+
+        downloadButton.style.display = "inline";
+
+        shareButton.style.display = "inline";
+        startVideo.style.display = "none";
+        recordedVideo.style.display = "block";
+        const superBuffer = new Blob(recordedBlobs, { type: 'video/webm' });
+        recordedVideo.src = null;
+        recordedVideo.srcObject = null;
+        recordedVideo.src = window.URL.createObjectURL(superBuffer);
+        recordedVideo.controls = true;
+        recordedVideo.play();
     };
     mediaRecorder.ondataavailable = handleDataAvailable;
     mediaRecorder.start();
@@ -154,16 +139,33 @@ function startRecording() {
 function stopRecording() {
     debugger;
     mediaRecorder.stop();
-}
+    
+    }
+
+    function resumeRecording() {
+        debugger;
+        pauseButton.textContent = "Pause";
+        mediaRecorder.play();
+
+    }
+
+    function pauseRecording() {
+        mediaRecorder.pause();
+        pauseButton.textContent = "Resume"
+    }
 
 function handleSuccess(stream) {
     debugger;
-    recordButton.disabled = false;
+    startVideo.style.display = "block";
     console.log('getUserMedia() got stream:', stream);
     window.stream = stream;
 
     const gumVideo = document.querySelector('video#gum');
     gumVideo.srcObject = stream;
+
+    if (recordButton.textContent === 'Record') {
+        startRecording();
+    }
 }
 
 async function init(constraints) {
@@ -179,8 +181,9 @@ async function init(constraints) {
 
 
     
-    document.querySelector('button#start').addEventListener('click', async () => {
+    document.querySelector('button#record').addEventListener('click', async () => {
         debugger;
+        startVideo.style.display = "block";
         const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
         const constraints = {
             audio: {
@@ -192,6 +195,7 @@ async function init(constraints) {
         };
         console.log('Using media constraints:', constraints);
         await init(constraints);
+       
     });
 }
 

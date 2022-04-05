@@ -2,15 +2,22 @@
 @inject IJSRuntime JSRuntime
 
 <div id="container">
-    <video id="gum" playsinline autoplay muted></video>
-
+    <video style="display:none" id="gum" playsinline autoplay muted></video>
+    <video style="display:none" id="recorded" playsinline loop></video>
 
     <div>
-        <button id="start">Start camera</button>
+        @*<button class="btn btn-primary" id="start">Start camera</button>
         <button class="btn btn-primary" id="record" >Record</button>
         <button class="btn btn-primary" id="save" disabled>Save</button>
         <button class="btn btn-primary" id="play" disabled>Play</button>
-        <button class="btn btn-primary" id="download" disabled>Download</button>
+        <button class="btn btn-primary" id="download" disabled>Download</button>*@
+
+        <button class="btn btn-primary" id="record">Record</button>
+        <button class="btn btn-primary" id="pause">Pause</button>
+        <button class="btn btn-primary" id="end">End</button>
+        <button style="display:none" class="btn btn-primary" id="save">Save</button>
+        <button style="display:none" class="btn btn-primary" id="share">Share</button>
+        <button style="display:none" class="btn btn-primary" id="download">Download</button>
     </div>
 
     <div>
@@ -20,7 +27,7 @@
         </p>
     </div>
 
-    <video id="recorded" playsinline loop></video>
+
 
     <div>
         <span id="errorMsg"></span>
@@ -46,7 +53,7 @@
     {
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("StartRecording");
+            await JSRuntime.InvokeVoidAsync("StartRecordingWebCam");
         }
     }
 }
