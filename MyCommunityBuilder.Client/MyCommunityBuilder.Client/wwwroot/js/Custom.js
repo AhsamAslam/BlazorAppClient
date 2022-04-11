@@ -38,13 +38,13 @@ const downloadButton = document.querySelector('button#download');
     const stopButton = document.querySelector('button#end');
 
     stopButton.addEventListener('click', () => {
-        debugger
+        ////debugger
         stopRecording();
         
     });
 
     pauseButton.addEventListener('click', () => {
-        debugger
+        ////debugger
         if (pauseButton.textContent == "Pause") {
             pauseRecording();
         }
@@ -57,7 +57,7 @@ const downloadButton = document.querySelector('button#download');
 
 
 downloadButton.addEventListener('click', () => {
-    debugger;
+    //debugger;
     const blob = new Blob(recordedBlobs, { type: 'video/mp4' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -72,7 +72,8 @@ downloadButton.addEventListener('click', () => {
     }, 100);
 });
 saveButton.addEventListener('click', () => {
-        debugger;
+    //debugger;
+    alert("Video save successfully...");
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -90,11 +91,13 @@ saveButton.addEventListener('click', () => {
     var request = new XMLHttpRequest();
     request.open("POST", "http://localhost:5002/api/UploadWebCamVideo/UploadVideo", false);
     request.send(formData);
+    //debugger;
+    
 
     });
 
 function handleDataAvailable(event) {
-    debugger;
+    //debugger;
     console.log('handleDataAvailable', event);
     if (event.data && event.data.size > 0) {
         recordedBlobs.push(event.data);
@@ -102,7 +105,7 @@ function handleDataAvailable(event) {
 }
 
 function startRecording() {
-    debugger;
+    //debugger;
     recordedBlobs = [];
     let options = { mimeType: 'video/webm;codecs=vp9,opus' };
     try {
@@ -137,15 +140,17 @@ function startRecording() {
 }
 
 function stopRecording() {
-    debugger;
+    //debugger;
     mediaRecorder.stop();
+    stopButton.style.display = "none";
+    pauseButton.style.display = "none";
     
     }
 
     function resumeRecording() {
-        debugger;
+        //debugger;
         pauseButton.textContent = "Pause";
-        mediaRecorder.play();
+        mediaRecorder.resume();
 
     }
 
@@ -155,7 +160,7 @@ function stopRecording() {
     }
 
 function handleSuccess(stream) {
-    debugger;
+    //debugger;
     startVideo.style.display = "block";
     console.log('getUserMedia() got stream:', stream);
     window.stream = stream;
@@ -169,7 +174,7 @@ function handleSuccess(stream) {
 }
 
 async function init(constraints) {
-    debugger;
+    //debugger;
     try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         handleSuccess(stream);
@@ -182,7 +187,7 @@ async function init(constraints) {
 
     
     document.querySelector('button#record').addEventListener('click', async () => {
-        debugger;
+        //debugger;
         startVideo.style.display = "block";
         const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
         const constraints = {
